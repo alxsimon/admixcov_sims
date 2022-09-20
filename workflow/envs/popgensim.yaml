@@ -1,0 +1,14 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - tskit=0.5.2
+  - msprime=1.2.0
+  - demes=0.2.2
+  - demesdraw=0.3.0
+  - slim=4.0
+  - numpy
+  - matplotlib
+  - seaborn
