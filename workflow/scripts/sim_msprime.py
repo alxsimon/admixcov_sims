@@ -5,15 +5,8 @@ import math
 import numpy as np
 import stdpopsim
 
-try snakemake:
-	# inputs
-	demes_file = snakemake.input['demes_file']
-	# outputs
-	trees_file = snakemake.output['trees_file']
-	# params
-	census_time = snakemake.params['census_time']
-	n_sample = snakemake.params['n_sample']
-	mutation_start_time = snakemake.params['mutation_start_time']
+try: 
+	snakemake
 except:
 	print("Not running in Snakemake")
 	print("Defining variables manually")
@@ -25,6 +18,15 @@ except:
 	census_time = 210
 	n_sample = 50
 	mutation_start_time = 205
+else:
+	# inputs
+	demes_file = snakemake.input['demes_file']
+	# outputs
+	trees_file = snakemake.output['trees_file']
+	# params
+	census_time = snakemake.params['census_time']
+	n_sample = snakemake.params['n_sample']
+	mutation_start_time = snakemake.params['mutation_start_time']
 
 
 graph = demes.load(demes_file)
