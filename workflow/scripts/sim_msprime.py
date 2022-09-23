@@ -1,28 +1,36 @@
 #!python
 import demes
+import demesdraw
 import msprime
 import math
 import numpy as np
 import stdpopsim
+import pickle
 
 try: 
 	snakemake
 except:
 	print("Not running in Snakemake")
 	print("Defining variables manually")
+	import funcs as fn
 	# inputs
-	demes_file = '../../resources/model_europe.yaml'
+	demes_file = 'resources/model_europe.yaml'
 	# outputs
-	trees_file = '../../results/simulations/europe_sim_test.trees'
+	trees_file = 'results/simulations/europe_sim_test.trees'
+	model_plot = 'results/simulations/europe_sim_test.svg'
+	rate_map_pickle = 'results/simulations/europe_sim_rate_map_test.pickle'
 	# params
 	census_time = 210
 	n_sample = 50
 	mutation_start_time = 205
 else:
+	import funcs as fn
 	# inputs
 	demes_file = snakemake.input['demes_file']
 	# outputs
 	trees_file = snakemake.output['trees_file']
+	model_plot = snakemake.output['model_plot']
+	rate_map_pickle = snakemake.output['rate_map_pickle']
 	# params
 	census_time = snakemake.params['census_time']
 	n_sample = snakemake.params['n_sample']
@@ -30,17 +38,23 @@ else:
 
 
 graph = demes.load(demes_file)
+ax = demesdraw.tubes(graph, log_time=True)
+ax.figure.savefig(model_plot)
 
 demography = msprime.Demography.from_demes(graph)
 demography.add_census(time=census_time)
+demography.add_census(time=175)
 demography.sort_events()
 
 # sampling
-sampling_times = [205, 195, 185, 145, 135, 125, 100, 90, 80, 70, 0]
+sampling_times = [205, 195, 185, 175, 145, 135, 125, 100, 90, 80, 70, 0]
 samples = [
 	msprime.SampleSet(n_sample, population='Pop0', time=t)
 	for t in sampling_times
 ]
+samples.append(msprime.SampleSet(n_sample, population='Pop0', time=210))
+samples.append(msprime.SampleSet(n_sample, population='Pop1', time=175))
+samples.append(msprime.SampleSet(n_sample, population='Pop2', time=210))
 
 # Contig setup
 species = stdpopsim.get_species("HomSap")
@@ -51,6 +65,7 @@ contigs = [
 	)
 	for chr in ['chr1', 'chr2', 'chr3']
 ]
+
 
 def merge_RateMaps(list_contigs):
 	r_break = math.log(2)
@@ -66,7 +81,11 @@ def merge_RateMaps(list_contigs):
 	merged_rate = np.concatenate(merged_rate)
 	return msprime.RateMap(position=merged_pos, rate=merged_rate)
 
+
 rate_map = merge_RateMaps(contigs)
+# save this rate map
+with open(rate_map_pickle, 'wb') as fw:
+	pickle.dump(rate_map, fw)
 
 # Simulation
 ts = msprime.sim_ancestry(
@@ -84,5 +103,8 @@ ts = msprime.sim_mutations(
 	start_time=mutation_start_time,
 	# random_seed=,
 )
+
+# drop sites with recurrent mutations
+ts = ts.delete_sites(np.where([len(s.mutations) > 1 for s in ts.sites()])[0])
 
 ts.dump(trees_file)

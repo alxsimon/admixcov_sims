@@ -2,4 +2,9 @@
 
 configfile: "config/config.yaml"
 
-include: "workflow/rules/simulations.smk"
+include: "rules/simulations.smk"
+include: "rules/analyses.smk"
+
+rule all:
+	input:
+		expand('results/figures/europe_sim_{variant}_admix.png', variant=['A', 'B']),
