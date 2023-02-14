@@ -6,13 +6,31 @@ rule sim_msprime_simple_scenarios:
 		model_plot = 'results/simulations/sim_scenario_{sc}.svg',
 		# rate_map_pickle = 'results/simulations/sim_scenario_{sc}_rate_map.pickle',
 	params:
-		census_time = 210,
+		census_time = 200,
 		n_sample = 100,
-		sampling_times = [210, 205, 185, 165, 145, 125, 105, 85, 65, 0],
+		sampling_times = [200, 80, 60, 40, 20, 0],
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/sim_msprime_simple.py'
+		'../scripts/sim_msprime_simple_scenarios.py'
+
+# rule sim_slim_simple_scenarios_sel:
+# 	input:
+# 		demes_file = 'resources/scenario_{sc}.yaml',
+# 	output:
+# 		trees_file = 'results/simulations/sim_scenario_{sc}.trees',
+# 		model_plot = 'results/simulations/sim_scenario_{sc}.svg',
+# 		# rate_map_pickle = 'results/simulations/sim_scenario_{sc}_rate_map.pickle',
+# 	params:
+# 		census_time = 210,
+# 		n_sample = 100,
+# 		sampling_times = [210, 205, 185, 165, 145, 125, 105, 85, 65, 0],
+# 	conda:
+# 		"../envs/popgensim.yaml"
+# 	shell:
+		# """
+		# ../scripts/sim_msprime_simple_scenarios.py
+		# """
 
 # rule sim_msprime_2pop:
 # 	input:

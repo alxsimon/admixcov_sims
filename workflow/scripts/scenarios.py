@@ -2,14 +2,10 @@ import demes
 
 class Scenario:
     pulse_times = [
-        200,
-        180,
-        160,
-        140,
-        120,
-        100,
-        80,
-        60,
+        70,
+        50,
+        30,
+        10,
     ]
     
     def __init__(self, name: str, N_anc: int, pulses: list[list], filename: str):
@@ -45,7 +41,7 @@ class Scenario:
             f"Pop{self.N_anc}",
             description="Admixed",
             ancestors=["Pop0"],
-            start_time=210,
+            start_time=200,
             epochs=[dict(end_time=0, start_size=5000)],
         )
         for t, p in zip(self.pulse_times, self.pulses):
@@ -67,92 +63,88 @@ S2A = Scenario(
     name="2A",
     N_anc=2,
     pulses=[
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0],
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0],
+        [0, 0.2],
+        [0, 0.2],
+        [0, 0.2],
+        [0, 0.2],
     ],
     filename=snakemake.output[0]
 )
 S2A.build()
 
-# Scenario 2B
-S2B = Scenario(
-    name="2B",
-    N_anc=2,
-    pulses=[
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0.1],
-        [0, 0],
-        [0.1, 0],
-        [0.1, 0],
-        [0.1, 0],
-        [0, 0],
-    ],
-    filename=snakemake.output[1]
-)
-S2B.build()
+# # Scenario 2B
+# S2B = Scenario(
+#     name="2B",
+#     N_anc=2,
+#     pulses=[
+#         [0, 0.1],
+#         [0, 0.1],
+#         [0, 0.1],
+#         [0, 0],
+#         [0.1, 0],
+#         [0.1, 0],
+#         [0.1, 0],
+#         [0, 0],
+#     ],
+#     filename=snakemake.output[1]
+# )
+# S2B.build()
 
-# Scenario 2C
-S2C = Scenario(
-    name="2C",
-    N_anc=2,
-    pulses=[
-        [0, 0.2],
-        [0.2, 0],
-        [0, 0.2],
-        [0, 0],
-        [0.2, 0],
-        [0, 0.2],
-        [0.2, 0],
-        [0, 0],
-    ],
-    filename=snakemake.output[2]
-)
-S2C.build()
+# # Scenario 2C
+# S2C = Scenario(
+#     name="2C",
+#     N_anc=2,
+#     pulses=[
+#         [0, 0.2],
+#         [0.2, 0],
+#         [0, 0.2],
+#         [0, 0],
+#         [0.2, 0],
+#         [0, 0.2],
+#         [0.2, 0],
+#         [0, 0],
+#     ],
+#     filename=snakemake.output[2]
+# )
+# S2C.build()
 
 
-#==================
-# Three populations
-#==================
+# #==================
+# # Three populations
+# #==================
 
-# Scenario 3A
-S3A = Scenario(
-    name="3A",
-    N_anc=3,
-    pulses=[
-        [0, 0.1, 0],
-        [0, 0.1, 0],
-        [0, 0.1, 0],
-        [0, 0, 0],
-        [0, 0, 0.1],
-        [0, 0, 0.1],
-        [0, 0, 0.1],
-        [0, 0, 0],
-    ],
-    filename=snakemake.output[3]
-)
-S3A.build()
+# # Scenario 3A
+# S3A = Scenario(
+#     name="3A",
+#     N_anc=3,
+#     pulses=[
+#         [0, 0.1, 0],
+#         [0, 0.1, 0],
+#         [0, 0.1, 0],
+#         [0, 0, 0],
+#         [0, 0, 0.1],
+#         [0, 0, 0.1],
+#         [0, 0, 0.1],
+#         [0, 0, 0],
+#     ],
+#     filename=snakemake.output[3]
+# )
+# S3A.build()
 
-# Scenario 3B
-S3B = Scenario(
-    name="3B",
-    N_anc=3,
-    pulses=[
-        [0, 0.2, 0],
-        [0, 0, 0.2],
-        [0, 0.2, 0],
-        [0, 0, 0],
-        [0, 0, 0.2],
-        [0, 0.2, 0],
-        [0, 0, 0.2],
-        [0, 0, 0],
-    ],
-    filename=snakemake.output[4]
-)
-S3B.build()
+# # Scenario 3B
+# S3B = Scenario(
+#     name="3B",
+#     N_anc=3,
+#     pulses=[
+#         [0, 0.2, 0],
+#         [0, 0, 0.2],
+#         [0, 0.2, 0],
+#         [0, 0, 0],
+#         [0, 0, 0.2],
+#         [0, 0.2, 0],
+#         [0, 0, 0.2],
+#         [0, 0, 0],
+#     ],
+#     filename=snakemake.output[4]
+# )
+# S3B.build()

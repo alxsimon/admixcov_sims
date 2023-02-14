@@ -10,10 +10,18 @@ include: "rules/analyses.smk"
 # 	'B': 'resources/model_europe_noEHGpulse.yaml',
 # }
 
+scenarios = [
+	"2A",
+	# "2B",
+	# "2C",
+	# "3A",
+	# "3B",
+]
+
 rule all:
 	input:
-		expand("results/simulations/sim_scenario_{sc}.trees", sc=["2A", "2B", "2C", "3A", "3B"]),
-		expand("results/analyses/data_scenario_{sc}.pickle", sc=["2A"]), #, "2B", "2C", "3A", "3B"]),
+		expand("results/simulations/sim_scenario_{sc}.trees", sc=scenarios),
+		expand("results/analyses/data_scenario_{sc}.pickle", sc=scenarios),
 		# expand('results/simulations/sim_2pop_{rep}.trees', rep=range(100)),
 		# Simple 2 pops
 		# expand('results/simulations/sim_2pop_{ver}.trees', ver=[1, 2]),
@@ -28,7 +36,7 @@ rule all:
 
 rule prepare_scenarios:
 	output:
-		expand("resources/scenario_{sc}.yaml", sc=["2A", "2B", "2C", "3A", "3B"]),
+		expand("resources/scenario_{sc}.yaml", sc=scenarios),
 	conda:
 		"envs/popgensim.yaml"
 	script:
