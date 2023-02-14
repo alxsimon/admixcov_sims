@@ -16,13 +16,13 @@ except:
 	# inputs
 	demes_file = 'resources/model_europe.yaml'
 	# outputs
-	trees_file = 'results/simulations/europe_sim_test.trees'
-	model_plot = 'results/simulations/europe_sim_test.svg'
-	rate_map_pickle = 'results/simulations/europe_sim_rate_map_test.pickle'
+	trees_file = 'results/simulations/sim_eu_test.trees'
+	model_plot = 'results/simulations/sim_eu_test.svg'
+	rate_map_pickle = 'results/simulations/sim_eu_rate_map_test.pickle'
 	# params
 	census_time = 210
 	n_sample = 50
-	mutation_start_time = 205
+	# mutation_start_time = 205
 else:
 	import funcs as fn
 	# inputs
@@ -34,7 +34,7 @@ else:
 	# params
 	census_time = snakemake.params['census_time']
 	n_sample = snakemake.params['n_sample']
-	mutation_start_time = snakemake.params['mutation_start_time']
+	# mutation_start_time = snakemake.params['mutation_start_time']
 
 
 graph = demes.load(demes_file)
@@ -55,13 +55,17 @@ samples = [
 samples.append(msprime.SampleSet(n_sample, population='Pop0', time=210))
 samples.append(msprime.SampleSet(n_sample, population='Pop1', time=175))
 samples.append(msprime.SampleSet(n_sample, population='Pop2', time=210))
+samples.append(msprime.SampleSet(n_sample, population='Pop3', time=210))
 
 # Contig setup
 species = stdpopsim.get_species("HomSap")
+# contig = species.get_contig('chr1', genetic_map='HapMapII_GRCh37')
+# contig = species.get_contig('chr1', genetic_map='DeCodeSexAveraged_GRCh36')
 contigs = [
 	species.get_contig(
 		chr,
-		genetic_map='HapMapII_GRCh37',
+		# length_multiplier=1,
+		# genetic_map='HapMapII_GRCh37',
 	)
 	for chr in ['chr1', 'chr2', 'chr3']
 ]
@@ -83,15 +87,19 @@ def merge_RateMaps(list_contigs):
 
 
 rate_map = merge_RateMaps(contigs)
+# rate_map = contig.recombination_map.map
 # save this rate map
 with open(rate_map_pickle, 'wb') as fw:
 	pickle.dump(rate_map, fw)
+
 
 # Simulation
 ts = msprime.sim_ancestry(
 	samples=samples,
 	ploidy=2,
 	recombination_rate=rate_map,
+	# sequence_length=contig.recombination_map.get_length(),
+	# recombination_rate=1.14856e-08,
 	demography=demography,
 	# random_seed=,
 )
@@ -99,8 +107,9 @@ ts = msprime.sim_ancestry(
 ts = msprime.sim_mutations(
 	ts,
 	rate=contigs[0].mutation_rate,
+	# rate=contig.mutation_rate,
 	# keep=True, # keep existing mutations
-	start_time=mutation_start_time,
+	# start_time=mutation_start_time,
 	# random_seed=,
 )
 

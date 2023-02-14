@@ -17,7 +17,6 @@ model_plot = snakemake.output['model_plot']
 # params
 census_time = snakemake.params['census_time']
 n_sample = snakemake.params['n_sample']
-sampling_times = snakemake.params['sampling_times']
 # mutation_start_time = snakemake.params['mutation_start_time']
 
 
@@ -29,7 +28,18 @@ demography = msprime.Demography.from_demes(graph)
 demography.add_census(time=census_time)
 demography.sort_events()
 
+# cohorts = [
+# 	'England.and.Wales_N',
+# 	'England.and.Wales_C.EBA',
+# 	'England.and.Wales_MBA',
+# 	'England.and.Wales_LBA',
+# 	'England.and.Wales_IA',
+# 	'England.and.Wales_PostIA',
+# 	'England.and.Wales_Modern',
+# ]
+
 # sampling
+sampling_times = [205, 135, 115, 95, 75, 55, 0]
 samples = []
 for d in graph.demes:
 	samples += [
@@ -44,7 +54,7 @@ for d in graph.demes:
 species = stdpopsim.get_species("HomSap")
 contigs = [
 	species.get_contig(chr)
-	for chr in ['chr22'] # ['chr1'] # , 'chr2', 'chr3']
+	for chr in ['chr22'] # , 'chr2', 'chr3']
 ]
 
 
@@ -73,7 +83,6 @@ contigs = [
 ts = msprime.sim_ancestry(
 	samples=samples,
 	ploidy=2,
-	# recombination_rate=rate_map,
 	recombination_rate=contigs[0].recombination_map,
 	demography=demography,
 )
