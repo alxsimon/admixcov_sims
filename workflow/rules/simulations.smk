@@ -8,7 +8,7 @@ rule sim_msprime_simple_scenarios:
 	params:
 		census_time = 200,
 		n_sample = 100,
-		sampling_times = [200, 80, 60, 40, 20, 0],
+		sampling_times = [200, 100, 80, 60, 40, 20, 0],
 	conda:
 		"../envs/popgensim.yaml"
 	script:

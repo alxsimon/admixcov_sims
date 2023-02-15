@@ -2,6 +2,7 @@ import demes
 
 class Scenario:
     pulse_times = [
+        90,
         70,
         50,
         30,
@@ -63,10 +64,11 @@ S2A = Scenario(
     name="2A",
     N_anc=2,
     pulses=[
-        [0, 0.2],
-        [0, 0.2],
-        [0, 0.2],
-        [0, 0.2],
+        [0, 0.15],
+        [0, 0.15],
+        [0, 0.15],
+        [0, 0.15],
+        [0, 0.15],
     ],
     filename=snakemake.output[0]
 )
