@@ -1,18 +1,44 @@
 rule sim_msprime_simple_scenarios:
 	input:
-		demes_file = 'resources/scenario_{sc}.yaml',
+		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		trees_file = 'results/simulations/sim_scenario_{sc}.trees',
+		trees_file = 'results/simulations/sim_msprime_scenario_{sc}.trees',
 		model_plot = 'results/simulations/sim_scenario_{sc}.svg',
 		# rate_map_pickle = 'results/simulations/sim_scenario_{sc}_rate_map.pickle',
 	params:
 		census_time = 200,
 		n_sample = 100,
-		sampling_times = [200, 100, 80, 60, 40, 20, 0],
+		sampling_times = [200, 120, 100, 80, 60, 40, 20, 0],
 	conda:
 		"../envs/popgensim.yaml"
 	script:
 		'../scripts/sim_msprime_simple_scenarios.py'
+
+
+rule sim_slim_simple_scenarios:
+	input:
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = 'results/simulations/sim_slim_scenario_{sc}.trees',
+		pheno_file = 'results/simulations/sim_slim_scenario_{sc}_pheno.txt',
+	params:
+		census_time = 200,
+		n_sample = 100,
+		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
+		shift_time
+	conda:
+		"../envs/popgensim.yaml"
+	shell:
+		'''
+		slim \
+		-d 'JSON_FILE="{input.demes}"' \
+		-d 'TREES_FILE="{output.trees_file}"' \
+		-d 'PHENO_FILE="{output.pheno_file}"' \
+		-d 'backward_sampling={params.sampling_times}' \
+		-d 'N_sample={params.n_sample}' \
+		-d 'census_time={params.census_time}' \
+		../scripts/sim_slim_simple_scenarios_sel.slim
+		'''
 
 # rule sim_slim_simple_scenarios_sel:
 # 	input:

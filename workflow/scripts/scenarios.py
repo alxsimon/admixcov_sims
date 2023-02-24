@@ -1,7 +1,9 @@
 import demes
+import os
 
 class Scenario:
     pulse_times = [
+        110,
         90,
         70,
         50,
@@ -9,13 +11,13 @@ class Scenario:
         10,
     ]
     
-    def __init__(self, name: str, N_anc: int, pulses: list[list], filename: str):
+    def __init__(self, name: str, N_anc: int, pulses: list[list], file_prefix: str):
         assert len(pulses[0]) == N_anc
         assert len(pulses) == len(self.pulse_times)
         self.name = name
         self.N_anc = N_anc
         self.pulses = pulses
-        self.filename = filename
+        self.file_prefix = file_prefix
 
     def build(self):
         b = demes.Builder(
@@ -53,24 +55,28 @@ class Scenario:
                 time=t,
             )
         self.graph = b.resolve()
-        demes.dump(self.graph, self.filename)
+        demes.dump(self.graph, self.file_prefix + '.yaml')
+        demes.dump(self.graph, self.file_prefix + '.json', format='json', simplified=False)
 
 #==================
 # Two populations
 #==================
+
+# ensure pulses 0s are floats!
 
 # Scenario 2A
 S2A = Scenario(
     name="2A",
     N_anc=2,
     pulses=[
-        [0, 0.15],
-        [0, 0.15],
-        [0, 0.15],
-        [0, 0.15],
-        [0, 0.15],
+        [.0, 0.2],
+        [.0, 0.2],
+        [.0, .0],
+        [.0, .0],
+        [.0, 0.2],
+        [.0, 0.2],
     ],
-    filename=snakemake.output[0]
+    file_prefix=os.path.splitext(snakemake.output[0])[0],
 )
 S2A.build()
 
@@ -88,7 +94,7 @@ S2A.build()
 #         [0.1, 0],
 #         [0, 0],
 #     ],
-#     filename=snakemake.output[1]
+#     file_prefix=snakemake.output[1]
 # )
 # S2B.build()
 
@@ -106,7 +112,7 @@ S2A.build()
 #         [0.2, 0],
 #         [0, 0],
 #     ],
-#     filename=snakemake.output[2]
+#     file_prefix =snakemake.output[2]
 # )
 # S2C.build()
 
@@ -129,7 +135,7 @@ S2A.build()
 #         [0, 0, 0.1],
 #         [0, 0, 0],
 #     ],
-#     filename=snakemake.output[3]
+#     file_prefix =snakemake.output[3]
 # )
 # S3A.build()
 
@@ -147,6 +153,6 @@ S2A.build()
 #         [0, 0, 0.2],
 #         [0, 0, 0],
 #     ],
-#     filename=snakemake.output[4]
+#     file_prefix =snakemake.output[4]
 # )
 # S3B.build()

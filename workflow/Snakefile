@@ -1,5 +1,7 @@
 # Snakemake workflow
 
+import os
+
 configfile: "config/config.yaml"
 
 include: "rules/simulations.smk"
@@ -21,7 +23,7 @@ scenarios = [
 rule all:
 	input:
 		expand("results/simulations/sim_scenario_{sc}.trees", sc=scenarios),
-		expand("results/analyses/data_scenario_{sc}.pickle", sc=scenarios),
+		# expand("results/analyses/data_scenario_{sc}.pickle", sc=scenarios),
 		# expand('results/simulations/sim_2pop_{rep}.trees', rep=range(100)),
 		# Simple 2 pops
 		# expand('results/simulations/sim_2pop_{ver}.trees', ver=[1, 2]),
@@ -36,7 +38,7 @@ rule all:
 
 rule prepare_scenarios:
 	output:
-		expand("resources/scenario_{sc}.yaml", sc=scenarios),
+		expand("results/simulations/scenario_{sc}.{ext}", sc=scenarios, ext=['yaml', 'json']),
 	conda:
 		"envs/popgensim.yaml"
 	script:

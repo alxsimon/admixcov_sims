@@ -1,0 +1,108 @@
+// require SLiM v3.7
+
+initialize() {
+	if (!exists("JSON_FILE")) {
+		stop("must define JSON_FILE");
+	}
+	if (!exists("backward_sampling")) {
+		stop("must define backward_sampling");
+	}
+	if (!exists("census_time")) {
+		stop("must define census_time");
+	}
+	if (!exists("N_sample")) {
+		defineConstant("N_sample", 100);
+	}
+	if (!exists("TREES_FILE")) {
+		defineConstant("TREES_FILE", "output.trees");
+	}
+	if (!exists("PHENO_FILE")) {
+		defineConstant("PHENO_FILE", "output_pheno.tsv");
+	}
+	header = "gen\tpop\tmean_z\tsd_z";
+	writeFile(PHENO_FILE, header, append=F);
+
+	// stdpopsim Human chr22
+	defineConstant("CONTIG_LENGTH", 50818468);
+	defineConstant("RECOMBINATION_RATE", 2.10572e-08);
+	defineConstant("MUTATION_RATE", 1.29e-08);
+
+	defineConstant("alpha", 0.01);
+	defineConstant("Vs", 1); // Stabilizing selection variance
+	// defineConstant("sigma", 0.05); // strength of selection
+	defineConstant("initial_opt", 0.0); // optimum before any shift
+	defineConstant("shift_size", 1);
+
+	initializeTreeSeq();
+	initializeMutationRate(MUTATION_RATE);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	m2.convertToSubstitution = F;
+	initializeGenomicElementType("g1", m2, 1.0);
+	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
+	
+	initializeRecombinationRate(RECOMBINATION_RATE);
+	
+	source("demes.slim");
+}
+
+// we use the sel coef field to store the mutation effect size
+// mutationEffect(m2) { return 1.0; } // Only if slim 4
+fitness(m2) { return 1.0; }
+
+1 early() {
+	model = demes_load(JSON_FILE, burn_in=1);
+	demes_schedule_events(model);
+	defineConstant("g_end", model.getValue("end_time"));
+
+	defineConstant("num_demes", length(model.getValue("demes")));
+	defineConstant("admix_start", model.getValue("demes")[num_demes - 1].getValue("start_time")); // start time of Admixed pop
+	
+	// rescheduling
+	sim.rescheduleScriptBlock(s1, g_end, g_end);
+	sampling_times = g_end - backward_sampling;
+	sim.rescheduleScriptBlock(s2, generations=sampling_times); // schedule sampling
+	sim.rescheduleScriptBlock(s3, generations=g_end - census_time); // census time
+}
+
+// Output the tree sequence file at the end of the simulation.
+s1 late() {
+	sim.treeSeqOutput(TREES_FILE);
+}
+
+// Sampling of N_sample individuals, remembered in the tree sequence file.
+s2 late() {
+	for (i in seq(0, length(sim.subpopulations) - 1)) {
+		sim.treeSeqRememberIndividuals(sample(sim.subpopulations[i].individuals, N_sample));
+	}
+}
+
+// Remember parental populations
+s3 early() {
+	sim.treeSeqRememberIndividuals(sim.subpopulations.individuals);
+}
+
+1: late() {
+	gen = sim.generation;
+	z_opt = initial_opt;
+	count = 1;
+	for (sp in sim.subpopulations) {
+		inds = sp.individuals;
+		z = inds.sumOfMutationsOfType(m2);
+		if (count == num_demes & gen >= admix_start) { // for admix pop after shift
+			z_opt = z_opt + shift_size;
+		};
+		// fitness scaling
+		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);
+		inds.fitnessScaling = dnorm(z - z_opt, mean=0, sd=sqrt(Vs));
+
+		if (gen >= (admix_start - 100) & gen % 10 == 0) {
+			line = paste(
+				c(gen, "Pop" + (count - 1), mean(z), sd(z)),
+				sep="\t"
+			);
+			writeFile(PHENO_FILE, line, append=T);
+		}
+		count = count + 1;
+	}
+}
