@@ -58,9 +58,6 @@ class Scenario:
         demes.dump(self.graph, self.file_prefix + '.yaml')
         demes.dump(self.graph, self.file_prefix + '.json', format='json', simplified=False)
 
-#==================
-# Two populations
-#==================
 
 # ensure pulses 0s are floats!
 
@@ -79,6 +76,22 @@ S2A = Scenario(
     file_prefix=os.path.splitext(snakemake.output[0])[0],
 )
 S2A.build()
+
+# Scenario 3A
+S3A = Scenario(
+    name="3A",
+    N_anc=3,
+    pulses=[
+        [.0, .2, .0],
+        [.0, .2, .0],
+        [.0, .0, .0],
+        [.0, .0, .0],
+        [.0, .0, .2],
+        [.0, .0, .2],
+    ],
+    file_prefix=os.path.splitext(snakemake.output[1])[0],
+)
+S3A.build()
 
 # # Scenario 2B
 # S2B = Scenario(
@@ -115,29 +128,6 @@ S2A.build()
 #     file_prefix =snakemake.output[2]
 # )
 # S2C.build()
-
-
-# #==================
-# # Three populations
-# #==================
-
-# # Scenario 3A
-# S3A = Scenario(
-#     name="3A",
-#     N_anc=3,
-#     pulses=[
-#         [0, 0.1, 0],
-#         [0, 0.1, 0],
-#         [0, 0.1, 0],
-#         [0, 0, 0],
-#         [0, 0, 0.1],
-#         [0, 0, 0.1],
-#         [0, 0, 0.1],
-#         [0, 0, 0],
-#     ],
-#     file_prefix =snakemake.output[3]
-# )
-# S3A.build()
 
 # # Scenario 3B
 # S3B = Scenario(

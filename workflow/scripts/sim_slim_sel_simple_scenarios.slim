@@ -13,11 +13,17 @@ initialize() {
 	if (!exists("N_sample")) {
 		defineConstant("N_sample", 100);
 	}
+	if (!exists("shift_size")) {
+		defineConstant("shift_size", 1);
+	}
 	if (!exists("TREES_FILE")) {
 		defineConstant("TREES_FILE", "output.trees");
 	}
 	if (!exists("PHENO_FILE")) {
 		defineConstant("PHENO_FILE", "output_pheno.tsv");
+	}
+	if (!exists("shift_delay")) {
+		defineConstant("shift_delay", 0);
 	}
 	header = "gen\tpop\tmean_z\tsd_z";
 	writeFile(PHENO_FILE, header, append=F);
@@ -29,9 +35,7 @@ initialize() {
 
 	defineConstant("alpha", 0.01);
 	defineConstant("Vs", 1); // Stabilizing selection variance
-	// defineConstant("sigma", 0.05); // strength of selection
 	defineConstant("initial_opt", 0.0); // optimum before any shift
-	defineConstant("shift_size", 1);
 
 	initializeTreeSeq();
 	initializeMutationRate(MUTATION_RATE);
@@ -43,7 +47,7 @@ initialize() {
 	
 	initializeRecombinationRate(RECOMBINATION_RATE);
 	
-	source("demes.slim");
+	source("workflow/scripts/demes.slim");
 }
 
 // we use the sel coef field to store the mutation effect size
@@ -57,6 +61,8 @@ fitness(m2) { return 1.0; }
 
 	defineConstant("num_demes", length(model.getValue("demes")));
 	defineConstant("admix_start", model.getValue("demes")[num_demes - 1].getValue("start_time")); // start time of Admixed pop
+	defineConstant("shift_start", admix_start + shift_delay);
+	defineConstant("shift_step", shift_size / (g_end - shift_start));
 	
 	// rescheduling
 	sim.rescheduleScriptBlock(s1, g_end, g_end);
@@ -89,8 +95,9 @@ s3 early() {
 	for (sp in sim.subpopulations) {
 		inds = sp.individuals;
 		z = inds.sumOfMutationsOfType(m2);
-		if (count == num_demes & gen >= admix_start) { // for admix pop after shift
-			z_opt = z_opt + shift_size;
+		if (count == num_demes & gen >= shift_start) { // for admix pop after shift
+			// z_opt = z_opt + shift_size; // step shift
+			z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
 		};
 		// fitness scaling
 		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);
