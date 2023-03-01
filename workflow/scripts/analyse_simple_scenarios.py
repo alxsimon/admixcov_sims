@@ -13,6 +13,7 @@ demes_file = snakemake.input['demes_file']
 unit_n_sample = snakemake.params['n_sample']
 unit_ref_n_sample = snakemake.params['ref_n_sample']
 census_time = snakemake.params['census_time']
+info = snakemake.output['info']
 
 drop_times = 2 if 'slim' in trees_file else 1
 
@@ -26,6 +27,14 @@ refs = [
     for i in range(admix_pop)
 ]
 rng = np.random.default_rng()
+
+with open(info, 'w') as f:
+    print(ts, file=f)
+    print('\n', file=f)
+    print('Analysed times', file=f)
+    print(times, file=f)
+    print('\n', file=f)
+
 
 samples_nodes = ac.ts.draw_sample_sets(ts, times, rng, admix_pop, n_samples)
 ref_nodes = [
@@ -111,9 +120,17 @@ for i in range(1, k + 1):
             include_diag=True, abs=False
         ) / totvar[-1]
     )
-# print(G)
-# print(G_nc)
-# print(Ap)
+
+with open(info, 'a') as f:
+    print('Total variance:', file=f)
+    print(totvar, file=f)
+    print('G:', file=f)
+    print(G, file=f)
+    print('G non-corrected:', file=f)
+    print(G_nc, file=f)
+    print('A\':', file=f)
+    print(Ap, file=f)
+    print('\n', file=f)
 
 
 #%%
@@ -203,25 +220,6 @@ d = {
     'G': G,
     'Ap': Ap,
 }
-
-#%%
-# fig, ax = plt.subplots()
-# for i in range(d['Q'].shape[1]):
-#     _ = ax.plot(d['times'], d['Q'][:, i], '-o', label=f"Pop{i}")
-# _ = ax.set_ylim((0, 1))
-# _ = ax.set_xlabel("Time ago (generations)")
-# _ = ax.set_ylabel("Mean ancestry")
-# ax.legend(loc='upper right')
-# plt.gca().invert_xaxis()
-
-#%%
-# fig = ac.plot_covmats(
-#     [
-#         d['covmat'],
-#         d['covmat'] - d['admix_cov'],
-#         # d['covmat'] - d['admix_cov'] - d['drift_err']
-#     ]
-# )
 
 
 # %%
@@ -344,7 +342,7 @@ fig.savefig(
 
 #%%
 if 'slim' in trees_file:
-    fig, ax = plt.subplots(figsize=(6, 3))
+    fig, ax = plt.subplots(figsize=(6, 4))
     ztb = pd.read_csv(trees_file.replace('.trees', '_pheno.tsv'), sep='\t')
     ztb['bgen'] = ztb.gen.max() - ztb.gen
     sns.lineplot(

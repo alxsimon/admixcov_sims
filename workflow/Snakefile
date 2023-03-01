@@ -29,7 +29,10 @@ rule all:
 		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),
 		
 		expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=scenarios),
-		expand('results/figures/sim_slim_sel_scenario_{sc}.pdf', sc=scenarios),
+		expand(
+			'results/figures/sim_slim_sel_scenario_{sc}_{change_type}.pdf',
+			sc=scenarios, change_type=['jump', 'gradual'],
+		),
 
 rule prepare_scenarios:
 	output:
@@ -39,4 +42,3 @@ rule prepare_scenarios:
 		"envs/popgensim.yaml"
 	script:
 		"scripts/scenarios.py"
-		

@@ -25,6 +25,9 @@ initialize() {
 	if (!exists("shift_delay")) {
 		defineConstant("shift_delay", 0);
 	}
+	if (!exists("shift_delay")) {
+		defineConstant("shift_type", "jump");
+	}
 	header = "gen\tpop\tmean_z\tsd_z";
 	writeFile(PHENO_FILE, header, append=F);
 
@@ -96,8 +99,15 @@ s3 early() {
 		inds = sp.individuals;
 		z = inds.sumOfMutationsOfType(m2);
 		if (count == num_demes & gen >= shift_start) { // for admix pop after shift
-			// z_opt = z_opt + shift_size; // step shift
-			z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
+			if (shift_type == "jump") {
+				z_opt = z_opt + shift_size; // step shift
+			} else {
+				if (shift_type == "gradual") {
+					z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
+				} else {
+					print("oops shift type should be 'jump' or 'gradual'");
+				};
+			};
 		};
 		// fitness scaling
 		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);

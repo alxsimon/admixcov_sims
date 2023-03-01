@@ -5,6 +5,7 @@ rule analyse_msprime_simple_scenarios:
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
 		main_fig = 'results/figures/sim_msprime_scenario_{sc}.pdf',
+		info = 'results/simulations/sim_msprime_scenario_{sc}.info.txt',
 	params:
 		census_time = 200,
 		n_sample = 20,
@@ -17,10 +18,11 @@ rule analyse_msprime_simple_scenarios:
 
 rule analyse_slim_sel_simple_scenarios:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_scenario_{sc}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.trees',
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}.pdf',
+		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
+		info = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.info.txt',
 	params:
 		census_time = 201,
 		n_sample = 20,
