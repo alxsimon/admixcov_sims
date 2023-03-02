@@ -46,6 +46,38 @@ rule sim_slim_sel_simple_scenarios:
 		> {log}
 		'''
 
+rule sim_slim_sel_simple_scenarios_rep:
+	input:
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_{rep}.trees',
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_{rep}_pheno.tsv',
+	params:
+		census_time = 200,
+		n_sample = 100,
+		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
+		shift_size = 1.0,
+		shift_delay = 100, # delay of shift from admix_start
+	log: 
+		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_{rep}.log"
+	conda:
+		"../envs/popgensim.yaml"
+	shell:
+		'''
+		slim \
+		-d 'JSON_FILE="{input.demes_file}"' \
+		-d 'TREES_FILE="{output.trees_file}"' \
+		-d 'PHENO_FILE="{output.pheno_file}"' \
+		-d 'backward_sampling={params.sampling_times}' \
+		-d 'N_sample={params.n_sample}' \
+		-d 'census_time={params.census_time}' \
+		-d 'shift_type="{wildcards.type}"' \
+		-d 'shift_size={params.shift_size}' \
+		-d 'shift_delay={params.shift_delay}' \
+		workflow/scripts/sim_slim_sel_simple_scenarios.slim \
+		> {log}
+		'''
+
 
 rule sim_msprime_simple_3pop_Patterson_like:
 	input:

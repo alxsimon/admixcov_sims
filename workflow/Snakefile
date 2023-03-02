@@ -23,7 +23,14 @@ scenarios = [
 rule all:
 	input:
 		expand("results/simulations/sim_msprime_scenario_{sc}.trees", sc=scenarios),
-		expand("results/simulations/sim_slim_sel_scenario_{sc}.trees", sc=scenarios),
+		expand(
+			"results/simulations/sim_slim_sel_scenario_{sc}_{change_type}.trees",
+			sc=scenarios, change_type=['jump', 'gradual'],
+		),
+		expand(
+			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{change_type}_{rep}.trees",
+			sc=scenarios[0], change_type=['gradual'], rep=range(30),
+		),
 		# Europe
 		rules.sim_msprime_simple_3pop_Patterson_like.output,
 		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),

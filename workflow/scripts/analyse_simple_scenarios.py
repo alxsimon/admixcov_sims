@@ -100,11 +100,13 @@ G = []
 G_nc = []
 Ap = []
 totvar = []
+totvar_adj = []
 for i in range(1, k + 1):
     totvar.append(np.sum(covmat[:i, :i]))
+    totvar_adj.append(np.sum((covmat - admix_cov - drift_err)[:i, :i]))
     G.append(
         ac.get_matrix_sum(
-            covmat[:i, :i] - admix_cov[:i, :i] - drift_err[:i, :i],
+            (covmat - admix_cov - drift_err)[:i, :i],
             include_diag=False, abs=False
         ) / totvar[-1]
     )
@@ -130,6 +132,8 @@ with open(info, 'a') as f:
     print(G_nc, file=f)
     print('A\':', file=f)
     print(Ap, file=f)
+    print('Total variance adjusted:', file=f)
+    print(totvar_adj, file=f)
     print('\n', file=f)
 
 
