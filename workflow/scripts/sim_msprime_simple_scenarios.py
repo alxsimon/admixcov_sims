@@ -12,8 +12,6 @@ import stdpopsim
 demes_file = snakemake.input['demes_file']
 # outputs
 trees_file = snakemake.output['trees_file']
-model_plot = snakemake.output['model_plot']
-# rate_map_pickle = snakemake.output['rate_map_pickle']
 # params
 census_time = snakemake.params['census_time']
 n_sample = snakemake.params['n_sample']
@@ -22,8 +20,6 @@ sampling_times = snakemake.params['sampling_times']
 
 
 graph = demes.load(demes_file)
-ax = demesdraw.tubes(graph, log_time=True)
-ax.figure.savefig(model_plot)
 
 demography = msprime.Demography.from_demes(graph)
 demography.add_census(time=census_time)
@@ -46,28 +42,6 @@ contigs = [
 	species.get_contig(chr)
 	for chr in ['chr22'] # ['chr1'] # , 'chr2', 'chr3']
 ]
-
-
-# def merge_RateMaps(list_contigs):
-# 	r_break = math.log(2)
-# 	list_RateMaps = [c.recombination_map.map for c in contigs]
-# 	merged_pos = [list_RateMaps[0].position]
-# 	pos_offset = merged_pos[0][-1] + 1
-# 	merged_rate = [list_RateMaps[0].rate]
-# 	for R in list_RateMaps[1:]:
-# 		merged_pos.append(R.position + pos_offset)
-# 		merged_rate.append(np.concatenate([[r_break], R.rate]))
-# 		pos_offset = merged_pos[-1][-1] + 1
-# 	merged_pos = np.concatenate(merged_pos)
-# 	merged_rate = np.concatenate(merged_rate)
-# 	return msprime.RateMap(position=merged_pos, rate=merged_rate)
-
-
-# rate_map = merge_RateMaps(contigs)
-# # save this rate map
-# with open(rate_map_pickle, 'wb') as fw:
-# 	pickle.dump(rate_map, fw)
-
 
 # Simulation
 ts = msprime.sim_ancestry(

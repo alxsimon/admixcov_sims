@@ -8,8 +8,8 @@ rule analyse_msprime_simple_scenarios:
 		info = 'results/simulations/sim_msprime_scenario_{sc}.info.txt',
 	params:
 		census_time = 200,
-		n_sample = 20,
-		ref_n_sample = 20,
+		n_sample = 30,
+		ref_n_sample = 30,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -25,8 +25,8 @@ rule analyse_slim_sel_simple_scenarios:
 		info = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.info.txt',
 	params:
 		census_time = 201,
-		n_sample = 20,
-		ref_n_sample = 20,
+		n_sample = 30,
+		ref_n_sample = 30,
 	conda:
 		"../envs/popgensim.yaml"
 	script:

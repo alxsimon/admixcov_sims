@@ -1,5 +1,6 @@
 import demes
 import os
+import demesdraw
 
 class Scenario:
     pulse_times = [
@@ -18,6 +19,7 @@ class Scenario:
         self.N_anc = N_anc
         self.pulses = pulses
         self.file_prefix = file_prefix
+        self.plot = f"{self.file_prefix}.svg"
 
     def build(self):
         b = demes.Builder(
@@ -57,6 +59,8 @@ class Scenario:
         self.graph = b.resolve()
         demes.dump(self.graph, self.file_prefix + '.yaml')
         demes.dump(self.graph, self.file_prefix + '.json', format='json', simplified=False)
+        ax = demesdraw.tubes(self.graph, log_time=True)
+        ax.figure.savefig(self.plot)
 
 
 # ensure pulses 0s are floats!

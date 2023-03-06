@@ -21,7 +21,8 @@ ts = tskit.load(trees_file)
 times = np.flip(ac.ts.get_times(ts))[drop_times:]
 n_samples = [unit_n_sample]*len(times)
 graph = demes.load(demes_file)
-admix_pop = ts.num_populations - 1
+admix_pop = len(graph.demes) - 1
+# not using ts.num_populations here as pyslim adds an additional one in ts
 refs = [
     {'pop': i, 'time': census_time, 'n': unit_ref_n_sample}
     for i in range(admix_pop)
@@ -176,8 +177,10 @@ n_loci = np.array([tile.size for tile in tile_idxs])
 weights = n_loci / np.sum(n_loci)
 
 # do the bootstraps
-straps_cov_nc = ac.bootstrap_stat(tiled_cov, weights, 1e4)
-straps_cov = ac.bootstrap_stat(tiled_corr_cov, weights, 1e4)
+m = covmat.shape[0]
+straps_cov_nc = ac.bootstrap_stat(tiled_cov, weights, 1e4, alpha=2 * 0.05 / (m * (m - 1)))
+straps_cov = ac.bootstrap_stat(tiled_corr_cov, weights, 1e4, alpha=2 * 0.05 / (m * (m - 1)))
+# Bonferonni correction only on half matrix without diagonal
 
 straps_G = []
 straps_G_nc = []
@@ -192,6 +195,7 @@ for i in range(1, k + 1):
             weights,
             1e4,
             statistic=G[i - 1],
+            alpha=0.05,
         )
     )
     straps_G_nc.append(
@@ -201,6 +205,7 @@ for i in range(1, k + 1):
             weights,
             1e4,
             statistic=G_nc[i - 1],
+            alpha=0.05,
         )
     )
     straps_Ap.append(
@@ -210,6 +215,7 @@ for i in range(1, k + 1):
             weights,
             1e4,
             statistic=Ap[i - 1],
+            alpha=0.05,
         )
     )
 
@@ -310,8 +316,8 @@ plot_covmat(combined_ci, axs[0, 1], scale_max)
 axs[0,1].set_title('covariance matrix (raw lower, corrected upper)')
 
 ymin, ymax = (
-    np.min(np.concatenate([np.tril(straps_cov_nc[0]), np.tril(straps_cov[0])])),
-    np.max(np.concatenate([np.tril(straps_cov_nc[2]), np.tril(straps_cov[2])])),
+    np.min(np.concatenate([np.tril(straps_cov_nc[0], k=-1), np.tril(straps_cov[0], k=-1)])),
+    np.max(np.concatenate([np.tril(straps_cov_nc[2], k=-1), np.tril(straps_cov[2], k=-1)])),
 )
 cov_lineplot(d['times'], straps_cov_nc, axs[1, 0], colors=colors_oi)
 axs[1, 0].set_ylim(ymin, ymax)
@@ -329,8 +335,8 @@ plot_ci_line(d['times'][1:], np.stack(straps_G_nc).T, ax=axs[2, 1], linestyle='d
 plot_ci_line(d['times'][1:], np.stack(straps_G).T, ax=axs[2, 1])
 plot_ci_line(d['times'][1:], np.stack(straps_Ap).T, ax=axs[2, 1], marker='s', color='blue')
 ymin, ymax = (
-    np.min(np.concatenate([np.stack(straps_G_nc), np.stack(straps_G), np.stack(straps_Ap)])),
-    np.max(np.concatenate([np.stack(straps_G_nc), np.stack(straps_G), np.stack(straps_Ap)])),
+    np.min(np.concatenate([np.stack(straps_G_nc)[:,0], np.stack(straps_G)[:,0], np.stack(straps_Ap)[:,0]])),
+    np.max(np.concatenate([np.stack(straps_G_nc)[:,2], np.stack(straps_G)[:,2], np.stack(straps_Ap)[:,2]])),
 )
 axs[2, 1].set_xlim(d['times'][1] + time_padding, -time_padding)
 axs[2, 1].set_ylim(ymin, ymax)
