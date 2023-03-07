@@ -10,6 +10,8 @@ rule analyse_msprime_simple_scenarios:
 		census_time = 200,
 		n_sample = 30,
 		ref_n_sample = 30,
+	resources:
+		mem_mb = 20_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -27,6 +29,8 @@ rule analyse_slim_sel_simple_scenarios:
 		census_time = 201,
 		n_sample = 30,
 		ref_n_sample = 30,
+	resources:
+		mem_mb = 20_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:

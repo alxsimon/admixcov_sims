@@ -5,7 +5,8 @@
 #SBATCH -A gmcoopgrp
 #SBATCH -p high2
 #SBATCH -t 10-00:00
-#SBATCH --output main_snakemake.log
+#SBATCH -o main_snakemake.out
+#SBATCH -e main_snakemake.err
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 1
@@ -15,4 +16,4 @@
 
 module load miniconda3
 
-snakemake --profile farm-profile -n
+snakemake --profile farm-profile

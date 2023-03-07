@@ -7,6 +7,8 @@ rule sim_msprime_simple_scenarios:
 		census_time = 200,
 		n_sample = 100,
 		sampling_times = [200, 120, 100, 80, 60, 40, 20, 0],
+	resources:
+		mem_mb = 2000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -25,6 +27,8 @@ rule sim_slim_sel_simple_scenarios:
 		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
 		shift_size = 1.0,
 		shift_delay = 100, # delay of shift from admix_start
+	resources:
+		mem_mb = 4000,
 	log: 
 		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_{rep}.log"
 	conda:
@@ -54,6 +58,8 @@ rule sim_slim_sel_postprocessing:
 		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_{rep}.trees',
 	params:
 		neutral_mut_rate = 1.29e-08, # stdpopsim Human mutation rate
+	resources:
+		mem_mb = 2000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -73,6 +79,8 @@ rule sim_msprime_simple_3pop_Patterson_like:
 		census_time = 200,
 		n_sample = 30,
 		sampling_times = [200, 135, 115, 95, 75, 55, 0],
+	resources:
+		mem_mb = 2000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -88,6 +96,8 @@ rule sim_msprime_eu:
 	params:
 		census_time = 210,
 		n_sample = 30,
+	resources:
+		mem_mb = 2000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
