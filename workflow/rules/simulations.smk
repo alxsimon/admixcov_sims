@@ -74,10 +74,10 @@ rule sim_msprime_simple_3pop_Patterson_like:
 		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
 	output:
 		trees_file = 'results/simulations/sim_3pop_simple_Patterson-like.trees',
-		model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
+		# model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
 	params:
 		census_time = 200,
-		n_sample = 30,
+		n_sample = 100,
 		sampling_times = [200, 135, 115, 95, 75, 55, 0],
 	resources:
 		mem_mb = 2000,
@@ -87,21 +87,19 @@ rule sim_msprime_simple_3pop_Patterson_like:
 		'../scripts/sim_msprime_simple_scenarios.py'
 
 
-rule sim_msprime_eu:
-	input:
-		demes_file = lambda w: variant_models[w.variant],
-	output:
-		trees_file = 'results/simulations/sim_eu_{variant}.trees',
-		model_plot = 'results/simulations/sim_eu_{variant}.svg',
-	params:
-		census_time = 210,
-		n_sample = 30,
-	resources:
-		mem_mb = 2000,
-	conda:
-		"../envs/popgensim.yaml"
-	script:
-		'../scripts/sim_msprime_eu.py'
+# rule sim_msprime_eu:
+# 	input:
+# 		demes_file = lambda w: variant_models[w.variant],
+# 	output:
+# 		trees_file = 'results/simulations/sim_eu_{variant}.trees',
+# 		model_plot = 'results/simulations/sim_eu_{variant}.svg',
+# 	params:
+# 		census_time = 210,
+# 		n_sample = 30,
+# 	conda:
+# 		"../envs/popgensim.yaml"
+# 	script:
+# 		'../scripts/sim_msprime_eu.py'
 
 # rule sim_slim_simple_scenarios_sel:
 # 	input:

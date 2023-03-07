@@ -36,6 +36,10 @@ rule analyse_slim_sel_simple_scenarios:
 	script:
 		'../scripts/analyse_simple_scenarios.py'
 
+# for Patterson
+# [37  69  26  23 273  38  62]
+# [18, 21, 18]
+
 
 # rule analyse_eu:
 # 	input:
