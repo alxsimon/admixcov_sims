@@ -66,9 +66,6 @@ rule sim_slim_sel_postprocessing:
 		'../scripts/sim_slim_postprocessing.py'
 
 
-
-
-
 rule sim_msprime_simple_3pop_Patterson_like:
 	input:
 		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
