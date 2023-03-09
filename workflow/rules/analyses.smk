@@ -3,7 +3,7 @@ rule analyse_msprime_simple_scenarios:
 	input:
 		files = expand(
 			'results/simulations/sim_msprime_rep/sim_msprime_scenario_{{sc}}_{rep}.trees',
-			rep=range(N_rep),
+			rep=range(config['N_rep']),
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
@@ -25,7 +25,7 @@ rule analyse_slim_sel_simple_scenarios:
 	input:
 		filet = expand(
 			'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_{rep}.trees',
-			rep=range(N_rep),
+			rep=range(config['N_rep']),
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:

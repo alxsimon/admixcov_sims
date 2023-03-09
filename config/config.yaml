@@ -1,4 +1,4 @@
 scenarios:
-	- "2A"
-	- "3A"
+  - "2A"
+  - "3A"
 N_rep: 100

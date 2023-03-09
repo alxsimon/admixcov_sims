@@ -7,34 +7,31 @@ configfile: "config/config.yaml"
 include: "rules/simulations.smk"
 include: "rules/analyses.smk"
 
-scenarios = config['scenarios']
-N_rep = config['N_rep']
-
 rule all:
 	input:
 		expand(
 			"results/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees",
-			sc=scenarios, rep=range(N_rep)
+			sc=config['scenarios'], rep=range(config['N_rep'])
 		),
 		expand(
 			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{change_type}_{rep}.trees",
-			sc=scenarios[0], change_type=['gradual', 'jump'], rep=range(N_rep),
+			sc=config['scenarios'][0], change_type=['gradual', 'jump'], rep=range(config['N_rep']),
 		),
 		# Europe
 		# rules.sim_msprime_simple_3pop_Patterson_like.output,
 		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),
 		
-		# expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=scenarios),
-		# expand(
-		# 	'results/figures/sim_slim_sel_scenario_{sc}_{change_type}.pdf',
-		# 	sc=scenarios, change_type=['jump', 'gradual'],
-		# ),
+		expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
+		expand(
+			'results/figures/sim_slim_sel_scenario_{sc}_{change_type}.pdf',
+			sc=config['scenarios'], change_type=['jump', 'gradual'],
+		),
 
 rule prepare_scenarios:
 	output:
-		expand("results/simulations/scenario_{sc}.yaml", sc=scenarios),
-		expand("results/simulations/scenario_{sc}.json", sc=scenarios),
-		expand("results/simulations/scenario_{sc}.svg", sc=scenarios),
+		expand("results/simulations/scenario_{sc}.yaml", sc=config['scenarios']),
+		expand("results/simulations/scenario_{sc}.json", sc=config['scenarios']),
+		expand("results/simulations/scenario_{sc}.svg", sc=config['scenarios']),
 	conda:
 		"envs/popgensim.yaml"
 	script:
