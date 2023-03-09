@@ -7,20 +7,8 @@ configfile: "config/config.yaml"
 include: "rules/simulations.smk"
 include: "rules/analyses.smk"
 
-# variant_models = {
-# 	'A': 'resources/model_europe.yaml',
-# 	'B': 'resources/model_europe_noEHGpulse.yaml',
-# }
-
-scenarios = [
-	"2A",
-	"3A",
-	# "2B",
-	# "2C",
-	# "3B",
-]
-
-N_rep = 100
+scenarios = config['scenarios']
+N_rep = config['N_rep']
 
 rule all:
 	input:

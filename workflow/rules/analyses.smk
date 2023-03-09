@@ -1,17 +1,20 @@
 
 rule analyse_msprime_simple_scenarios:
 	input:
-		trees_file = 'results/simulations/sim_msprime_scenario_{sc}.trees',
+		files = expand(
+			'results/simulations/sim_msprime_rep/sim_msprime_scenario_{{sc}}_{rep}.trees',
+			rep=range(N_rep),
+		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
 		main_fig = 'results/figures/sim_msprime_scenario_{sc}.pdf',
-		info = 'results/simulations/sim_msprime_scenario_{sc}.info.txt',
+		# info = 'results/simulations/sim_msprime_scenario_{sc}.info.txt',
 	params:
 		census_time = 200,
 		n_sample = 30,
 		ref_n_sample = 30,
 	resources:
-		mem_mb = 20_000,
+		mem_mb = 10_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -20,7 +23,10 @@ rule analyse_msprime_simple_scenarios:
 
 rule analyse_slim_sel_simple_scenarios:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.trees',
+		filet = expand(
+			'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_{rep}.trees',
+			rep=range(N_rep),
+		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
 		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
@@ -30,7 +36,7 @@ rule analyse_slim_sel_simple_scenarios:
 		n_sample = 30,
 		ref_n_sample = 30,
 	resources:
-		mem_mb = 20_000,
+		mem_mb = 10_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -77,3 +83,4 @@ rule analyse_slim_sel_simple_scenarios:
 # 		"../envs/popgensim.yaml"
 # 	script:
 # 		'../scripts/analyse_simple_scenarios.py'
+

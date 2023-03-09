@@ -1,1 +1,4 @@
-dummy: dummy
+scenarios:
+	- "2A"
+	- "3A"
+N_rep: 100
