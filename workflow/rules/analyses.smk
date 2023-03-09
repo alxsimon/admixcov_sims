@@ -30,7 +30,7 @@ rule analyse_slim_sel_simple_scenarios:
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
 		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
-		info = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.info.txt',
+		# info = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.info.txt',
 	params:
 		census_time = 201,
 		n_sample = 30,
