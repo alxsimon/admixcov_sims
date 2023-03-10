@@ -15,7 +15,7 @@ rule all:
 		),
 		expand(
 			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{change_type}_{rep}.trees",
-			sc=config['scenarios'][0], change_type=['gradual', 'jump'], rep=range(config['N_rep']),
+			sc=config['scenarios'], change_type=['gradual', 'jump'], rep=range(config['N_rep']),
 		),
 		# Europe
 		# rules.sim_msprime_simple_3pop_Patterson_like.output,
