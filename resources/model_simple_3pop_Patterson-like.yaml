@@ -1,0 +1,62 @@
+description: Simple 3 pop, pulses Patterson-like. Some parameters from Allentoft model.
+time_units: generations
+generation_time: 1
+
+demes:
+- name: Pop0
+  description: Ancestral 1 / EEF
+  epochs:
+  - {end_time: 0, start_size: 5000}
+- name: Pop1
+  description: Ancestral 2 / WHG
+  start_time: 1500
+  ancestors: [Pop0]
+  epochs:
+  - {end_time: 0, start_size: 5000}
+- name: Pop2
+  description: Ancestral 3 / Steppe
+  start_time: 800
+  ancestors: [Pop0]
+  epochs:
+  - {end_time: 0, start_size: 5000}
+- name: Pop3
+  description: Admixed
+  start_time: 200
+  ancestors: [Pop0, Pop1]
+  proportions: [0.75, 0.25]
+  epochs:
+  - {end_time: 0, start_size: 5000}
+
+#   WHG      / EEF      / Steppe
+# [[0.         0.         0.54282814]
+#  [0.         0.04501918 0.        ]
+#  [0.         0.01853724 0.        ]
+#  [0.         0.0329648  0.        ]
+#  [0.01185482 0.         0.        ]
+#  [0.         0.05733729 0.        ]]
+
+pulses:
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [.0, .0, 0.543]
+  dest: Pop3
+  time: 140
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [0.045, .0, .0]
+  dest: Pop3
+  time: 120
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [0.019, .0, .0]
+  dest: Pop3
+  time: 100
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [0.033, .0, .0]
+  dest: Pop3
+  time: 80
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [.0, 0.012, .0]
+  dest: Pop3
+  time: 60
+- sources: [Pop0, Pop1, Pop2]
+  proportions: [0.057, .0, .0]
+  dest: Pop3
+  time: 40
