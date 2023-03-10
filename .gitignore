@@ -1,5 +1,6 @@
 results/
 logs/
 .snakemake/
+.vscode/
 main_snakemake.err
 main_snakemake.out
