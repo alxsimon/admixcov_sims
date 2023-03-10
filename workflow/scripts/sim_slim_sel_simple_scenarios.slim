@@ -98,7 +98,7 @@ s3 early() {
 	for (sp in sim.subpopulations) {
 		inds = sp.individuals;
 		z = inds.sumOfMutationsOfType(m2);
-		if (count == num_demes & gen >= shift_start) { // for admix pop after shift
+		if (gen >= shift_start) { // for admix pop after shift
 			if (shift_type == "jump") {
 				z_opt = z_opt + shift_size; // step shift
 			} else {
