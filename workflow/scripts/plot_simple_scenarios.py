@@ -37,7 +37,7 @@ colors_oi = [
 
 fig, axs = plt.subplots(3, 2, figsize=(10, 8))
 
-for i in range(Q.shape[2]):
+for i in range(len(Q_CIs)):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[0,0], color=colors_oi[i], label=f"Pop{i}")
 axs[0,0].set_xlim(times[0] + time_padding, -time_padding)
 axs[0,0].set_ylim((0,1))
