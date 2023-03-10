@@ -14,7 +14,6 @@ demes_file = snakemake.input['demes_file']
 unit_n_sample = snakemake.params['n_sample']
 unit_ref_n_sample = snakemake.params['ref_n_sample']
 census_time = snakemake.params['census_time']
-# info = snakemake.output['info']
 
 drop_times = 2 if 'slim' in files[0] else 1
 
@@ -32,14 +31,6 @@ alpha_mask = np.array(
     [p.proportions for p in graph.pulses]
 ) > 0 # create alphas from graph
 rng = np.random.default_rng()
-
-# with open(info, 'w') as f:
-#     print(ts, file=f)
-#     print('\n', file=f)
-#     print('Analysed times', file=f)
-#     print(times, file=f)
-#     print('\n', file=f)
-
 
 #%% filtering
 # freq_filt = ac.ts.get_allele_frequencies(
@@ -66,21 +57,6 @@ for ts in ts_reps(files):
             rng,
         )
     )
-
-
-# with open(info, 'a') as f:
-#     print('Total variance:', file=f)
-#     print(totvar, file=f)
-#     print('G:', file=f)
-#     print(G, file=f)
-#     print('G non-corrected:', file=f)
-#     print(G_nc, file=f)
-#     print('A\':', file=f)
-#     print(Ap, file=f)
-#     print('Total variance adjusted:', file=f)
-#     print(totvar_adj, file=f)
-#     print('\n', file=f)
-
 
 #%% transform results
 totvar = []
@@ -111,11 +87,12 @@ Ap = np.array(Ap)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
 covmat = np.stack(covmat)
-# # convert to CIs
+# convert to CIs
 totvar_CI = ac.get_ci(totvar)
 G_nc_CI = ac.get_ci(G_nc)
 G_CI = ac.get_ci(G)
 Ap_CI = ac.get_ci(Ap)
+
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
 
@@ -129,7 +106,8 @@ if 'slim' in files[0]:
     for f in files[1:]:
         ztb = pd.concat([ztb, pd.read_csv(f.replace('.trees', '_pheno.tsv'), sep='\t')])
     ztb['bgen'] = ztb.gen.max() - ztb.gen
-
+else:
+    ztb = None
 
 with open(snakemake.output['pickle'], 'wb') as fw:
     pickle.dump(

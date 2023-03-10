@@ -97,7 +97,7 @@ if 'slim' in snakemake.input['pickle']:
         estimator='mean', errorbar='ci', # 95% ci by default
         ax=ax,
     )
-    ax.set_xlim(xmin=times[0] + 20, xmax=-5)
+    ax.set_xlim(xmin=200, xmax=-5)
     ax.set_xlabel('generations')
     ax.set_ylabel('mean phenotype')
     fig.savefig(snakemake.output['pheno_fig'])
