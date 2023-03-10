@@ -7,8 +7,7 @@ rule analyse_msprime_simple_scenarios:
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		main_fig = 'results/figures/sim_msprime_scenario_{sc}.pdf',
-		# info = 'results/simulations/sim_msprime_scenario_{sc}.info.txt',
+		pickle = 'results/simulations/sim_msprime_scenario_{sc}.pickle',
 	params:
 		census_time = 200,
 		n_sample = 30,
@@ -29,8 +28,7 @@ rule analyse_slim_sel_simple_scenarios:
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
-		# info = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.info.txt',
+		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.pickle',
 	params:
 		census_time = 201,
 		n_sample = 30,
@@ -41,6 +39,34 @@ rule analyse_slim_sel_simple_scenarios:
 		"../envs/popgensim.yaml"
 	script:
 		'../scripts/analyse_simple_scenarios.py'
+
+
+rule plot_msprime_simple_scenarios:
+	input:
+		pickle = 'results/simulations/sim_msprime_scenario_{sc}.pickle',
+	output:
+		main_fig = 'results/figures/sim_msprime_scenario_{sc}.pdf',
+	resources:
+		mem_mb = 1000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/plot_simple_scenarios.py'
+
+
+rule plot_slim_sel_simple_scenarios:
+	input:
+		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.pickle',
+	output:
+		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
+		pheno_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_pheno.pdf'
+	resources:
+		mem_mb = 1000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/plot_simple_scenarios.py'
+
 
 # for Patterson
 # [37  69  26  23 273  38  62]
