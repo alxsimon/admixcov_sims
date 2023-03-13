@@ -57,10 +57,10 @@ ymin, ymax = (
     np.min(np.concatenate([np.tril(covmat_nc_CI[0], k=-1), np.tril(covmat_CI[0], k=-1)])),
     np.max(np.concatenate([np.tril(covmat_nc_CI[2], k=-1), np.tril(covmat_CI[2], k=-1)])),
 )
-ac.cov_lineplot(times, covmat_nc_CI, axs[1, 0], colors=colors_oi, marker='o')
+ac.cov_lineplot(times, covmat_nc_CI, axs[1, 0], colors=colors_oi, marker='o', time_padding=time_padding)
 axs[1, 0].set_ylim(ymin, ymax)
 axs[1, 0].set_ylabel('raw covariance (without bias)')
-ac.cov_lineplot(times, covmat_CI, axs[1, 1], colors=colors_oi, marker='o')
+ac.cov_lineplot(times, covmat_CI, axs[1, 1], colors=colors_oi, marker='o', time_padding=time_padding)
 axs[1, 1].set_ylim(ymin, ymax)
 axs[1, 1].set_ylabel('admixture corrected covariance')
 
