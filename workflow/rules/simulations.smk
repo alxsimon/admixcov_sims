@@ -25,7 +25,7 @@ rule sim_slim_sel_simple_scenarios:
 		census_time = 200,
 		n_sample = 100,
 		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
-		shift_size = 5.0,
+		shift_size = 2.0,
 		shift_delay = 60, # delay of shift from admix_start
 	resources:
 		mem_mb = 4000,

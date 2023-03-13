@@ -113,7 +113,7 @@ s3 early() {
 		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);
 		inds.fitnessScaling = dnorm(z - z_opt, mean=0, sd=sqrt(Vs));
 
-		if (gen >= (admix_start - 100) & gen % 10 == 0) {
+		if (gen >= admix_start & gen % 10 == 0) {
 			line = paste(
 				c(gen, "Pop" + (count - 1), mean(z), sd(z)),
 				sep="\t"
