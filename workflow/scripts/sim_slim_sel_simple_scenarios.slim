@@ -95,20 +95,20 @@ s3 early() {
 	gen = sim.generation;
 	z_opt = initial_opt;
 	count = 1;
+	if (gen >= shift_start) { // for admix pop after shift
+		if (shift_type == "jump") {
+			z_opt = z_opt + shift_size; // step shift
+		} else {
+			if (shift_type == "gradual") {
+				z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
+			} else {
+				print("oops shift type should be 'jump' or 'gradual'");
+			};
+		};
+	};
 	for (sp in sim.subpopulations) {
 		inds = sp.individuals;
 		z = inds.sumOfMutationsOfType(m2);
-		if (gen >= shift_start) { // for admix pop after shift
-			if (shift_type == "jump") {
-				z_opt = z_opt + shift_size; // step shift
-			} else {
-				if (shift_type == "gradual") {
-					z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
-				} else {
-					print("oops shift type should be 'jump' or 'gradual'");
-				};
-			};
-		};
 		// fitness scaling
 		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);
 		inds.fitnessScaling = dnorm(z - z_opt, mean=0, sd=sqrt(Vs));
