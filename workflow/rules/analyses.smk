@@ -23,12 +23,12 @@ rule analyse_msprime_simple_scenarios:
 rule analyse_slim_sel_simple_scenarios:
 	input:
 		files = expand(
-			'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_{rep}.trees',
+			'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_s{{ssize}}_{rep}.trees',
 			rep=range(config['N_rep']),
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.pickle',
+		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}_s{ssize}.pickle',
 	params:
 		census_time = 201,
 		n_sample = 30,
@@ -56,10 +56,10 @@ rule plot_msprime_simple_scenarios:
 
 rule plot_slim_sel_simple_scenarios:
 	input:
-		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}.pickle',
+		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}_s{ssize}.pickle',
 	output:
-		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}.pdf',
-		pheno_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_pheno.pdf'
+		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_s{ssize}.pdf',
+		pheno_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_s{ssize}_pheno.pdf'
 	resources:
 		mem_mb = 1000,
 	conda:

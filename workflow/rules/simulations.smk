@@ -19,18 +19,17 @@ rule sim_slim_sel_simple_scenarios:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_{rep}.trees',
-		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_{rep}_pheno.tsv',
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_s{ssize}_{rep}.trees',
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_s{ssize}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 100,
 		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
-		shift_size = 2.0,
 		shift_delay = 60, # delay of shift from admix_start
 	resources:
 		mem_mb = 4000,
 	log: 
-		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_{rep}.log"
+		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_s{ssize}_{rep}.log"
 	conda:
 		"../envs/popgensim.yaml"
 	shell:
@@ -43,7 +42,7 @@ rule sim_slim_sel_simple_scenarios:
 		-d 'N_sample={params.n_sample}' \
 		-d 'census_time={params.census_time}' \
 		-d 'shift_type="{wildcards.type}"' \
-		-d 'shift_size={params.shift_size}' \
+		-d 'shift_size={wildcards.ssize}' \
 		-d 'shift_delay={params.shift_delay}' \
 		workflow/scripts/sim_slim_sel_simple_scenarios.slim \
 		> {log}
@@ -52,10 +51,10 @@ rule sim_slim_sel_simple_scenarios:
 
 rule sim_slim_sel_postprocessing:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_s{ssize}_{rep}.trees',
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_s{ssize}_{rep}.trees',
 	params:
 		neutral_mut_rate = 1.29e-08, # stdpopsim Human mutation rate
 	resources:

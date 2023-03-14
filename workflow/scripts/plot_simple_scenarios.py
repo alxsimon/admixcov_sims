@@ -92,7 +92,8 @@ fig.savefig(
 if 'slim' in snakemake.input['pickle']:
     fig, ax = plt.subplots(figsize=(6, 4))
     sns.lineplot(
-        ztb[ztb.bgen < times[0] + 20], 
+        # ztb[ztb.bgen < times[0] + 20], 
+        ztb,
         x='bgen', y='mean_z', style='pop', hue='pop',
         estimator='mean', errorbar='ci', # 95% ci by default
         ax=ax,
