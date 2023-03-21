@@ -16,4 +16,4 @@
 
 module load miniconda3
 
-snakemake --profile farm-profile
+snakemake --profile farm-profile --rerun-triggers mtime
