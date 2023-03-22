@@ -39,7 +39,7 @@ fig, axs = plt.subplots(3, 2, figsize=(10, 8))
 
 for i in range(len(Q_CIs)):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[0,0], color=colors_oi[i], label=f"Pop{i}")
-axs[0,0].set_xlim(times[0] + time_padding, -time_padding)
+axs[0,0].set_xlim(times[0] + time_padding, times[-1] - time_padding)
 axs[0,0].set_ylim((0,1))
 axs[0,0].set_ylabel("Mean ancestry")
 axs[0,0].set_xlabel("Time point")
@@ -53,30 +53,21 @@ scale_max = (
 ac.plot_covmat_ci(combined_ci, axs[0, 1], scale_max)
 axs[0,1].set_title('covariance matrix (raw lower, corrected upper)')
 
-ymin, ymax = (
-    np.min(np.concatenate([np.tril(covmat_nc_CI[0], k=-1), np.tril(covmat_CI[0], k=-1)])),
-    np.max(np.concatenate([np.tril(covmat_nc_CI[2], k=-1), np.tril(covmat_CI[2], k=-1)])),
-)
 ac.cov_lineplot(times, covmat_nc_CI, axs[1, 0], colors=colors_oi, marker='o', time_padding=time_padding, d=2)
 axs[1, 0].set_ylabel('raw covariance (without bias)')
 ac.cov_lineplot(times, covmat_CI, axs[1, 1], colors=colors_oi, marker='o', time_padding=time_padding, d=2, ylim=axs[1, 0].get_ylim())
 axs[1, 1].set_ylabel('admixture corrected covariance')
 
 ac.plot_ci_line(x=times[1:], CI=totvar_CI, ax=axs[2, 0], marker='o')
-axs[2, 0].set_xlim(times[1] + time_padding, -time_padding)
+axs[2, 0].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[2, 0].set_ylim(0)
 axs[2, 0].set_ylabel('Total variance (t)')
 
 ac.plot_ci_line(times[1:], G_nc_CI, ax=axs[2, 1], marker='o', linestyle='dashed')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[2, 1], marker='o')
 ac.plot_ci_line(times[1:], Ap_CI, ax=axs[2, 1], marker='s', color='blue')
-ymin, ymax = (
-    np.min(np.concatenate([G_CI[0], G_nc_CI[0], Ap_CI[0]])),
-    np.max(np.concatenate([G_CI[2], G_nc_CI[2], Ap_CI[2]])),
-)
-axs[2, 1].set_xlim(times[1] + time_padding, -time_padding)
-axs[2, 1].set_ylim(ymin, ymax)
-axs[2, 1].hlines(y=0, xmin=0, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
+axs[2, 1].set_xlim(times[1] + time_padding, times[-1] - time_padding)
+axs[2, 1].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[2, 1].set_xlabel('time')
 axs[2, 1].set_ylabel("G(t) or A'(t)")
 
