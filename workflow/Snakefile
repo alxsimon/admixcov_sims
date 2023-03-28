@@ -14,17 +14,23 @@ rule all:
 			sc=config['scenarios'], rep=range(config['N_rep'])
 		),
 		expand(
-			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{shift_type}_s{ssize}_{rep}.trees",
-			sc=config['scenarios'], shift_type=['gradual', 'jump'], ssize=[2.0, 4.0], rep=range(config['N_rep']),
+			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}_{rep}.trees",
+			sc=config['scenarios'],
+			shift_type=['gradual', 'jump'],
+			time=[140, 80],
+			ssize=[2.0, 4.0],
+			rep=range(config['N_rep']),
 		),
 		# Europe
 		# rules.sim_msprime_simple_3pop_Patterson_like.output,
 		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),
-		
 		expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
 		expand(
-			'results/figures/sim_slim_sel_scenario_{sc}_{shift_type}_s{ssize}.pdf',
-			sc=config['scenarios'], shift_type=['jump', 'gradual'], ssize=[2.0, 4.0],
+			'results/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
+			sc=config['scenarios'],
+			shift_type=['gradual', 'jump'],
+			time=[140, 80],
+			ssize=[2.0, 4.0],
 		),
 
 rule prepare_scenarios:

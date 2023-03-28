@@ -4,7 +4,7 @@
 #SBATCH -J main_admixcov_sims
 #SBATCH -A gmcoopgrp
 #SBATCH -p high2
-#SBATCH -t 10-00:00
+#SBATCH -t 2-00:00
 #SBATCH -o main_snakemake.out
 #SBATCH -e main_snakemake.err
 #SBATCH --nodes 1
