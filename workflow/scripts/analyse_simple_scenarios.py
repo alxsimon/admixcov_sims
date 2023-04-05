@@ -72,7 +72,7 @@ for r in results:
         r['admix_cov'],
         r['drift_err'],
     )
-    totvar.append(t)
+    totvar.append(np.array(t) / r['hz'][:-1]) # dividing by first time point hz
     G_nc.append(gnc)
     G.append(g)
     Ap.append(a)
