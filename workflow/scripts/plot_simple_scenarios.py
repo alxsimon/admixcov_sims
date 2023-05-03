@@ -66,9 +66,9 @@ axs[2, 0].set_ylim(0)
 axs[2, 0].set_ylabel('Total variance (t)')
 
 x_shift = 2
-ac.plot_ci_line(times[1:] + 2, G_nc_CI, ax=axs[2, 1], marker='o', linestyle='dashed')
+ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[2, 1], marker='o', linestyle='dashed')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[2, 1], marker='o')
-ac.plot_ci_line(times[1:] - 2, Ap_CI, ax=axs[2, 1], marker='s', color='blue')
+ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[2, 1], marker='s', color='blue')
 axs[2, 1].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[2, 1].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[2, 1].set_xlabel('time')
