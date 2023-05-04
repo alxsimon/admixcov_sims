@@ -32,6 +32,7 @@ rule all:
 			time=[140, 80],
 			ssize=[2.0, 4.0],
 		),
+		"results/figures/sim_main_figure.pdf",
 
 rule prepare_scenarios:
 	output:
@@ -42,3 +43,14 @@ rule prepare_scenarios:
 		"envs/popgensim.yaml"
 	script:
 		"scripts/scenarios.py"
+
+rule paper_figure:
+	input:
+		sim_neutral = 'results/simulations/sim_msprime_scenario_2A.pickle',
+		sim_sel = 'results/simulations/sim_slim_sel_scenario_2A_jump_t140_s2.0.pickle',
+	output:
+		fig = "results/figures/sim_main_figure.pdf",
+	conda:
+		"envs/popgensim.yaml"
+	script:
+		"scripts/main_figure.py"
