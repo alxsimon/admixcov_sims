@@ -65,22 +65,38 @@ rule sim_slim_sel_postprocessing:
 		'../scripts/sim_slim_postprocessing.py'
 
 
-rule sim_msprime_simple_3pop_Patterson_like:
+rule sim_msprime_europe_Patterson2022:
 	input:
-		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
+		demes_file = 'resources/model_europe_Patterson2022.yaml',
 	output:
-		trees_file = 'results/simulations/sim_3pop_simple_Patterson-like.trees',
-		# model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
+		trees_file = 'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
 	params:
-		census_time = 200,
-		n_sample = 100,
-		sampling_times = [200, 135, 115, 95, 75, 55, 0],
+		census_time = 160, # to capture final Yamnaya composition
+		n_sample = 200,
 	resources:
 		mem_mb = 2000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/sim_msprime_simple_scenarios.py'
+		'../scripts/sim_msprime_europe_Patterson2022.py'
+
+
+# rule sim_msprime_simple_3pop_Patterson_like:
+# 	input:
+# 		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
+# 	output:
+# 		trees_file = 'results/simulations/sim_3pop_simple_Patterson-like.trees',
+# 		# model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
+# 	params:
+# 		census_time = 200,
+# 		n_sample = 100,
+# 		sampling_times = [200, 135, 115, 95, 75, 55, 0],
+# 	resources:
+# 		mem_mb = 2000,
+# 	conda:
+# 		"../envs/popgensim.yaml"
+# 	script:
+# 		'../scripts/sim_msprime_simple_scenarios.py'
 
 
 # rule sim_msprime_eu:

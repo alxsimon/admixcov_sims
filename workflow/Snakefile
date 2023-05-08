@@ -21,6 +21,10 @@ rule all:
 			ssize=[2.0, 4.0],
 			rep=range(config['N_rep']),
 		),
+		expand(
+			'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
+			rep=range(config['N_rep'])
+		),
 		# Europe
 		# rules.sim_msprime_simple_3pop_Patterson_like.output,
 		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),
