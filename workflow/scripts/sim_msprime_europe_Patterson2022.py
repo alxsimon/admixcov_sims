@@ -39,7 +39,7 @@ demography.sort_events()
 # ]
 
 # sampling
-sampling_times = [180, 130, 110, 90, 70, 50, 0]
+sampling_times = [160, 150, 130, 110, 90, 70, 50, 0]
 samples = []
 for d in graph.demes:
 	samples += [

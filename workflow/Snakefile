@@ -9,25 +9,6 @@ include: "rules/analyses.smk"
 
 rule all:
 	input:
-		expand(
-			"results/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees",
-			sc=config['scenarios'], rep=range(config['N_rep'])
-		),
-		expand(
-			"results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}_{rep}.trees",
-			sc=config['scenarios'],
-			shift_type=['gradual', 'jump'],
-			time=[140, 80],
-			ssize=[2.0, 4.0],
-			rep=range(config['N_rep']),
-		),
-		expand(
-			'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
-			rep=range(config['N_rep'])
-		),
-		# Europe
-		# rules.sim_msprime_simple_3pop_Patterson_like.output,
-		# expand('results/figures/sim_eu_{variant}_admix.png', variant=['A', 'B']),
 		expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
 		expand(
 			'results/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
@@ -37,6 +18,7 @@ rule all:
 			ssize=[2.0, 4.0],
 		),
 		"results/figures/sim_main_figure.pdf",
+		'results/figures/sim_msprime_europe_Patterson2022.pdf',
 
 rule prepare_scenarios:
 	output:

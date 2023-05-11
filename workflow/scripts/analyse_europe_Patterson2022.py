@@ -18,21 +18,25 @@ drop_times = 2 if 'slim' in files[0] else 1
 ts = tskit.load(files[0]) # extract info common to all trees
 times = np.flip(ac.ts.get_times(ts))[drop_times:]
 graph = demes.load(demes_file)
-N_admix_pop = len(graph.demes) - 1
 
-n_samples = [snakemake.params['n_sample']]*len(times)
+n_samples = snakemake.params['n_samples']
 assert len(n_samples) == len(times)
 
-ref_n_sample = snakemake.params['ref_n_sample']
+ref_n_samples = snakemake.params['ref_n_samples']
 
-# not using ts.num_populations here as pyslim adds an additional one in ts
+# WHG, EEF, Steppe
 refs = [
-    {'pop': i, 'time': census_time, 'n': ref_n_sample}
-    for i in range(N_admix_pop)
+    {'pop': p, 'time': census_time, 'n': n}
+    for (p, n) in zip([2, 0, 1], ref_n_samples)
 ]
-alpha_mask = np.array(
-    [p.proportions for p in graph.pulses]
-) > 0 # create alphas from graph
+alpha_mask = np.array([ # WHG, EEF, Steppe
+    [0, 0, 1],
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [1, 0, 0],
+    [0, 1, 0],
+], dtype=bool)
 rng = np.random.default_rng()
 
 #%%
@@ -47,7 +51,7 @@ for ts in ts_reps(files):
             ts,
             times,
             n_samples,
-            N_admix_pop,
+            4, # focal pop
             refs,
             alpha_mask,
             rng,

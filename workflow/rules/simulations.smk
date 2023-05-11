@@ -8,7 +8,7 @@ rule sim_msprime_simple_scenarios:
 		n_sample = 100,
 		sampling_times = [200, 120, 100, 80, 60, 40, 20, 0],
 	resources:
-		mem_mb = 2000,
+		mem_mb = 10_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -27,7 +27,7 @@ rule sim_slim_sel_simple_scenarios:
 		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
-		mem_mb = 4000,
+		mem_mb = 10_000,
 	log: 
 		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_t{time}_s{ssize}_{rep}.log"
 	conda:
@@ -58,7 +58,7 @@ rule sim_slim_sel_postprocessing:
 	params:
 		neutral_mut_rate = 1.29e-08, # stdpopsim Human mutation rate
 	resources:
-		mem_mb = 2000,
+		mem_mb = 10_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -72,9 +72,9 @@ rule sim_msprime_europe_Patterson2022:
 		trees_file = 'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
 	params:
 		census_time = 160, # to capture final Yamnaya composition
-		n_sample = 200,
+		n_sample = 300,
 	resources:
-		mem_mb = 2000,
+		mem_mb = 10_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
