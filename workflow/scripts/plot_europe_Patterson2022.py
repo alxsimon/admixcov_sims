@@ -44,10 +44,10 @@ fmts = ['-o', '-s', '-^']
 labels = ['WHG-like', 'EEF-like', 'Steppe-like']
 for i, pop in enumerate(labels):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[k, l], color=colors_oi[i], label=pop, fmt=fmts[i])
-axs[0,0].set_xlim(times[0] + time_padding, times[-1] - time_padding)
+axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
 axs[k, l].set_ylim(top=1)
-axs[0,0].set_ylabel("Mean ancestry")
-axs[0,0].set_xlabel("Time (generations BP)")
+axs[k, l].set_ylabel("Mean ancestry")
+axs[k, l].set_xlabel("Time (generations BP)")
 axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
