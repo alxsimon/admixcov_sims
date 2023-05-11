@@ -73,6 +73,9 @@ axs[2, 1].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[2, 1].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[2, 1].set_xlabel('time')
 axs[2, 1].set_ylabel("G(t) or A'(t)")
+for ci, t in zip(G_CI, times[1:]):
+    if ci[0]*ci[2] > 0:
+        axs[2, 1].annotate("*", xy=(t, 0.1))
 
 fig.tight_layout()
 
