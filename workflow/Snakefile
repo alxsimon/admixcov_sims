@@ -33,9 +33,11 @@ rule prepare_scenarios:
 rule paper_figure:
 	input:
 		sim_neutral = 'results/simulations/sim_msprime_scenario_2A.pickle',
-		sim_sel = 'results/simulations/sim_slim_sel_scenario_2A_jump_t140_s2.0.pickle',
+		sim_sel = 'results/simulations/sim_slim_sel_scenario_2A_jump_t80_s2.0.pickle',
 	output:
 		fig = "results/figures/sim_main_figure.pdf",
+	params:
+		sel_title = "sel. jump t80 2.0",
 	conda:
 		"envs/popgensim.yaml"
 	script:
