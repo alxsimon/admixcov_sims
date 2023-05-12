@@ -93,6 +93,9 @@ axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
 axs[k, l].set_title('neutral')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
+for ci, t in zip(G_CI, times[1:]):
+    if ci[0]*ci[2] > 0:
+        axs[k, l].annotate("*", xy=(t, 0.1))
 
 # ==================
 with open(snakemake.input['sim_sel'], 'rb') as fr:
@@ -121,6 +124,9 @@ axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
 axs[k, l].set_title('sel. jump t140')
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
+for ci, t in zip(G_CI, times[1:]):
+    if ci[0]*ci[2] > 0:
+        axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.tight_layout()
 fig.savefig(snakemake.output['fig'])
