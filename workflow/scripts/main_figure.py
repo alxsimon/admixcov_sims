@@ -93,8 +93,8 @@ axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
 axs[k, l].set_title('neutral')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
-for ci, t in zip(G_CI, times[1:]):
-    if ci[0]*ci[2] > 0:
+for i, t in enumerate(times[1:]):
+    if G_CI[0][i]*G_CI[2][i] > 0:
         axs[k, l].annotate("*", xy=(t, 0.1))
 
 # ==================
@@ -121,11 +121,11 @@ axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
-axs[k, l].set_title('sel. jump t140')
+axs[k, l].set_title(snakemake.params['sel_title'])
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
-for ci, t in zip(G_CI, times[1:]):
-    if ci[0]*ci[2] > 0:
+for i, t in enumerate(times[1:]):
+    if G_CI[0][i]*G_CI[2][i] > 0:
         axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.tight_layout()

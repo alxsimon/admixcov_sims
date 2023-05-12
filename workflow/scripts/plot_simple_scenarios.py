@@ -39,43 +39,49 @@ times = np.array(times) # ensure it is an array
 
 fig, axs = plt.subplots(3, 2, figsize=(10, 8))
 
+k, l = (0, 0)
 for i in range(len(Q_CIs)):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[0,0], color=colors_oi[i], label=f"Pop{i}", marker='o')
-axs[0,0].set_xlim(times[0] + time_padding, times[-1] - time_padding)
-# axs[0,0].set_ylim((0,1))
-axs[0,0].set_ylabel("Mean ancestry")
-axs[0,0].set_xlabel("Time point")
-axs[0,0].legend(loc="upper right")
+axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
+# axs[k, l].set_ylim((0,1))
+axs[k, l].set_ylabel("Mean ancestry")
+axs[k, l].set_xlabel("Time point")
+axs[k, l].legend(loc="upper right")
 
+k, l = (0, 1)
 combined_ci = ac.combine_covmat_CIs(covmat_CI, covmat_nc_CI)
 scale_max = (
     np.max(np.abs([np.nanmin(combined_ci[1] - np.diag(np.diag(combined_ci[1]))),
     np.nanmax(combined_ci[1] - np.diag(np.diag(combined_ci[1])))]))
 )
-ac.plot_covmat_ci(combined_ci, axs[0, 1], scale_max)
-axs[0,1].set_title('covariance matrix (raw lower, corrected upper)')
+ac.plot_covmat_ci(combined_ci, axs[k, l], scale_max)
+axs[k, l].set_title('covariance matrix (raw lower, corrected upper)')
 
-ac.cov_lineplot(times, covmat_nc_CI, axs[1, 0], colors=colors_oi, marker='o', time_padding=time_padding, d=2)
-axs[1, 0].set_ylabel('raw covariance (without bias)')
-ac.cov_lineplot(times, covmat_CI, axs[1, 1], colors=colors_oi, marker='o', time_padding=time_padding, d=2, ylim=axs[1, 0].get_ylim())
-axs[1, 1].set_ylabel('admixture corrected covariance')
+k, l = (1, 0)
+ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2)
+axs[k, l].set_ylabel('raw covariance (without bias)')
+k, l = (1, 1)
+ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2, ylim=axs[k, l].get_ylim())
+axs[k, l].set_ylabel('admixture corrected covariance')
 
-ac.plot_ci_line(x=times[1:], CI=totvar_CI, ax=axs[2, 0], marker='o')
-axs[2, 0].set_xlim(times[1] + time_padding, times[-1] - time_padding)
-axs[2, 0].set_ylim(0)
-axs[2, 0].set_ylabel('Total variance (t)')
+k, l = (2, 0)
+ac.plot_ci_line(x=times[1:], CI=totvar_CI, ax=axs[k, l], marker='o')
+axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
+axs[k, l].set_ylim(0)
+axs[k, l].set_ylabel('Total variance (t)')
 
+k, l = (2, 1)
 x_shift = 2
-ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[2, 1], marker='o', linestyle='dashed')
-ac.plot_ci_line(times[1:], G_CI, ax=axs[2, 1], marker='o')
-ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[2, 1], marker='s', color='blue')
-axs[2, 1].set_xlim(times[1] + time_padding, times[-1] - time_padding)
-axs[2, 1].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
-axs[2, 1].set_xlabel('time')
-axs[2, 1].set_ylabel("G(t) or A'(t)")
-for ci, t in zip(G_CI, times[1:]):
-    if ci[0]*ci[2] > 0:
-        axs[2, 1].annotate("*", xy=(t, 0.1))
+ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed')
+ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o')
+ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue')
+axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
+axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
+axs[k, l].set_xlabel('time')
+axs[k, l].set_ylabel("G(t) or A'(t)")
+for i, t in enumerate(times[1:]):
+    if G_CI[0][i]*G_CI[2][i] > 0:
+        axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.tight_layout()
 
