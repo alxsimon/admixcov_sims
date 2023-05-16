@@ -4,47 +4,44 @@ generation_time: 1
 
 demes:
 - name: Pop0
-  description: EEF/Anatolian/WestAsian/Basal
+  description: Anatolian/WestAsian/Basal
   epochs:
   - {end_time: 0, start_size: 5_000}
 - name: Pop1
-  description: Yamnaya/CHG
-  start_time: 800
-  ancestors: [Pop0]
-  epochs:
-  - {end_time: 180, start_size: 10_000}
-  - {end_time: 0, start_size: 5_000}
-- name: Pop2
   description: WHG/NorthernEuropean
-  start_time: 1500
   ancestors: [Pop0]
+  start_time: 1500
   epochs:
   - {end_time: 600, start_size: 5_000}
   - {end_time: 0, start_size: 10_000}
+- name: Pop2
+  description: Yamnaya/CHG
+  ancestors: [Pop0]
+  start_time: 800
+  epochs:
+  - {end_time: 180, start_size: 10_000}
+  - {end_time: 0, start_size: 5_000}
 - name: Pop3
   description: EHG
+  ancestors: [Pop1]
   start_time: 600
-  ancestors: [Pop2]
   epochs:
   - {end_time: 0, start_size: 10_000}
 - name: Pop4
   description: 1000GenomesEUR/BronzeAge/Neolithic (focal)
-  start_time: 160
-  ancestors: [Pop0]
+  ancestors: [Pop0, Pop1]
+  proportions: [0.75, 0.25]
+  start_time: 200
   epochs:
   - {end_time: 140, start_size: 50_000}
   - {end_time: 0, start_size: 50_000, end_size: 500_000_000}
 
 pulses:
-- sources: [Pop2]
-  dest: Pop0
-  time: 200
-  proportions: [0.25]
 - sources: [Pop3]
-  dest: Pop1
-  time: 180
   proportions: [0.5]
-- sources: [Pop1]
+  dest: Pop2
+  time: 210
+- sources: [Pop2]
   proportions: [0.543]
   dest: Pop4
   time: 140
@@ -60,7 +57,7 @@ pulses:
   proportions: [0.033]
   dest: Pop4
   time: 80
-- sources: [Pop2]
+- sources: [Pop1]
   proportions: [0.012]
   dest: Pop4
   time: 60

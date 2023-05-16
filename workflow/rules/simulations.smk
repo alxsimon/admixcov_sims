@@ -71,7 +71,7 @@ rule sim_msprime_europe_Patterson2022:
 	output:
 		trees_file = 'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
 	params:
-		census_time = 160, # to capture final Yamnaya composition
+		census_time = 200, # to capture final Yamnaya composition
 		n_sample = 300,
 	resources:
 		mem_mb = 10_000,

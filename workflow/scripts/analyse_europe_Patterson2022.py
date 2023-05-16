@@ -24,12 +24,12 @@ assert len(n_samples) == len(times)
 
 ref_n_samples = snakemake.params['ref_n_samples']
 
-# WHG, EEF, Steppe
+# WHG, Anatolia, Steppe
 refs = [
     {'pop': p, 'time': census_time, 'n': n}
-    for (p, n) in zip([2, 0, 1], ref_n_samples)
+    for (p, n) in zip([1, 0, 2], ref_n_samples)
 ]
-alpha_mask = np.array([ # WHG, EEF, Steppe
+alpha_mask = np.array([ # WHG, Anatolia, Steppe
     [0, 0, 1],
     [0, 1, 0],
     [0, 1, 0],

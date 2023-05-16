@@ -82,7 +82,7 @@ rule analyse_msprime_europe_Patterson2022:
 	output:
 		pickle = 'results/simulations/sim_msprime_europe_Patterson2022.pickle',
 	params:
-		census_time = 160,
+		census_time = 200,
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
 		ref_n_samples = [18, 21, 18],
 	resources:
