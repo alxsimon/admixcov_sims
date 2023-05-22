@@ -9,22 +9,22 @@ include: "rules/analyses.smk"
 
 rule all:
 	input:
-		expand('results/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
+		expand('results_test/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
 		expand(
-			'results/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
+			'results_test/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
 			sc=config['scenarios'],
 			shift_type=['gradual', 'jump'],
 			time=[140, 80],
 			ssize=[2.0, 4.0],
 		),
-		"results/figures/sim_main_figure.pdf",
-		'results/figures/sim_msprime_europe_Patterson2022.pdf',
+		"results_test/figures/sim_main_figure.pdf",
+		'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
 
 rule prepare_scenarios:
 	output:
-		expand("results/simulations/scenario_{sc}.yaml", sc=config['scenarios']),
-		expand("results/simulations/scenario_{sc}.json", sc=config['scenarios']),
-		expand("results/simulations/scenario_{sc}.svg", sc=config['scenarios']),
+		expand("results_test/simulations/scenario_{sc}.yaml", sc=config['scenarios']),
+		expand("results_test/simulations/scenario_{sc}.json", sc=config['scenarios']),
+		expand("results_test/simulations/scenario_{sc}.svg", sc=config['scenarios']),
 	conda:
 		"envs/popgensim.yaml"
 	script:
@@ -32,10 +32,10 @@ rule prepare_scenarios:
 
 rule paper_figure:
 	input:
-		sim_neutral = 'results/simulations/sim_msprime_scenario_2A.pickle',
-		sim_sel = 'results/simulations/sim_slim_sel_scenario_2A_jump_t80_s2.0.pickle',
+		sim_neutral = 'results_test/simulations/sim_msprime_scenario_2A.pickle',
+		sim_sel = 'results_test/simulations/sim_slim_sel_scenario_2A_jump_t80_s2.0.pickle',
 	output:
-		fig = "results/figures/sim_main_figure.pdf",
+		fig = "results_test/figures/sim_main_figure.pdf",
 	params:
 		sel_title = "sel. jump t80 2.0",
 	conda:

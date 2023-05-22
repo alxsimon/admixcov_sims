@@ -1,12 +1,12 @@
 rule sim_msprime_simple_scenarios:
 	input:
-		demes_file = 'results/simulations/scenario_{sc}.yaml',
+		demes_file = 'results_test/simulations/scenario_{sc}.yaml',
 	output:
-		trees_file = 'results/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees',
+		trees_file = 'results_test/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees',
 	params:
 		census_time = 200,
 		n_sample = 100,
-		sampling_times = [200, 120, 100, 80, 60, 40, 20, 0],
+		sampling_times = [200, 160, 140, 120, 100, 80, 60, 40, 20, 0],
 	resources:
 		mem_mb = 10_000,
 	conda:
@@ -17,14 +17,14 @@ rule sim_msprime_simple_scenarios:
 
 rule sim_slim_sel_simple_scenarios:
 	input:
-		demes_file = 'results/simulations/scenario_{sc}.json',
+		demes_file = 'results_test/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
-		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}_pheno.tsv',
+		trees_file = 'results_test/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
+		pheno_file = 'results_test/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 100,
-		sampling_times = 'c(200, 120, 100, 80, 60, 40, 20, 0)',
+		sampling_times = 'c(200, 160, 140, 120, 100, 80, 60, 40, 20, 0)',
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
 		mem_mb = 10_000,
@@ -51,10 +51,10 @@ rule sim_slim_sel_simple_scenarios:
 
 rule sim_slim_sel_postprocessing:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
-		demes_file = 'results/simulations/scenario_{sc}.json',
+		trees_file = 'results_test/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
+		demes_file = 'results_test/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
+		trees_file = 'results_test/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
 	params:
 		neutral_mut_rate = 1.29e-08, # stdpopsim Human mutation rate
 	resources:
@@ -69,7 +69,7 @@ rule sim_msprime_europe_Patterson2022:
 	input:
 		demes_file = 'resources/model_europe_Patterson2022.yaml',
 	output:
-		trees_file = 'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
+		trees_file = 'results_test/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
 	params:
 		census_time = 200, # to capture final Yamnaya composition
 		n_sample = 300,
@@ -85,8 +85,8 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_3pop_simple_Patterson-like.trees',
-# 		# model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
+# 		trees_file = 'results_test/simulations/sim_3pop_simple_Patterson-like.trees',
+# 		# model_plot = 'results_test/simulations/sim_3pop_Patterson-like.svg',
 # 	params:
 # 		census_time = 200,
 # 		n_sample = 100,
@@ -103,8 +103,8 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = lambda w: variant_models[w.variant],
 # 	output:
-# 		trees_file = 'results/simulations/sim_eu_{variant}.trees',
-# 		model_plot = 'results/simulations/sim_eu_{variant}.svg',
+# 		trees_file = 'results_test/simulations/sim_eu_{variant}.trees',
+# 		model_plot = 'results_test/simulations/sim_eu_{variant}.svg',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 30,
@@ -117,9 +117,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/scenario_{sc}.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_scenario_{sc}.trees',
-# 		model_plot = 'results/simulations/sim_scenario_{sc}.svg',
-# 		# rate_map_pickle = 'results/simulations/sim_scenario_{sc}_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_scenario_{sc}.trees',
+# 		model_plot = 'results_test/simulations/sim_scenario_{sc}.svg',
+# 		# rate_map_pickle = 'results_test/simulations/sim_scenario_{sc}_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 100,
@@ -135,9 +135,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_2pop_{ver}.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_2pop_{ver}.trees',
-# 		model_plot = 'results/simulations/sim_2pop_{ver}.svg',
-# 		rate_map_pickle = 'results/simulations/sim_2pop_{ver}_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_2pop_{ver}.trees',
+# 		model_plot = 'results_test/simulations/sim_2pop_{ver}.svg',
+# 		rate_map_pickle = 'results_test/simulations/sim_2pop_{ver}_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 1000,
@@ -152,9 +152,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_2pop.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_2pop_simple.trees',
-# 		model_plot = 'results/simulations/sim_2pop.svg',
-# 		rate_map_pickle = 'results/simulations/sim_2pop_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_2pop_simple.trees',
+# 		model_plot = 'results_test/simulations/sim_2pop.svg',
+# 		rate_map_pickle = 'results_test/simulations/sim_2pop_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 1000,
@@ -168,9 +168,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_2pop_const_pulse.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_2pop_const_pulse.trees',
-# 		model_plot = 'results/simulations/sim_2pop_const_pulse.svg',
-# 		rate_map_pickle = 'results/simulations/sim_2pop_const_pulse_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_2pop_const_pulse.trees',
+# 		model_plot = 'results_test/simulations/sim_2pop_const_pulse.svg',
+# 		rate_map_pickle = 'results_test/simulations/sim_2pop_const_pulse_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 1000,
@@ -184,9 +184,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_2pop_no_pulse.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_2pop_no_pulse.trees',
-# 		model_plot = 'results/simulations/sim_2pop_no_pulse.svg',
-# 		rate_map_pickle = 'results/simulations/sim_2pop_no_pulse_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_2pop_no_pulse.trees',
+# 		model_plot = 'results_test/simulations/sim_2pop_no_pulse.svg',
+# 		rate_map_pickle = 'results_test/simulations/sim_2pop_no_pulse_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 1000,
@@ -201,9 +201,9 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_3pop.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_3pop_simple.trees',
-# 		model_plot = 'results/simulations/sim_3pop.svg',
-# 		rate_map_pickle = 'results/simulations/sim_3pop_rate_map.pickle',
+# 		trees_file = 'results_test/simulations/sim_3pop_simple.trees',
+# 		model_plot = 'results_test/simulations/sim_3pop.svg',
+# 		rate_map_pickle = 'results_test/simulations/sim_3pop_rate_map.pickle',
 # 	params:
 # 		census_time = 210,
 # 		n_sample = 1000,
@@ -218,8 +218,8 @@ rule sim_msprime_europe_Patterson2022:
 # 	input:
 # 		demes_file = 'resources/model_simple_3pop_Patterson-like.yaml',
 # 	output:
-# 		trees_file = 'results/simulations/sim_3pop_simple_Patterson-like.trees',
-# 		model_plot = 'results/simulations/sim_3pop_Patterson-like.svg',
+# 		trees_file = 'results_test/simulations/sim_3pop_simple_Patterson-like.trees',
+# 		model_plot = 'results_test/simulations/sim_3pop_Patterson-like.svg',
 # 	params:
 # 		census_time = 200,
 # 		n_sample = 100,

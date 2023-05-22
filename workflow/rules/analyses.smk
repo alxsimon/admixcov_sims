@@ -2,12 +2,12 @@
 rule analyse_msprime_simple_scenarios:
 	input:
 		files = expand(
-			'results/simulations/sim_msprime_rep/sim_msprime_scenario_{{sc}}_{rep}.trees',
+			'results_test/simulations/sim_msprime_rep/sim_msprime_scenario_{{sc}}_{rep}.trees',
 			rep=range(config['N_rep']),
 		),
-		demes_file = 'results/simulations/scenario_{sc}.yaml',
+		demes_file = 'results_test/simulations/scenario_{sc}.yaml',
 	output:
-		pickle = 'results/simulations/sim_msprime_scenario_{sc}.pickle',
+		pickle = 'results_test/simulations/sim_msprime_scenario_{sc}.pickle',
 	params:
 		census_time = 200,
 		n_sample = 30,
@@ -23,12 +23,12 @@ rule analyse_msprime_simple_scenarios:
 rule analyse_slim_sel_simple_scenarios:
 	input:
 		files = expand(
-			'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_t{{time}}_s{{ssize}}_{rep}.trees',
+			'results_test/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{{sc}}_{{type}}_t{{time}}_s{{ssize}}_{rep}.trees',
 			rep=range(config['N_rep']),
 		),
-		demes_file = 'results/simulations/scenario_{sc}.yaml',
+		demes_file = 'results_test/simulations/scenario_{sc}.yaml',
 	output:
-		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pickle',
+		pickle = 'results_test/simulations/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pickle',
 	params:
 		census_time = 201,
 		n_sample = 30,
@@ -43,9 +43,9 @@ rule analyse_slim_sel_simple_scenarios:
 
 rule plot_msprime_simple_scenarios:
 	input:
-		pickle = 'results/simulations/sim_msprime_scenario_{sc}.pickle',
+		pickle = 'results_test/simulations/sim_msprime_scenario_{sc}.pickle',
 	output:
-		main_fig = 'results/figures/sim_msprime_scenario_{sc}.pdf',
+		main_fig = 'results_test/figures/sim_msprime_scenario_{sc}.pdf',
 	resources:
 		mem_mb = 4000,
 	conda:
@@ -56,10 +56,10 @@ rule plot_msprime_simple_scenarios:
 
 rule plot_slim_sel_simple_scenarios:
 	input:
-		pickle = 'results/simulations/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pickle',
+		pickle = 'results_test/simulations/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pickle',
 	output:
-		main_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pdf',
-		pheno_fig = 'results/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_pheno.pdf'
+		main_fig = 'results_test/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pdf',
+		pheno_fig = 'results_test/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_pheno.pdf'
 	resources:
 		mem_mb = 4000,
 	conda:
@@ -75,12 +75,13 @@ rule plot_slim_sel_simple_scenarios:
 rule analyse_msprime_europe_Patterson2022:
 	input:
 		files = expand(
-			'results/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
+			'results_test/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
 			rep=range(config['N_rep']),
 		),
 		demes_file = 'resources/model_europe_Patterson2022.yaml',
 	output:
-		pickle = 'results/simulations/sim_msprime_europe_Patterson2022.pickle',
+		pickle = 'results_test/simulations/sim_msprime_europe_Patterson2022.pickle',
+		fig_demo = 'results_test/figures/sim_msprime_europe_Patterson2022_demo.pdf',
 	params:
 		census_time = 200,
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
@@ -95,9 +96,9 @@ rule analyse_msprime_europe_Patterson2022:
 
 rule plot_msprime_europe_Patterson2022:
 	input:
-		pickle = 'results/simulations/sim_msprime_europe_Patterson2022.pickle',
+		pickle = 'results_test/simulations/sim_msprime_europe_Patterson2022.pickle',
 	output:
-		main_fig = 'results/figures/sim_msprime_europe_Patterson2022.pdf',
+		main_fig = 'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
 	resources:
 		mem_mb = 4000,
 	conda:

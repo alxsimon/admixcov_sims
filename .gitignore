@@ -1,4 +1,4 @@
-results/
+results_test/
 logs/
 .snakemake/
 .vscode/
