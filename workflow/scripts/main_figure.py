@@ -16,6 +16,7 @@ with open(snakemake.input['sim_neutral'], 'rb') as fr:
         G_nc_CI,
         G_CI,
         Ap_CI,
+        G_de_CI,
         covmat_nc_CI,
         covmat_CI,
         Q_CIs,
@@ -45,7 +46,7 @@ for x, txt in zip([t - 10 for t in times[:-1]], delta_list):
 	_ = axs[k, l].text(x, 1, txt, ha='center')
 for x in times[1::2]:
     _ = axs[k, l].axvspan(x, x + 20, facecolor='grey', alpha=0.10)
-for x in [110, 90, 30, 10]:
+for x in [150, 130, 110, 90, 30, 10]:
 	_ = axs[k, l].annotate("", xy=(x, 0.1), xytext=(x, 0), arrowprops=dict(arrowstyle="->"))
 axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
 axs[k, l].set_ylabel("Mean ancestry")
@@ -84,9 +85,10 @@ axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 
 k, l = (2, 0)
 x_shift = 2
-ac.plot_ci_line(times[1:] + 2, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='G_nc')
+ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_nc$')
+ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dotted', label='$G_de$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
-ac.plot_ci_line(times[1:] - 2, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
+ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[k, l].set_xlabel('t')
@@ -105,6 +107,7 @@ with open(snakemake.input['sim_sel'], 'rb') as fr:
         G_nc_CI,
         G_CI,
         Ap_CI,
+        G_de_CI,
         covmat_nc_CI,
         covmat_CI,
         Q_CIs,
@@ -114,9 +117,10 @@ with open(snakemake.input['sim_sel'], 'rb') as fr:
 
 k, l = (2, 1)
 x_shift = 2
-ac.plot_ci_line(times[1:] + 2, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='G_nc')
+ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_nc$')
+ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dotted', label='$G_de$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
-ac.plot_ci_line(times[1:] - 2, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
+ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[k, l].set_xlabel('t')

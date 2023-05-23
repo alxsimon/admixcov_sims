@@ -59,11 +59,12 @@ totvar = []
 G = []
 G_nc = []
 Ap = []
+G_de = []
 Q = []
 covmat_nc = []
 covmat = []
 for r in results:
-    (t, gnc, g, a) =  ac.stats_from_matrices(
+    (t, gnc, g, a, gde) =  ac.stats_from_matrices(
         r['covmat'],
         r['admix_cov'],
         r['drift_err'],
@@ -72,6 +73,7 @@ for r in results:
     G_nc.append(gnc)
     G.append(g)
     Ap.append(a)
+    G_nc.append(gde)
     Q.append(r['Q'])
     covmat_nc.append(r['covmat'])
     covmat.append(r['covmat'] - r['admix_cov'] - r['drift_err'])
@@ -80,6 +82,7 @@ totvar = np.array(totvar)
 G_nc = np.array(G_nc)
 G = np.array(G)
 Ap = np.array(Ap)
+G_de = np.array(G_de)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
 covmat = np.stack(covmat)
@@ -88,6 +91,7 @@ totvar_CI = ac.get_ci(totvar)
 G_nc_CI = ac.get_ci(G_nc)
 G_CI = ac.get_ci(G)
 Ap_CI = ac.get_ci(Ap)
+G_de_CI = ac.get_ci(G_de)
 
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
@@ -113,6 +117,7 @@ with open(snakemake.output['pickle'], 'wb') as fw:
             G_nc_CI,
             G_CI,
             Ap_CI,
+            G_de_CI,
             covmat_nc_CI,
             covmat_CI,
             Q_CIs,
