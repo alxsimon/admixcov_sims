@@ -103,23 +103,23 @@ S3A = Scenario(
 )
 S3A.build()
 
-# # Scenario 2B
-# S2B = Scenario(
-#     name="2B",
-#     N_anc=2,
-#     pulses=[
-#         [0, 0.1],
-#         [0, 0.1],
-#         [0, 0.1],
-#         [0, 0],
-#         [0.1, 0],
-#         [0.1, 0],
-#         [0.1, 0],
-#         [0, 0],
-#     ],
-#     file_prefix=snakemake.output[1]
-# )
-# S2B.build()
+# Scenario 3B
+S3B = Scenario(
+    name="3B",
+    N_anc=3,
+    pulses=[
+        [.0, .2, .0],
+        [.0, .0, .2],
+        [.0, .2, .0],
+        [.0, .0, .0],
+        [.0, .0, .0],
+        [.0, .0, .2],
+        [.0, .2, .0],
+        [.0, .0, .2],
+    ],
+    file_prefix=os.path.splitext(snakemake.output[1])[0],
+)
+S3B.build()
 
 # # Scenario 2C
 # S2C = Scenario(
