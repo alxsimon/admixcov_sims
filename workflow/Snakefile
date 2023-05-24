@@ -10,14 +10,14 @@ include: "rules/analyses.smk"
 rule all:
 	input:
 		expand('results_test/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
-		expand(
-			'results_test/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
-			sc=config['scenarios'],
-			shift_type=['gradual'],
-			time=[140],
-			ssize=[2.0, 4.0],
-		),
-		"results_test/figures/sim_main_figure.pdf",
+		# expand(
+		# 	'results_test/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
+		# 	sc=config['scenarios'],
+		# 	shift_type=['gradual'],
+		# 	time=[140],
+		# 	ssize=[2.0, 4.0],
+		# ),
+		# "results_test/figures/sim_main_figure.pdf",
 		'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
 
 rule prepare_scenarios:
