@@ -28,13 +28,13 @@ initialize() {
 	if (!exists("shift_delay")) {
 		defineConstant("shift_type", "jump");
 	}
-	header = "gen\tpop\tmean_z\tsd_z";
+	header = "gen\tpop\tmean_z0\tmean_z1\tmean_z2";
 	writeFile(PHENO_FILE, header, append=F);
 
 	// stdpopsim Human chr22
 	defineConstant("CONTIG_LENGTH", 50818468);
 	defineConstant("RECOMBINATION_RATE", 2.10572e-08);
-	defineConstant("MUTATION_RATE", 1.29e-08);
+	defineConstant("MUTATION_RATE", 1.29e-08 * 0.1); \\ reduced recomb rate for non-neutral only
 
 	defineConstant("alpha", 0.01);
 	defineConstant("Vs", 1); // Stabilizing selection variance
@@ -44,8 +44,10 @@ initialize() {
 	initializeMutationRate(MUTATION_RATE);
 	initializeMutationType("m1", 0.5, "f", 0.0);
 	initializeMutationType("m2", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	initializeMutationType("m3", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	initializeMutationType("m4", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
 	m2.convertToSubstitution = F;
-	initializeGenomicElementType("g1", m2, 1.0);
+	initializeGenomicElementType("g1", c(m2, m3, m4), c(1.0, 1.0, 1.0));
 	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
 	
 	initializeRecombinationRate(RECOMBINATION_RATE);
@@ -108,14 +110,19 @@ s3 early() {
 	};
 	for (sp in sim.subpopulations) {
 		inds = sp.individuals;
-		z = inds.sumOfMutationsOfType(m2);
+		z0 = inds.sumOfMutationsOfType(m2);
+		z1 = inds.sumOfMutationsOfType(m3);
+		z2 = inds.sumOfMutationsOfType(m4);
 		// fitness scaling
-		// inds.fitnessScaling = exp(-sigma * (z - z_opt)^2);
-		inds.fitnessScaling = dnorm(z - z_opt, mean=0, sd=sqrt(Vs));
+		f0 = dnorm(z0 - z_opt, mean=0, sd=sqrt(Vs));
+		f1 = dnorm(z1 - z_opt, mean=0, sd=sqrt(Vs));
+		f2 = dnorm(z2 - z_opt, mean=0, sd=sqrt(Vs));
+
+		inds.fitnessScaling = f0 * f1 * f2;
 
 		if (gen >= (admix_start - 1) & gen % 10 == 0) {
 			line = paste(
-				c(gen, "Pop" + (count - 1), mean(z), sd(z)),
+				c(gen, "Pop" + (count - 1), mean(z0), mean(z1), mean(z2)),
 				sep="\t"
 			);
 			writeFile(PHENO_FILE, line, append=T);
