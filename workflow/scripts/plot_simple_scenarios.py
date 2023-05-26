@@ -74,11 +74,11 @@ axs[k, l].set_ylabel('Total variance (t)')
 k, l = (2, 1)
 x_shift = 2
 ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed')
-ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dotted')
+ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dashdot')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
-axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
+axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='grey')
 axs[k, l].set_xlabel('time')
 axs[k, l].set_ylabel("G(t) or A'(t)")
 for i, t in enumerate(times[1:]):
@@ -93,15 +93,16 @@ fig.savefig(
 
 #%%
 if 'slim' in snakemake.input['pickle']:
-    fig, ax = plt.subplots(figsize=(6, 4))
-    sns.lineplot(
-        # ztb[ztb.bgen < times[0] + 20], 
-        ztb,
-        x='bgen', y='mean_z', style='pop', hue='pop',
-        estimator='mean', errorbar='ci', # 95% ci by default
-        ax=ax,
-    )
-    ax.set_xlim(xmin=200, xmax=-5)
-    ax.set_xlabel('generations')
-    ax.set_ylabel('mean phenotype')
+    fig, axs = plt.subplots(1, 3, figsize=(10, 4), layout='constrained')
+    for i in range(3):
+        sns.lineplot(
+            # ztb[ztb.bgen < times[0] + 20], 
+            ztb,
+            x='bgen', y=f'mean_z{i}', style='pop', hue='pop',
+            estimator='mean', errorbar='ci', # 95% ci by default
+            ax=axs[i],
+        )
+        axs[i].set_xlim(xmin=200, xmax=-5)
+        axs[i].set_xlabel('generations')
+        axs[i].set_ylabel(f'mean phenotype {i}')
     fig.savefig(snakemake.output['pheno_fig'])

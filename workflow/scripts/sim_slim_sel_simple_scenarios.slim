@@ -28,13 +28,13 @@ initialize() {
 	if (!exists("shift_delay")) {
 		defineConstant("shift_type", "jump");
 	}
-	header = "gen\tpop\tmean_z0\tmean_z1\tmean_z2";
+	header = "gen\tpop\tz_opt\tmean_z0\tmean_z1\tmean_z2";
 	writeFile(PHENO_FILE, header, append=F);
 
 	// stdpopsim Human chr22
 	defineConstant("CONTIG_LENGTH", 50818468);
 	defineConstant("RECOMBINATION_RATE", 2.10572e-08);
-	defineConstant("MUTATION_RATE", 1.29e-08 * 0.1); \\ reduced recomb rate for non-neutral only
+	defineConstant("MUTATION_RATE", 1.29e-08); // reduced recomb rate for non-neutral only
 
 	defineConstant("alpha", 0.01);
 	defineConstant("Vs", 1); // Stabilizing selection variance
@@ -47,6 +47,8 @@ initialize() {
 	initializeMutationType("m3", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
 	initializeMutationType("m4", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
 	m2.convertToSubstitution = F;
+	m3.convertToSubstitution = F;
+	m4.convertToSubstitution = F;
 	initializeGenomicElementType("g1", c(m2, m3, m4), c(1.0, 1.0, 1.0));
 	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
 	
@@ -58,6 +60,8 @@ initialize() {
 // we use the sel coef field to store the mutation effect size
 // mutationEffect(m2) { return 1.0; } // Only if slim 4
 fitness(m2) { return 1.0; }
+fitness(m3) { return 1.0; }
+fitness(m4) { return 1.0; }
 
 1 early() {
 	model = demes_load(JSON_FILE, burn_in=1);
@@ -122,7 +126,7 @@ s3 early() {
 
 		if (gen >= (admix_start - 1) & gen % 10 == 0) {
 			line = paste(
-				c(gen, "Pop" + (count - 1), mean(z0), mean(z1), mean(z2)),
+				c(gen, "Pop" + (count - 1), z_opt, mean(z0), mean(z1), mean(z2)),
 				sep="\t"
 			);
 			writeFile(PHENO_FILE, line, append=T);

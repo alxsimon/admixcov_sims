@@ -2,6 +2,8 @@ import demes
 import os
 import demesdraw
 
+sc = snakemake.wildcards['sc']
+
 class Scenario:
     pulse_times = [
         150,
@@ -20,7 +22,7 @@ class Scenario:
         N_anc: int,
         pop_sizes: list[int],
         pulses: list[list],
-        file_prefix: str
+        path: str
     ):
         assert len(pulses[0]) == N_anc
         assert len(pop_sizes) == (N_anc + 1)
@@ -29,7 +31,7 @@ class Scenario:
         self.N_anc = N_anc
         self.pop_sizes = pop_sizes
         self.pulses = pulses
-        self.file_prefix = file_prefix
+        self.file_prefix = path + '/scenario_' + name
         self.plot = f"{self.file_prefix}.svg"
 
     def build(self):
@@ -41,7 +43,7 @@ class Scenario:
         b.add_deme(
             "Pop0",
             description="Ancestral 1",
-            epochs=[dict(end_time=0, start_size=pop_sizes[0])],
+            epochs=[dict(end_time=0, start_size=self.pop_sizes[0])],
         )
         start = 1500
         for i in range(1, self.N_anc):
@@ -50,7 +52,7 @@ class Scenario:
                 description=f"Ancestral {i + 1}",
                 ancestors=["Pop0"],
                 start_time=start,
-                epochs=[dict(end_time=0, start_size=pop_sizes[i])],
+                epochs=[dict(end_time=0, start_size=self.pop_sizes[i])],
             )
             start -= 200
         b.add_deme(
@@ -58,7 +60,7 @@ class Scenario:
             description="Admixed",
             ancestors=["Pop0"],
             start_time=200,
-            epochs=[dict(end_time=0, start_size=pop_sizes[N_anc])],
+            epochs=[dict(end_time=0, start_size=self.pop_sizes[self.N_anc])],
         )
         for t, p in zip(self.pulse_times, self.pulses):
             b.add_pulse(
@@ -76,11 +78,12 @@ class Scenario:
 
 # ensure pulses 0s are floats!
 
+sc_dict = dict()
 # Scenario 2A
-S2A = Scenario(
+sc_dict['2A'] = Scenario(
     name="2A",
     N_anc=2,
-    pop_sizes=[10_000, 10_000, 10_000],
+    pop_sizes=[5_000, 5_000, 5_000],
     pulses=[
         [.0, 0.2],
         [.0, 0.2],
@@ -91,34 +94,50 @@ S2A = Scenario(
         [.0, 0.2],
         [.0, 0.2],
     ],
-    file_prefix=os.path.splitext(snakemake.output[0])[0],
+    path=snakemake.params['outdir'],
 )
-S2A.build()
 
 # Scenario 2B
-S2A = Scenario(
+sc_dict['2B'] = Scenario(
     name="2B",
     N_anc=2,
-    pop_sizes=[20_000, 1000, 10_000],
+    pop_sizes=[5_000, 5_000, 5_000],
     pulses=[
         [.0, 0.2],
         [.0, 0.2],
         [.0, 0.2],
-        [.0, .0],
-        [.0, .0],
+        [.2, .0],
+        [.2, .0],
         [.0, 0.2],
         [.0, 0.2],
         [.0, 0.2],
     ],
-    file_prefix=os.path.splitext(snakemake.output[0])[0],
+    path=snakemake.params['outdir'],
 )
-S2A.build()
+
+# Scenario 2C
+sc_dict['2C'] = Scenario(
+    name="2C",
+    N_anc=2,
+    pop_sizes=[10_000, 1_000, 5_000],
+    pulses=[
+        [.0, 0.2],
+        [.0, 0.2],
+        [.0, 0.2],
+        [.2, .0],
+        [.2, .0],
+        [.0, 0.2],
+        [.0, 0.2],
+        [.0, 0.2],
+    ],
+    path=snakemake.params['outdir'],
+)
 
 # Scenario 3A
-S3A = Scenario(
+sc_dict['3A'] = Scenario(
     name="3A",
     N_anc=3,
-    pop_sizes=[10_000, 10_000, 10_000, 10_000],
+    pop_sizes=[5_000, 5_000, 5_000, 5_000],
     pulses=[
         [.0, .2, .0],
         [.0, .2, .0],
@@ -129,80 +148,44 @@ S3A = Scenario(
         [.0, .0, .2],
         [.0, .0, .2],
     ],
-    file_prefix=os.path.splitext(snakemake.output[1])[0],
+    path=snakemake.params['outdir'],
 )
-S3A.build()
 
 # Scenario 3B
-S3B = Scenario(
+sc_dict['3B'] = Scenario(
     name="3B",
     N_anc=3,
-    pop_sizes=[10_000, 10_000, 10_000, 10_000],
+    pop_sizes=[5_000, 5_000, 5_000, 5_000],
     pulses=[
         [.0, .2, .0],
         [.0, .0, .2],
         [.0, .2, .0],
         [.2, .0, .0],
-        [.0, .0, .0],
+        [.2, .0, .0],
         [.0, .0, .2],
         [.0, .2, .0],
         [.0, .0, .2],
     ],
-    file_prefix=os.path.splitext(snakemake.output[1])[0],
+    path=snakemake.params['outdir'],
 )
-S3B.build()
 
 # Scenario 3C
-S3C = Scenario(
+sc_dict['3C'] = Scenario(
     name="3C",
     N_anc=3,
-    pop_sizes=[10_000, 1000, 5000, 10_000],
+    pop_sizes=[5_000, 1_000, 10_000, 5_000],
     pulses=[
         [.0, .2, .0],
         [.0, .0, .2],
         [.0, .2, .0],
         [.2, .0, .0],
-        [.0, .0, .0],
+        [.2, .0, .0],
         [.0, .0, .2],
         [.0, .2, .0],
         [.0, .0, .2],
     ],
-    file_prefix=os.path.splitext(snakemake.output[1])[0],
+    path=snakemake.params['outdir'],
 )
-S3C.build()
 
-# # Scenario 2C
-# S2C = Scenario(
-#     name="2C",
-#     N_anc=2,
-#     pulses=[
-#         [0, 0.2],
-#         [0.2, 0],
-#         [0, 0.2],
-#         [0, 0],
-#         [0.2, 0],
-#         [0, 0.2],
-#         [0.2, 0],
-#         [0, 0],
-#     ],
-#     file_prefix =snakemake.output[2]
-# )
-# S2C.build()
 
-# # Scenario 3B
-# S3B = Scenario(
-#     name="3B",
-#     N_anc=3,
-#     pulses=[
-#         [0, 0.2, 0],
-#         [0, 0, 0.2],
-#         [0, 0.2, 0],
-#         [0, 0, 0],
-#         [0, 0, 0.2],
-#         [0, 0.2, 0],
-#         [0, 0, 0.2],
-#         [0, 0, 0],
-#     ],
-#     file_prefix =snakemake.output[4]
-# )
-# S3B.build()
+sc_dict[sc].build()

@@ -73,7 +73,7 @@ for r in results:
     G_nc.append(gnc)
     G.append(g)
     Ap.append(a)
-    G_nc.append(gde)
+    G_de.append(gde)
     Q.append(r['Q'])
     covmat_nc.append(r['covmat'])
     covmat.append(r['covmat'] - r['admix_cov'] - r['drift_err'])
