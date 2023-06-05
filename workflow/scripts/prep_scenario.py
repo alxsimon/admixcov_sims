@@ -63,12 +63,13 @@ class Scenario:
             epochs=[dict(end_time=0, start_size=self.pop_sizes[self.N_anc])],
         )
         for t, p in zip(self.pulse_times, self.pulses):
-            b.add_pulse(
-                sources=[f"Pop{i}" for i in range(self.N_anc)],
-                dest=f"Pop{self.N_anc}",
-                proportions=p,
-                time=t,
-            )
+            if sum(p) != 0: # only add pulse if there is one
+                b.add_pulse(
+                    sources=[f"Pop{i}" for i in range(self.N_anc)],
+                    dest=f"Pop{self.N_anc}",
+                    proportions=p,
+                    time=t,
+                )
         self.graph = b.resolve()
         demes.dump(self.graph, self.file_prefix + '.yaml')
         demes.dump(self.graph, self.file_prefix + '.json', format='json', simplified=False)
@@ -79,6 +80,24 @@ class Scenario:
 # ensure pulses 0s are floats!
 
 sc_dict = dict()
+# Scenario 2NGF (No Gene Flow)
+sc_dict['2NGF'] = Scenario( 
+    name="2NGF",
+    N_anc=2,
+    pop_sizes=[5_000, 5_000, 5_000],
+    pulses=[
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+    ],
+    path=snakemake.params['outdir'],
+)
+
 # Scenario 2A
 sc_dict['2A'] = Scenario(
     name="2A",

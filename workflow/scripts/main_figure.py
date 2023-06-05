@@ -7,7 +7,7 @@ import seaborn as sns
 import pandas as pd
 import pickle
 
-fig, axs = plt.subplots(3, 2, figsize=(12, 10))
+fig, axs = plt.subplots(3, 2, figsize=(12, 10), layout="constrained")
 
 with open(snakemake.input['sim_neutral'], 'rb') as fr:
 	(
@@ -46,7 +46,7 @@ for x, txt in zip([t - 10 for t in times[:-1]], delta_list):
 	_ = axs[k, l].text(x, 1, txt, ha='center')
 for x in times[1::2]:
     _ = axs[k, l].axvspan(x, x + 20, facecolor='grey', alpha=0.10)
-for x in [150, 130, 110, 90, 30, 10]:
+for x in [150, 130, 110, 50, 30, 10]:
 	_ = axs[k, l].annotate("", xy=(x, 0.1), xytext=(x, 0), arrowprops=dict(arrowstyle="->"))
 axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
 axs[k, l].set_ylabel("Mean ancestry")
@@ -92,7 +92,7 @@ ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blu
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='grey')
 axs[k, l].set_xlabel('t')
-axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
+axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
 axs[k, l].set_title('neutral')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
@@ -132,5 +132,5 @@ for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
         axs[k, l].annotate("*", xy=(t, 0.1))
 
-fig.tight_layout()
+
 fig.savefig(snakemake.output['fig'])

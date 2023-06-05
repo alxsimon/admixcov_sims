@@ -11,16 +11,15 @@ rule all:
 	input:
 		expand("results_test/simulations/scenario_{sc}.{ext}", sc=config['scenarios'], ext=['yaml', 'json', 'svg']),
 		expand('results_test/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
-		# expand('results_test/figures/sim_slim_sel_scenario_{sc}_gradual_t140_s2.0.pdf', sc=config['scenarios']),
 		expand(
 			'results_test/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
 			sc=config['scenarios'],
 			shift_type=['gradual'],
 			time=[140],
-			ssize=[2.0, 4.0],
+			ssize=[1.0, 2.0],
 		),
 		"results_test/figures/sim_main_figure.pdf",
-		'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
+		# 'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
 
 rule prepare_scenarios:
 	output:
@@ -34,7 +33,7 @@ rule prepare_scenarios:
 	script:
 		"scripts/prep_scenario.py"
 
-rule paper_figure:
+rule main_figure:
 	input:
 		sim_neutral = 'results_test/simulations/sim_msprime_scenario_2A.pickle',
 		sim_sel = 'results_test/simulations/sim_slim_sel_scenario_2A_gradual_t140_s2.0.pickle',

@@ -16,8 +16,6 @@ trees_file = snakemake.output['trees_file']
 census_time = snakemake.params['census_time']
 n_sample = snakemake.params['n_sample']
 sampling_times = snakemake.params['sampling_times']
-# mutation_start_time = snakemake.params['mutation_start_time']
-
 
 graph = demes.load(demes_file)
 
@@ -40,7 +38,7 @@ for d in graph.demes:
 species = stdpopsim.get_species("HomSap")
 contigs = [
 	species.get_contig(chr)
-	for chr in ['chr22'] # ['chr1'] # , 'chr2', 'chr3']
+	for chr in ['chr22']
 ]
 
 # Simulation

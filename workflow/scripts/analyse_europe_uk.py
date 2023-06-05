@@ -29,12 +29,12 @@ assert len(n_samples) == len(times)
 
 ref_n_samples = snakemake.params['ref_n_samples']
 
-# WHG, Anatolia, Steppe
+# WHG, ANA, YAM
 refs = [
-    {'pop': p, 'time': census_time, 'n': n}
-    for (p, n) in zip([1, 0, 2], ref_n_samples)
+    {'pop': p, 'time': c, 'n': n}
+    for (p, n, c) in zip([5, 4, 7], ref_n_samples, [200, 200, 180])
 ]
-alpha_mask = np.array([ # WHG, Anatolia, Steppe
+alpha_mask = np.array([ # WHG, ANA, YAM
     [0, 0, 1],
     [0, 1, 0],
     [0, 1, 0],
@@ -56,7 +56,7 @@ for ts in ts_reps(files):
             ts,
             times,
             n_samples,
-            4, # focal pop
+            8, # focal pop
             refs,
             alpha_mask,
             rng,
