@@ -42,7 +42,7 @@ fig, axs = plt.subplots(2, 2, figsize=(10, 8), layout='constrained')
 
 k, l = (0, 1)
 fmts = ['-o', '-s', '-^']
-labels = ['WHG-like', 'EEF-like', 'Steppe-like']
+labels = ['WHG', 'ANA', 'YAM']
 for i, pop in enumerate(labels):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[k, l], color=colors_oi[i], label=pop, fmt=fmts[i])
 axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
@@ -92,7 +92,7 @@ axs[k, l].set_xlim(times[1] + x_shift + time_padding, times[-1] - x_shift - time
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, colors='grey', linestyles='dotted')
 axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{5424}$)")
-axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
+axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
