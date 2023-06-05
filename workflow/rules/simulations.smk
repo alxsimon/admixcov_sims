@@ -65,18 +65,17 @@ rule sim_slim_sel_postprocessing:
 		'../scripts/sim_slim_postprocessing.py'
 
 
-rule sim_msprime_europe_Patterson2022:
+rule sim_msprime_europe_uk:
 	input:
-		demes_file = 'resources/model_europe_Patterson2022.yaml',
+		demes_file = 'resources/AncientEurope_4A21_mod.yaml',
 	output:
-		trees_file = 'results_test/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
+		trees_file = 'results_test/simulations/sim_msprime_europe_uk/sim_msprime_europe_uk_{rep}.trees',
 	params:
-		census_time = 200,
 		n_sample = 300,
 	resources:
 		mem_mb = 5_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/sim_msprime_europe_Patterson2022.py'
+		'../scripts/sim_msprime_europe_uk.py'
 

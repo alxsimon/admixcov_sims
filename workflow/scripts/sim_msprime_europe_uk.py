@@ -15,7 +15,7 @@ trees_file = snakemake.output['trees_file']
 # model_plot = snakemake.output['model_plot']
 # rate_map_pickle = snakemake.output['rate_map_pickle']
 # params
-census_time = snakemake.params['census_time']
+# census_time = snakemake.params['census_time']
 n_sample = snakemake.params['n_sample']
 
 
@@ -23,8 +23,11 @@ graph = demes.load(demes_file)
 # ax = demesdraw.tubes(graph, log_time=True)
 # ax.figure.savefig(model_plot)
 
+census_times = {'WHG': 200, 'ANA': 200, 'YAM': 150}
+
 demography = msprime.Demography.from_demes(graph)
-demography.add_census(time=census_time)
+for ct in np.unique(list(census_times.values())):
+	demography.add_census(time=ct)
 demography.sort_events()
 
 # cohorts = [
@@ -38,8 +41,7 @@ demography.sort_events()
 # ]
 
 # sampling
-sampling_times = [200, 150, 130, 110, 90, 70, 50, 0]
-census_times = {'WHG': 200, 'ANA': 200, 'YAM': 180}
+sampling_times = [150, 130, 110, 90, 70, 50, 0]
 samples = []
 for d in graph.demes:
 	if d.name in ['NEO', 'WHG', 'ANA', 'YAM']:
@@ -48,8 +50,9 @@ for d in graph.demes:
 			for t in sampling_times
 			if (t < d.epochs[0].start_time) & (t >= d.epochs[-1].end_time)
 		]
-		if (census_time < d.epochs[0].start_time) & (census_time >= d.epochs[-1].end_time):
-			samples.append(msprime.SampleSet(n_sample, population=d.name, time=census_time[d.name]))
+for pop, ct in census_times.items():
+	samples.append(msprime.SampleSet(n_sample, population=pop, time=ct))
+
 
 # Contig setup
 species = stdpopsim.get_species("HomSap")

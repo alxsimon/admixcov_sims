@@ -72,16 +72,16 @@ rule plot_slim_sel_simple_scenarios:
 # [37  69  26  23 273  38  62]
 # [18, 21, 18]
 
-rule analyse_msprime_europe_Patterson2022:
+rule analyse_msprime_europe_uk:
 	input:
 		files = expand(
-			'results_test/simulations/sim_msprime_europe_Patterson2022/sim_msprime_europe_Patterson2022_{rep}.trees',
+			'results_test/simulations/sim_msprime_europe_uk/sim_msprime_europe_uk_{rep}.trees',
 			rep=range(config['N_rep']),
 		),
-		demes_file = 'resources/model_europe_Patterson2022.yaml',
+		demes_file = 'resources/AncientEurope_4A21_mod.yaml',
 	output:
-		pickle = 'results_test/simulations/sim_msprime_europe_Patterson2022.pickle',
-		fig_demo = 'results_test/figures/sim_msprime_europe_Patterson2022_demo.pdf',
+		pickle = 'results_test/simulations/sim_msprime_europe_uk.pickle',
+		fig_demo = 'results_test/figures/sim_msprime_europe_uk_demo.pdf',
 	params:
 		census_time = 200,
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
@@ -91,17 +91,17 @@ rule analyse_msprime_europe_Patterson2022:
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/analyse_europe_Patterson2022.py'
+		'../scripts/analyse_europe_uk.py'
 
 
-rule plot_msprime_europe_Patterson2022:
+rule plot_msprime_europe_uk:
 	input:
-		pickle = 'results_test/simulations/sim_msprime_europe_Patterson2022.pickle',
+		pickle = 'results_test/simulations/sim_msprime_europe_uk.pickle',
 	output:
-		main_fig = 'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
+		main_fig = 'results_test/figures/sim_msprime_europe_uk.pdf',
 	resources:
 		mem_mb = 4000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/plot_europe_Patterson2022.py'
+		'../scripts/plot_europe_uk.py'

@@ -14,10 +14,11 @@ files = snakemake.input['files']
 demes_file = snakemake.input['demes_file']
 census_time = snakemake.params['census_time']
 
-drop_times = 2 if 'slim' in files[0] else 1
+# drop_times = 2 if 'slim' in files[0] else 1
 
 ts = tskit.load(files[0]) # extract info common to all trees
-times = np.flip(ac.ts.get_times(ts))[drop_times:]
+# times = np.flip(ac.ts.get_times(ts))[drop_times:]
+times = [150, 130, 110, 90, 70, 50, 0]
 graph = demes.load(demes_file)
 
 fig, ax = plt.subplots(figsize=(8, 8))
@@ -32,7 +33,7 @@ ref_n_samples = snakemake.params['ref_n_samples']
 # WHG, ANA, YAM
 refs = [
     {'pop': p, 'time': c, 'n': n}
-    for (p, n, c) in zip([5, 4, 7], ref_n_samples, [200, 200, 180])
+    for (p, n, c) in zip([5, 4, 7], ref_n_samples, [200, 200, 150])
 ]
 alpha_mask = np.array([ # WHG, ANA, YAM
     [0, 0, 1],
