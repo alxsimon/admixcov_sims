@@ -91,7 +91,7 @@ ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], color='blue', marker='
 axs[k, l].set_xlim(times[1] + x_shift + time_padding, times[-1] - x_shift - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, colors='grey', linestyles='dotted')
 axs[k, l].set_xlabel('t')
-axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{5424}$)")
+axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{150}$)")
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
