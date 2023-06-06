@@ -124,7 +124,7 @@ ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blu
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[k, l].set_xlabel('t')
-axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{120}$)")
+axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
 axs[k, l].set_title(snakemake.params['sel_title'])
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
