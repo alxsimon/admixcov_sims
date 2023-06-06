@@ -63,13 +63,12 @@ class Scenario:
             epochs=[dict(end_time=0, start_size=self.pop_sizes[self.N_anc])],
         )
         for t, p in zip(self.pulse_times, self.pulses):
-            if sum(p) != 0: # only add pulse if there is one
-                b.add_pulse(
-                    sources=[f"Pop{i}" for i in range(self.N_anc)],
-                    dest=f"Pop{self.N_anc}",
-                    proportions=p,
-                    time=t,
-                )
+            b.add_pulse(
+                sources=[f"Pop{i}" for i in range(self.N_anc)],
+                dest=f"Pop{self.N_anc}",
+                proportions=p,
+                time=t,
+            )
         self.graph = b.resolve()
         demes.dump(self.graph, self.file_prefix + '.yaml')
         demes.dump(self.graph, self.file_prefix + '.json', format='json', simplified=False)

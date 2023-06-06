@@ -19,7 +19,7 @@ rule all:
 			ssize=[1.0, 2.0],
 		),
 		"results_test/figures/sim_main_figure.pdf",
-		# 'results_test/figures/sim_msprime_europe_Patterson2022.pdf',
+		'results_test/figures/sim_msprime_europe_uk.pdf',
 
 rule prepare_scenarios:
 	output:
