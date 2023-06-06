@@ -117,8 +117,8 @@ with open(snakemake.input['sim_sel'], 'rb') as fr:
 
 k, l = (2, 1)
 x_shift = 2
-ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_nc$')
-ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dotted', label='$G_de$')
+ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_{nc}$')
+ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dotted', label='$G_{de}$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
