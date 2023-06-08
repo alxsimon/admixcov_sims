@@ -16,7 +16,7 @@ rule all:
 			sc=config['scenarios'],
 			shift_type=['gradual'],
 			time=[140],
-			ssize=[1.0, 2.0],
+			ssize=[1.0, 3.0],
 		),
 		"results_test/figures/sim_main_figure.pdf",
 		'results_test/figures/sim_msprime_europe_uk.pdf',
