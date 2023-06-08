@@ -23,7 +23,7 @@ graph = demes.load(demes_file)
 
 fig, ax = plt.subplots(figsize=(8, 8))
 demesdraw.tubes(graph, log_time=True, ax=ax)
-fig.savefig(snakemake.output['fig_demo'])
+fig.savefig(snakemake.output['fig_ndemo'])
 
 n_samples = snakemake.params['n_samples']
 assert len(n_samples) == len(times)
@@ -69,12 +69,12 @@ totvar = []
 G = []
 G_nc = []
 Ap = []
-G_de = []
+G_nde = []
 Q = []
 covmat_nc = []
 covmat = []
 for r in results:
-    (t, gnc, g, a, gde) =  ac.stats_from_matrices(
+    (t, gnc, g, a, gnde) =  ac.stats_from_matrices(
         r['covmat'],
         r['admix_cov'],
         r['drift_err'],
@@ -83,7 +83,7 @@ for r in results:
     G_nc.append(gnc)
     G.append(g)
     Ap.append(a)
-    G_de.append(gde)
+    G_nde.append(gnde)
     Q.append(r['Q'])
     covmat_nc.append(r['covmat'])
     covmat.append(r['covmat'] - r['admix_cov'] - r['drift_err'])
@@ -91,6 +91,7 @@ for r in results:
 totvar = np.array(totvar)
 G_nc = np.array(G_nc)
 G = np.array(G)
+G_nde = np.array(G_nde)
 Ap = np.array(Ap)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
@@ -100,7 +101,7 @@ totvar_CI = ac.get_ci(totvar)
 G_nc_CI = ac.get_ci(G_nc)
 G_CI = ac.get_ci(G)
 Ap_CI = ac.get_ci(Ap)
-G_de_CI = ac.get_ci(G_de)
+G_nde_CI = ac.get_ci(G_nde)
 
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
@@ -126,7 +127,7 @@ with open(snakemake.output['pickle'], 'wb') as fw:
             G_nc_CI,
             G_CI,
             Ap_CI,
-            G_de_CI,
+            G_nde_CI,
             covmat_nc_CI,
             covmat_CI,
             Q_CIs,

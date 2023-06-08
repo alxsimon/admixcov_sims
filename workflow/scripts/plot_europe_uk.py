@@ -15,7 +15,7 @@ with open(snakemake.input['pickle'], 'rb') as fr:
         G_nc_CI,
         G_CI,
         Ap_CI,
-        G_de_CI,
+        G_nde_CI,
         covmat_nc_CI,
         covmat_CI,
         Q_CIs,
@@ -85,7 +85,7 @@ axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), title="$\\Delt
 
 k, l = (1, 1)
 ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], linestyle='dashed', marker='o', label='$G_{nc}$')
-ac.plot_ci_line(times[1:] + 2 * x_shift, G_de_CI, ax=axs[k, l], marker='^', linestyle='dashdot', label='$G_{de}$')
+ac.plot_ci_line(times[1:] + 2 * x_shift, G_nde_CI, ax=axs[k, l], marker='^', linestyle='dashdot', label='$G_{nde}$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], color='blue', marker='s', label='A\'')
 axs[k, l].set_xlim(times[1] + x_shift + time_padding, times[-1] - x_shift - time_padding)
