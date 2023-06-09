@@ -83,7 +83,7 @@ sc_dict = dict()
 sc_dict['2NGF'] = Scenario( 
     name="2NGF",
     N_anc=2,
-    pop_sizes=[5_000, 5_000, 5_000],
+    pop_sizes=[10_000, 10_000, 10_000],
     pulses=[
         [.0, .0],
         [.0, .0],
@@ -101,7 +101,7 @@ sc_dict['2NGF'] = Scenario(
 sc_dict['2A'] = Scenario(
     name="2A",
     N_anc=2,
-    pop_sizes=[5_000, 5_000, 5_000],
+    pop_sizes=[10_000, 10_000, 10_000],
     pulses=[
         [.0, 0.2],
         [.0, 0.2],
@@ -119,7 +119,7 @@ sc_dict['2A'] = Scenario(
 sc_dict['2B'] = Scenario(
     name="2B",
     N_anc=2,
-    pop_sizes=[5_000, 5_000, 5_000],
+    pop_sizes=[10_000, 10_000, 10_000],
     pulses=[
         [.0, 0.2],
         [.0, 0.2],

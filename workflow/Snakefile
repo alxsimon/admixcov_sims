@@ -10,16 +10,16 @@ include: "rules/analyses.smk"
 rule all:
 	input:
 		expand("results_test/simulations/scenario_{sc}.{ext}", sc=config['scenarios'], ext=['yaml', 'json', 'svg']),
-		expand('results_test/figures/sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
+		expand('results_test/figures/fig_sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
 		expand(
-			'results_test/figures/sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
+			'results_test/figures/fig_sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
 			sc=config['scenarios'],
 			shift_type=['gradual'],
 			time=[140],
-			ssize=[1.0, 3.0],
+			ssize=[3.0],
 		),
-		"results_test/figures/sim_main_figure.pdf",
-		'results_test/figures/sim_msprime_europe_uk.pdf',
+		"results_test/figures/fig_sim_main.pdf",
+		'results_test/figures/fig_sim_msprime_europe_uk.pdf',
 
 rule prepare_scenarios:
 	output:
@@ -36,11 +36,11 @@ rule prepare_scenarios:
 rule main_figure:
 	input:
 		sim_neutral = 'results_test/simulations/sim_msprime_scenario_2A.pickle',
-		sim_sel = 'results_test/simulations/sim_slim_sel_scenario_2A_gradual_t140_s2.0.pickle',
+		sim_sel = 'results_test/simulations/sim_slim_sel_scenario_2A_gradual_t140_s3.0.pickle',
 	output:
-		fig = "results_test/figures/sim_main_figure.pdf",
+		fig = "results_test/figures/fig_sim_main.pdf",
 	params:
-		sel_title = "sel. gradual t140 2.0",
+		sel_title = "sel. gradual t140 3.0",
 	conda:
 		"envs/popgensim.yaml"
 	script:

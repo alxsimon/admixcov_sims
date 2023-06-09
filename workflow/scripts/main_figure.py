@@ -97,7 +97,7 @@ axs[k, l].set_title('neutral')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1))
+        axs[k, l].annotate("*", xy=(t, 0.2))
 
 # ==================
 with open(snakemake.input['sim_sel'], 'rb') as fr:
@@ -130,7 +130,7 @@ axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1))
+        axs[k, l].annotate("*", xy=(t, 0.2))
 
 
 fig.savefig(snakemake.output['fig'])

@@ -45,7 +45,7 @@ rule plot_msprime_simple_scenarios:
 	input:
 		pickle = 'results_test/simulations/sim_msprime_scenario_{sc}.pickle',
 	output:
-		main_fig = 'results_test/figures/sim_msprime_scenario_{sc}.pdf',
+		main_fig = 'results_test/figures/fig_sim_msprime_scenario_{sc}.pdf',
 	resources:
 		mem_mb = 4000,
 	conda:
@@ -58,8 +58,8 @@ rule plot_slim_sel_simple_scenarios:
 	input:
 		pickle = 'results_test/simulations/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pickle',
 	output:
-		main_fig = 'results_test/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pdf',
-		pheno_fig = 'results_test/figures/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_pheno.pdf'
+		main_fig = 'results_test/figures/fig_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pdf',
+		pheno_fig = 'results_test/figures/fig_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_pheno.pdf'
 	resources:
 		mem_mb = 4000,
 	conda:
@@ -98,7 +98,7 @@ rule plot_msprime_europe_uk:
 	input:
 		pickle = 'results_test/simulations/sim_msprime_europe_uk.pickle',
 	output:
-		main_fig = 'results_test/figures/sim_msprime_europe_uk.pdf',
+		main_fig = 'results_test/figures/fig_sim_msprime_europe_uk.pdf',
 	resources:
 		mem_mb = 4000,
 	conda:
