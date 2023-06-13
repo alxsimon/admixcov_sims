@@ -58,7 +58,7 @@ for pop, ct in census_times.items():
 species = stdpopsim.get_species("HomSap")
 contigs = [
 	species.get_contig(chr)
-	for chr in ['chr22']
+	for chr in ['chr1']
 ]
 
 # Simulation

@@ -36,23 +36,24 @@ for d in graph.demes:
 
 # Contig setup
 species = stdpopsim.get_species("HomSap")
-contigs = [
-	species.get_contig(chr)
-	for chr in ['chr22']
-]
+# contigs = [
+# 	species.get_contig(chr)
+# 	for chr in ['chr22']
+# ]
 
 # Simulation
 ts = msprime.sim_ancestry(
 	samples=samples,
 	ploidy=2,
 	# recombination_rate=rate_map,
-	recombination_rate=contigs[0].recombination_map,
+	sequence_length=1e8,
+	recombination_rate=2e-8,
 	demography=demography,
 )
 
 ts = msprime.sim_mutations(
 	ts,
-	rate=contigs[0].mutation_rate,
+	rate=1e-8,
 )
 
 # drop sites with recurrent mutations

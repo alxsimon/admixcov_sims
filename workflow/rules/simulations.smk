@@ -1,8 +1,8 @@
 rule sim_msprime_simple_scenarios:
 	input:
-		demes_file = 'results_test/simulations/scenario_{sc}.yaml',
+		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
-		trees_file = 'results_test/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees',
+		trees_file = 'results/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees',
 	params:
 		census_time = 200,
 		n_sample = 100,
@@ -17,10 +17,10 @@ rule sim_msprime_simple_scenarios:
 
 rule sim_slim_sel_simple_scenarios:
 	input:
-		demes_file = 'results_test/simulations/scenario_{sc}.json',
+		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = temp('results_test/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees'),
-		pheno_file = 'results_test/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}_pheno.tsv',
+		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees'),
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 100,
@@ -51,12 +51,12 @@ rule sim_slim_sel_simple_scenarios:
 
 rule sim_slim_sel_postprocessing:
 	input:
-		trees_file = 'results_test/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
-		demes_file = 'results_test/simulations/scenario_{sc}.json',
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
+		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results_test/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_{rep}.trees',
 	params:
-		neutral_mut_rate = 1.29e-08, # stdpopsim Human mutation rate
+		neutral_mut_rate = 1e-08,
 	resources:
 		mem_mb = 5_000,
 	conda:
@@ -69,7 +69,7 @@ rule sim_msprime_europe_uk:
 	input:
 		demes_file = 'resources/AncientEurope_4A21_mod.yaml',
 	output:
-		trees_file = 'results_test/simulations/sim_msprime_europe_uk/sim_msprime_europe_uk_{rep}.trees',
+		trees_file = 'results/simulations/sim_msprime_europe_uk/sim_msprime_europe_uk_{rep}.trees',
 	params:
 		n_sample = 300,
 	resources:

@@ -60,14 +60,19 @@ ac.plot_covmat_ci(combined_ci, axs[k, l], scale_max)
 axs[k, l].set_title('covariance matrix (raw lower, corrected upper)')
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
+x_shift = 2
 k, l = (1, 0)
-ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2)
+ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', d=2)
 axs[k, l].set_ylabel('raw covariance (without bias)')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
+axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
+axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 k, l = (1, 1)
-ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2, ylim=axs[1, 0].get_ylim())
+ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', d=2, ylim=axs[1, 0].get_ylim())
 axs[k, l].set_ylabel('admixture corrected covariance')
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
+axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
+axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 
 k, l = (2, 0)
 ac.plot_ci_line(x=times[1:], CI=totvar_CI, ax=axs[k, l], marker='o')
@@ -98,10 +103,10 @@ fig.savefig(
 
 #%%
 if 'slim' in snakemake.input['pickle']:
-    fig, axs = plt.subplots(1, 3, figsize=(10, 4), layout='constrained')
-    for i in range(3):
+    n_traits = 3
+    fig, axs = plt.subplots(1, n_traits, figsize=(n_traits*4, 3), layout='constrained')
+    for i in range(n_traits):
         sns.lineplot(
-            # ztb[ztb.bgen < times[0] + 20], 
             ztb,
             x='bgen', y=f'mean_z{i}', style='pop', hue='pop',
             estimator='mean', errorbar='ci', # 95% ci by default

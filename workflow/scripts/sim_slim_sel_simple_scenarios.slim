@@ -29,12 +29,13 @@ initialize() {
 		defineConstant("shift_type", "jump");
 	}
 	header = "gen\tpop\tz_opt\tmean_z0\tmean_z1\tmean_z2";
+	// header = "gen\tpop\tz_opt\tmean_z0\tmean_z1";
 	writeFile(PHENO_FILE, header, append=F);
 
-	// stdpopsim Human chr22
-	defineConstant("CONTIG_LENGTH", 50818468);
-	defineConstant("RECOMBINATION_RATE", 2.10572e-08);
-	defineConstant("MUTATION_RATE", 1.29e-08);
+	// chr parameters
+	defineConstant("CONTIG_LENGTH", 5e7);
+	defineConstant("RECOMBINATION_RATE", 2e-08);
+	defineConstant("MUTATION_RATE", 1e-08);
 
 	defineConstant("alpha", 0.01);
 	defineConstant("Vs", 1); // Stabilizing selection variance
@@ -46,10 +47,11 @@ initialize() {
 	initializeMutationType("m2", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
 	initializeMutationType("m3", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
 	initializeMutationType("m4", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
-	m2.convertToSubstitution = F;
-	m3.convertToSubstitution = F;
-	m4.convertToSubstitution = F;
+	m2.convertToSubstitution = T;
+	m3.convertToSubstitution = T;
+	m4.convertToSubstitution = T;
 	initializeGenomicElementType("g1", c(m2, m3, m4), c(1.0, 1.0, 1.0));
+	// initializeGenomicElementType("g1", c(m2, m3), c(1.0, 1.0));
 	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
 	
 	initializeRecombinationRate(RECOMBINATION_RATE);
@@ -64,7 +66,7 @@ fitness(m3) { return 1.0; }
 fitness(m4) { return 1.0; }
 
 1 early() {
-	model = demes_load(JSON_FILE, burn_in=1);
+	model = demes_load(JSON_FILE, burn_in=0.1);
 	demes_schedule_events(model);
 	defineConstant("g_end", model.getValue("end_time"));
 
@@ -92,7 +94,7 @@ s2 late() {
 	}
 }
 
-// Remember parental populations
+// Populations census
 s3 early() {
 	sim.treeSeqRememberIndividuals(sim.subpopulations.individuals);
 }
@@ -112,21 +114,28 @@ s3 early() {
 			};
 		};
 	};
+	// fixed traits
+	ft_0 = sum(sim.substitutions[sim.substitutions.mutationType == m2].selectionCoeff);
+	ft_1 = sum(sim.substitutions[sim.substitutions.mutationType == m3].selectionCoeff);
+	ft_2 = sum(sim.substitutions[sim.substitutions.mutationType == m4].selectionCoeff);
+
 	for (sp in sim.subpopulations) {
 		inds = sp.individuals;
-		z0 = inds.sumOfMutationsOfType(m2);
-		z1 = inds.sumOfMutationsOfType(m3);
-		z2 = inds.sumOfMutationsOfType(m4);
+		z0 = ft_0 + inds.sumOfMutationsOfType(m2);
+		z1 = ft_1 + inds.sumOfMutationsOfType(m3);
+		z2 = ft_2 + inds.sumOfMutationsOfType(m4);
 		// fitness scaling
 		f0 = dnorm(z0 - z_opt, mean=0, sd=sqrt(Vs));
 		f1 = dnorm(z1 - z_opt, mean=0, sd=sqrt(Vs));
 		f2 = dnorm(z2 - z_opt, mean=0, sd=sqrt(Vs));
 
 		inds.fitnessScaling = f0 * f1 * f2;
+		// inds.fitnessScaling = f0 * f1;
 
 		if (gen >= (admix_start - 1) & gen % 10 == 0) {
 			line = paste(
 				c(gen, "Pop" + (count - 1), z_opt, mean(z0), mean(z1), mean(z2)),
+				// c(gen, "Pop" + (count - 1), z_opt, mean(z0), mean(z1)),
 				sep="\t"
 			);
 			writeFile(PHENO_FILE, line, append=T);

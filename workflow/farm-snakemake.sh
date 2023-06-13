@@ -15,4 +15,4 @@
 #SBATCH --mail-user acpsimon@ucdavis.edu
 
 module load miniconda3
-snakemake --profile farm-profile --rerun-trigger code mtime
+snakemake --profile farm-profile -U 'results/figures/fig_sim_slim_sel_scenario_2A_gradual_t140_s3.0.pdf'
