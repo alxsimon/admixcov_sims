@@ -67,20 +67,24 @@ ac.plot_covmat_ci(
 )
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
-
+x_shift = 2
 k, l = (1, 0)
-ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2)
+ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', d=2)
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
 axs[k, l].set_xlabel('t')
 axs[k, l].set_title('Before admix. correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
+axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
+axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 k, l = (1, 1)
-ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', time_padding=time_padding, d=2, ylim=axs[k, l - 1].get_ylim())
+ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', d=2, ylim=axs[k, l - 1].get_ylim())
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
 axs[k, l].set_xlabel('t')
 axs[k, l].set_title('After admix. correction')
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5), title="$\\Delta p_i$")
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
+axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
+axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 
 
 k, l = (2, 0)
