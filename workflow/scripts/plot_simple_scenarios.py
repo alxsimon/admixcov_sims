@@ -57,19 +57,19 @@ scale_max = (
     np.nanmax(combined_ci[1] - np.diag(np.diag(combined_ci[1])))]))
 )
 ac.plot_covmat_ci(combined_ci, axs[k, l], scale_max)
-axs[k, l].set_title('covariance matrix (raw lower, corrected upper)')
+# axs[k, l].set_title('covariance matrix (raw lower, corrected upper)')
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
 x_shift = 2
 k, l = (1, 0)
 ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, marker='o', d=2)
-axs[k, l].set_ylabel('raw covariance (without bias)')
+axs[k, l].set_ylabel('Before correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 k, l = (1, 1)
 ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, marker='o', d=2, ylim=axs[1, 0].get_ylim())
-axs[k, l].set_ylabel('admixture corrected covariance')
+axs[k, l].set_ylabel('After correction')
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
@@ -88,6 +88,7 @@ ac.plot_ci_line(times[1:] + 2 * x_shift, G_nde_CI, ax=axs[k, l], marker='^', lin
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
+axs[k, l].set_ylim(ymax=1.1)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='grey')
 axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
@@ -95,7 +96,7 @@ axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1))
+        axs[k, l].annotate("*", xy=(t, -0.2))
 
 fig.savefig(
     snakemake.output['main_fig'],

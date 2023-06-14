@@ -13,7 +13,7 @@ rule analyse_msprime_simple_scenarios:
 		n_sample = 30,
 		ref_n_sample = 30,
 	resources:
-		mem_mb = 10_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -34,7 +34,7 @@ rule analyse_slim_sel_simple_scenarios:
 		n_sample = 30,
 		ref_n_sample = 30,
 	resources:
-		mem_mb = 10_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -47,7 +47,7 @@ rule plot_msprime_simple_scenarios:
 	output:
 		main_fig = 'results/figures/fig_sim_msprime_scenario_{sc}.pdf',
 	resources:
-		mem_mb = 4000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -61,7 +61,7 @@ rule plot_slim_sel_simple_scenarios:
 		main_fig = 'results/figures/fig_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}.pdf',
 		pheno_fig = 'results/figures/fig_sim_slim_sel_scenario_{sc}_{type}_t{time}_s{ssize}_pheno.pdf'
 	resources:
-		mem_mb = 4000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -87,7 +87,7 @@ rule analyse_msprime_europe_uk:
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
 		ref_n_samples = [18, 21, 18],
 	resources:
-		mem_mb = 10_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -100,7 +100,7 @@ rule plot_msprime_europe_uk:
 	output:
 		main_fig = 'results/figures/fig_sim_msprime_europe_uk.pdf',
 	resources:
-		mem_mb = 4000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:

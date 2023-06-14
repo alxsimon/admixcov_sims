@@ -155,7 +155,7 @@ sc_dict['2C'] = Scenario(
 sc_dict['3A'] = Scenario(
     name="3A",
     N_anc=3,
-    pop_sizes=[5_000, 5_000, 5_000, 5_000],
+    pop_sizes=[10_000, 10_000, 10_000, 10_000],
     pulses=[
         [.0, .2, .0],
         [.0, .2, .0],
@@ -172,24 +172,6 @@ sc_dict['3A'] = Scenario(
 # Scenario 3B
 sc_dict['3B'] = Scenario(
     name="3B",
-    N_anc=3,
-    pop_sizes=[5_000, 5_000, 5_000, 5_000],
-    pulses=[
-        [.0, .2, .0],
-        [.0, .0, .2],
-        [.0, .2, .0],
-        [.2, .0, .0],
-        [.2, .0, .0],
-        [.0, .0, .2],
-        [.0, .2, .0],
-        [.0, .0, .2],
-    ],
-    path=snakemake.params['outdir'],
-)
-
-# Scenario 3C
-sc_dict['3C'] = Scenario(
-    name="3C",
     N_anc=3,
     pop_sizes=[5_000, 1_000, 10_000, 5_000],
     pulses=[

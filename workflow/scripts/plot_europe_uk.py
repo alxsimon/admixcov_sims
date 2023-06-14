@@ -98,7 +98,7 @@ axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].xaxis.set_major_locator(loc)
 for ci, t in zip(straps_G, new_times[1:]):
     if ci[0]*ci[2] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1)
+        axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.savefig(
     snakemake.output['main_fig'],

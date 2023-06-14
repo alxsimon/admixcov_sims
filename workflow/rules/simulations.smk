@@ -8,7 +8,7 @@ rule sim_msprime_simple_scenarios:
 		n_sample = 100,
 		sampling_times = [200, 160, 140, 120, 100, 80, 60, 40, 20, 0],
 	resources:
-		mem_mb = 5_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -27,7 +27,7 @@ rule sim_slim_sel_simple_scenarios:
 		sampling_times = 'c(200, 160, 140, 120, 100, 80, 60, 40, 20, 0)',
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
-		mem_mb = 10_000,
+		mem_mb = 6_000,
 	log: 
 		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_t{time}_s{ssize}_{rep}.log"
 	conda:
@@ -58,7 +58,7 @@ rule sim_slim_sel_postprocessing:
 	params:
 		neutral_mut_rate = 1e-08,
 	resources:
-		mem_mb = 5_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
@@ -73,7 +73,7 @@ rule sim_msprime_europe_uk:
 	params:
 		n_sample = 300,
 	resources:
-		mem_mb = 10_000,
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
