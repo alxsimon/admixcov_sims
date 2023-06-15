@@ -2,7 +2,6 @@
 import admixcov as ac
 import tskit
 import demes
-import demesdraw
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -20,10 +19,6 @@ ts = tskit.load(files[0]) # extract info common to all trees
 # times = np.flip(ac.ts.get_times(ts))[drop_times:]
 times = [150, 130, 110, 90, 70, 50, 0]
 graph = demes.load(demes_file)
-
-fig, ax = plt.subplots(figsize=(8, 8))
-demesdraw.tubes(graph, log_time=True, ax=ax)
-fig.savefig(snakemake.output['fig_demo'])
 
 n_samples = snakemake.params['n_samples']
 assert len(n_samples) == len(times)

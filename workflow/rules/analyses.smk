@@ -81,7 +81,6 @@ rule analyse_msprime_europe_uk:
 		demes_file = 'resources/AncientEurope_4A21_mod.yaml',
 	output:
 		pickle = 'results/simulations/sim_msprime_europe_uk.pickle',
-		fig_demo = 'results/figures/sim_msprime_europe_uk_demo.pdf',
 	params:
 		census_time = 200,
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
@@ -97,8 +96,10 @@ rule analyse_msprime_europe_uk:
 rule plot_msprime_europe_uk:
 	input:
 		pickle = 'results/simulations/sim_msprime_europe_uk.pickle',
+		demes_file = 'resources/AncientEurope_4A21_mod.yaml',
 	output:
 		main_fig = 'results/figures/fig_sim_msprime_europe_uk.pdf',
+		fig_demo = 'results/figures/fig_sim_msprime_europe_uk_demo.pdf',
 	resources:
 		mem_mb = 3_000,
 	conda:

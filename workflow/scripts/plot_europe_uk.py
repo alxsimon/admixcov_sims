@@ -2,11 +2,18 @@
 import admixcov as ac
 import tskit
 import demes
+import demesdraw
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import pickle
+
+demes_file = snakemake.input['demes_file']
+graph = demes.load(demes_file)
+fig, ax = plt.subplots(figsize=(8, 8))
+demesdraw.tubes(graph, log_time=True, ax=ax)
+fig.savefig(snakemake.output['fig_demo'])
 
 with open(snakemake.input['pickle'], 'rb') as fr:
 	(
@@ -46,7 +53,7 @@ fig, axs = plt.subplots(2, 2, figsize=(10, 8), layout='constrained')
 k, l = (0, 1)
 fmts = ['-o', '-s', '-^']
 labels = ['WHG', 'ANA', 'YAM']
-for i, pop in enumerate(ds.cohorts_ref_id.values):
+for i, pop in enumerate(labels):
     axs[k, l].plot(times, Q[:,i], fmts[i], label=labels[i], color=colors_oi[i])
 for x1, x2, txt in zip(times[:-1], times[1:], delta_list):
     _ = axs[k, l].text(x2+(x1 - x2)/2, 0.9, txt, ha='center')
