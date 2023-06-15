@@ -54,7 +54,7 @@ k, l = (0, 1)
 fmts = ['-o', '-s', '-^']
 labels = ['WHG', 'ANA', 'YAM']
 for i, pop in enumerate(labels):
-    axs[k, l].plot(times, Q[:,i], fmts[i], label=labels[i], color=colors_oi[i])
+    ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[k, l], color=colors_oi[i], label=pop, fmt=fmts[i])
 for x1, x2, txt in zip(times[:-1], times[1:], delta_list):
     _ = axs[k, l].text(x2+(x1 - x2)/2, 0.9, txt, ha='center')
 for i, t in enumerate(times):
@@ -71,7 +71,7 @@ axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 x_shift = 0.1
 new_times = np.array(range(len(times)))
 k, l = (0, 0)
-ac.cov_lineplot(new_times, straps_cov_nc, axs[k, l], colors=colors_oi, d=x_shift, labels=delta_list, marker='o')
+ac.cov_lineplot(new_times, covmat_nc_CI, axs[k, l], colors=colors_oi, d=x_shift, labels=delta_list, marker='o')
 axs[k, l].set_xlim(new_times[1] - x_shift, new_times[-2] + 3 * x_shift)
 axs[k, l].hlines(y=0, xmin=0, xmax=new_times[-1] + 3 * x_shift, linestyles='dotted', colors='grey')
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
@@ -81,7 +81,7 @@ axs[k, l].set_title("A", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].xaxis.set_major_locator(loc)
 
 k, l = (1, 0)
-ac.cov_lineplot(new_times, straps_cov, axs[k, l], colors=colors_oi, d=x_shift, labels=delta_list, marker='o', ylim=axs[0, 0].get_ylim())
+ac.cov_lineplot(new_times, covmat_CI, axs[k, l], colors=colors_oi, d=x_shift, labels=delta_list, marker='o', ylim=axs[0, 0].get_ylim())
 axs[k, l].set_xlim(new_times[1] - x_shift, new_times[-2] + 3 * x_shift)
 axs[k, l].hlines(y=0, xmin=0, xmax=new_times[-1] + 3 * x_shift, linestyles='dotted', colors='grey')
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
@@ -92,9 +92,9 @@ axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), title="$\\Delt
 axs[k, l].xaxis.set_major_locator(loc)
 
 k, l = (1, 1)
-ac.plot_ci_line(new_times[1:] + x_shift, np.stack(straps_G_nc).T, ax=axs[k, l], linestyle='dashed', marker='o', label='$G_{nc}$')
-ac.plot_ci_line(new_times[1:], np.stack(straps_G).T, ax=axs[k, l], marker='o', label='G')
-ac.plot_ci_line(new_times[1:] - x_shift, np.stack(straps_Ap).T, ax=axs[k, l], color='blue', marker='s', label='A\'')
+ac.plot_ci_line(new_times[1:] + x_shift, G_nc_CI, ax=axs[k, l], linestyle='dashed', marker='o', label='$G_{nc}$')
+ac.plot_ci_line(new_times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
+ac.plot_ci_line(new_times[1:] - x_shift, Ap_CI, ax=axs[k, l], color='blue', marker='s', label='A\'')
 axs[k, l].set_xlim(new_times[1] - 2*x_shift, new_times[-1] + 2*x_shift)
 axs[k, l].hlines(y=0, xmin=new_times[-1], xmax=new_times[1], colors='grey', linestyles='dotted')
 axs[k, l].set_ylim(ymax=1)
@@ -103,8 +103,8 @@ axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{0}$)")
 axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].xaxis.set_major_locator(loc)
-for ci, t in zip(straps_G, new_times[1:]):
-    if ci[0]*ci[2] > 0:
+for i, t in enumerate(new_times[1:]):
+    if G_CI[0][i]*G_CI[2][i] > 0:
         axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.savefig(
