@@ -10,9 +10,9 @@
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 1
-#SBATCH --mem 8G
+#SBATCH --mem 3000M
 #SBATCH --mail-type END
 #SBATCH --mail-user acpsimon@ucdavis.edu
 
 module load miniconda3
-snakemake --profile farm-profile --rerun-trigger code mtime
+snakemake --profile farm-profile
