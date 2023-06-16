@@ -95,8 +95,9 @@ axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
+    (_, ytop) = axs[k, l].get_ylim()
     if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, -0.2))
+        axs[k, l].annotate("*", xy=(t, ytop))
 
 fig.savefig(
     snakemake.output['main_fig'],
