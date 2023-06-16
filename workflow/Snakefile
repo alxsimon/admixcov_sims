@@ -40,7 +40,7 @@ rule main_figure:
 	output:
 		fig = "results/figures/fig_sim_main.pdf",
 	params:
-		sel_title = "sel. gradual t140 3.0",
+		sel_title = "gradual selection",
 	conda:
 		"envs/popgensim.yaml"
 	script:
