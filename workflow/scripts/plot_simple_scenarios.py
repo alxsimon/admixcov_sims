@@ -86,7 +86,7 @@ x_shift = 2
 ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_{nc}$')
 ac.plot_ci_line(times[1:] + 2 * x_shift, G_nde_CI, ax=axs[k, l], marker='^', linestyle='dashdot', label='$G_{nde}$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='G')
-ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A\'')
+ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='A')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
 axs[k, l].set_ylim(ymax=1.1)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='grey')
