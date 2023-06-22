@@ -27,7 +27,7 @@ rule sim_slim_sel_simple_scenarios:
 		sampling_times = 'c(200, 160, 140, 120, 100, 80, 60, 40, 20, 0)',
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
-		mem_mb = 6_000,
+		mem_mb = 9_000,
 	log: 
 		"logs/sim_slim_sel_simple_scenarios_{sc}_{type}_t{time}_s{ssize}_{rep}.log"
 	conda:
