@@ -73,7 +73,7 @@ rule sim_msprime_europe_uk:
 	params:
 		n_sample = 300,
 	resources:
-		mem_mb = 3_000,
+		mem_mb = 6_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
