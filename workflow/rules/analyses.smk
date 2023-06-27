@@ -86,7 +86,7 @@ rule analyse_msprime_europe_uk:
 		n_samples = [37, 69, 26, 23, 273, 38, 62],
 		ref_n_samples = [18, 21, 18],
 	resources:
-		mem_mb = 3_000,
+		mem_mb = 9_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
