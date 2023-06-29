@@ -49,7 +49,7 @@ for x in times[1::2]:
 for x in [150, 130, 110, 50, 30, 10]:
 	_ = axs[k, l].annotate("", xy=(x, 0.1), xytext=(x, 0), arrowprops=dict(arrowstyle="->"))
 axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
-axs[k, l].set_ylabel("Mean ancestry")
+axs[k, l].set_ylabel("Mean ancestry proportion")
 axs[k, l].set_xlabel("Time (gen. BP)")
 axs[k, l].legend(loc="center left")
 axs[k, l].set_title('$A$', loc='left', fontdict={'fontweight': 'bold'})

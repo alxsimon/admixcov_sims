@@ -45,7 +45,7 @@ for i in range(len(Q_CIs)):
     ac.plot_ci_line(x=times, CI=Q_CIs[i], ax=axs[0,0], color=colors_oi[i], label=f"Pop{i}", marker='o')
 axs[k, l].set_xlim(times[0] + time_padding, times[-1] - time_padding)
 axs[k, l].set_ylim((0,1))
-axs[k, l].set_ylabel("Mean ancestry")
+axs[k, l].set_ylabel("Mean ancestry proportion")
 axs[k, l].set_xlabel("Time point")
 axs[k, l].legend(loc="upper right")
 axs[k, l].set_title('$A$', loc='left', fontdict={'fontweight': 'bold'})

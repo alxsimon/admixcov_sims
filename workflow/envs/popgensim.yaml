@@ -18,4 +18,4 @@ dependencies:
   - sgkit=0.6.0
   - pip
   - pip:
-    - git+https://github.com/alxsimon/py-admixcov.git@fb0e7da
+    - git+https://github.com/alxsimon/py-admixcov.git@v1.0.0
