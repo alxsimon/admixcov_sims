@@ -38,7 +38,13 @@ colors_oi = [
 
 times = np.array(times) # ensure it is an array
 
-fig, axs = plt.subplots(3, 2, figsize=(10, 8), layout="constrained")
+fig, axs = plt.subplots(3, 2, figsize=(10, 8), layout="tight")
+
+# sci notation in colorbar
+import matplotlib.ticker as tkr
+formatter = tkr.ScalarFormatter(useMathText=True)
+formatter.set_scientific(True)
+formatter.set_powerlimits((0, 0))
 
 k, l = (0, 0)
 for i in range(len(Q_CIs)):
@@ -56,8 +62,12 @@ scale_max = (
     np.max(np.abs([np.nanmin(combined_ci[1] - np.diag(np.diag(combined_ci[1]))),
     np.nanmax(combined_ci[1] - np.diag(np.diag(combined_ci[1])))]))
 )
-ac.plot_covmat_ci(combined_ci, axs[k, l], scale_max)
-# axs[k, l].set_title('covariance matrix (raw lower, corrected upper)')
+ac.plot_covmat_ci(
+    combined_ci,
+    axs[k, l],
+    scale_max,
+    cbar_kws={'label': 'covariance', "format": formatter},
+)
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
 x_shift = 2
@@ -67,12 +77,14 @@ axs[k, l].set_ylabel('Before correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
+axs[k, l].yaxis.set_major_formatter(formatter)
 k, l = (1, 1)
 ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, d=2, ylim=axs[1, 0].get_ylim())
 axs[k, l].set_ylabel('After correction')
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
+axs[k, l].yaxis.set_major_formatter(formatter)
 
 k, l = (2, 0)
 ac.plot_ci_line(x=times[1:], CI=totvar_CI, ax=axs[k, l], marker='o')

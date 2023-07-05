@@ -48,6 +48,12 @@ colors_oi = [
 times = np.array(times) # ensure it is an array
 delta_list = [f"$\\Delta p_{{{int(t)}}}$" for t in range(len(times) - 1)]
 
+# sci notation in colorbar
+import matplotlib.ticker as tkr
+formatter = tkr.ScalarFormatter(useMathText=True)
+formatter.set_scientific(True)
+formatter.set_powerlimits((0, 0))
+
 fig, axs = plt.subplots(2, 2, figsize=(10, 8), layout='constrained')
 
 k, l = (0, 1)
@@ -79,6 +85,7 @@ axs[k, l].set_xlabel("t")
 axs[k, l].set_title('Before admix. correction')
 axs[k, l].set_title("A", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].xaxis.set_major_locator(loc)
+axs[k, l].yaxis.set_major_formatter(formatter)
 
 k, l = (1, 0)
 ac.cov_lineplot(new_times, covmat_CI, axs[k, l], colors=colors_oi, d=x_shift, labels=delta_list, ylim=axs[0, 0].get_ylim())
@@ -90,6 +97,7 @@ axs[k, l].set_title('After admix. correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), title="$\\Delta p_i$", ncol=3)
 axs[k, l].xaxis.set_major_locator(loc)
+axs[k, l].yaxis.set_major_formatter(formatter)
 
 k, l = (1, 1)
 ac.plot_ci_line(new_times[1:] + x_shift, G_nc_CI, ax=axs[k, l], linestyle='dashed', marker='o', label='$G_{nc}$')
