@@ -39,8 +39,6 @@ rule main_figure:
 		sim_sel = 'results/simulations/sim_slim_sel_scenario_2A_gradual_t140_s3.0.pickle',
 	output:
 		fig = "results/figures/fig_sim_main.pdf",
-	params:
-		sel_title = "gradual selection",
 	conda:
 		"envs/popgensim.yaml"
 	script:

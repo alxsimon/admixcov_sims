@@ -71,16 +71,20 @@ ac.plot_covmat_ci(
     axs[k, l],
     scale_max,
 	delta_labels=delta_list,
-	cbar_kws={'label': 'covariance', "format": formatter},
+	cbar_kws={
+        'label': "covariance, Cov($\\Delta p_i$, $\\Delta p_j$)",
+        "format": formatter
+    },
 )
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
+axs[k, l].set_title('Neutral covariances')
 
 x_shift = 2
 k, l = (1, 0)
 ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, d=2)
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
 axs[k, l].set_xlabel('t')
-axs[k, l].set_title('Before admixture correction')
+axs[k, l].set_title('Neutral, before admixture correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
@@ -89,7 +93,7 @@ k, l = (1, 1)
 ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, d=2, ylim=axs[k, l - 1].get_ylim())
 axs[k, l].set_ylabel("Cov($\\Delta p_i$, $\\Delta p_t$)")
 axs[k, l].set_xlabel('t')
-axs[k, l].set_title('After admixture correction')
+axs[k, l].set_title('Neutral, after admixture correction')
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5), title="$\\Delta p_i$")
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
@@ -108,7 +112,7 @@ axs[k, l].set_ylim(ymax=1.1)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='grey')
 axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
-axs[k, l].set_title('neutral')
+axs[k, l].set_title('Neutral, Var. decomposition')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
     if G_CI[0][i]*G_CI[2][i] > 0:
@@ -141,7 +145,7 @@ axs[k, l].set_ylim(ymax=1.1)
 axs[k, l].hlines(y=0, xmin=times[-1] - time_padding, xmax=times[1] + time_padding, linestyles='dotted', colors='black')
 axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
-axs[k, l].set_title(snakemake.params['sel_title'])
+axs[k, l].set_title('Gradual selection, Var. decomposition')
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
 for i, t in enumerate(times[1:]):
