@@ -106,3 +106,24 @@ rule plot_msprime_europe_uk:
 		"../envs/popgensim.yaml"
 	script:
 		'../scripts/plot_europe_uk.py'
+
+
+rule analyse_slim_sel_variable_interval:
+	input:
+		files = expand(
+			'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{{sc}}_{{type}}_t{{time}}_s{{ssize}}_i{{inter}}_{rep}.trees',
+			rep=range(config['N_rep']),
+		),
+		demes_file = 'results/simulations/scenario_{sc}.yaml',
+	output:
+		pickle = 'results/simulations/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}.pickle',
+	params:
+		census_time = 201,
+		n_sample = 30,
+		ref_n_sample = 30,
+	resources:
+		mem_mb = 3_000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/analyse_simple_scenarios.py'

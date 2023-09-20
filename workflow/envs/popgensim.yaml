@@ -5,7 +5,8 @@ channels:
 dependencies:
   - python=3.10
   - tskit=0.5.4
-  - pyslim=1.0.3
+  - pyslim=1.0.4
+  - jsonschema=4.18.6
   - msprime=1.2.0
   - demes=0.2.2
   - demesdraw=0.3.1

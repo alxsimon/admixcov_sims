@@ -85,16 +85,16 @@ rule sim_slim_sel_variable_interval:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees'),
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
 		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 50,
-		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, w.inter))[::-1]])})",
+		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, int(w.inter)))[::-1]])})",
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
 		mem_mb = 9_000,
-	log: 
+	log:
 		"logs/sim_slim_sel_variable_interval_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.log"
 	conda:
 		"../envs/popgensim.yaml"
@@ -113,3 +113,18 @@ rule sim_slim_sel_variable_interval:
 		workflow/scripts/sim_slim_sel_simple_scenarios.slim \
 		> {log}
 		'''
+
+rule sim_slim_sel_variable_interval_postprocessing:
+	input:
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
+	params:
+		neutral_mut_rate = 1e-08,
+	resources:
+		mem_mb = 3_000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/sim_slim_postprocessing.py'
