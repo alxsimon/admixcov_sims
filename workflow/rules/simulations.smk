@@ -79,3 +79,37 @@ rule sim_msprime_europe_uk:
 	script:
 		'../scripts/sim_msprime_europe_uk.py'
 
+
+
+rule sim_slim_sel_variable_interval:
+	input:
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees'),
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}_pheno.tsv',
+	params:
+		census_time = 200,
+		n_sample = 50,
+		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, w.inter))[::-1]])})",
+		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
+	resources:
+		mem_mb = 9_000,
+	log: 
+		"logs/sim_slim_sel_variable_interval_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.log"
+	conda:
+		"../envs/popgensim.yaml"
+	shell:
+		'''
+		slim \
+		-d 'JSON_FILE="{input.demes_file}"' \
+		-d 'TREES_FILE="{output.trees_file}"' \
+		-d 'PHENO_FILE="{output.pheno_file}"' \
+		-d 'backward_sampling={params.sampling_times}' \
+		-d 'N_sample={params.n_sample}' \
+		-d 'census_time={params.census_time}' \
+		-d 'shift_type="{wildcards.type}"' \
+		-d 'shift_size={wildcards.ssize}' \
+		-d 'shift_delay={params.shift_delay}' \
+		workflow/scripts/sim_slim_sel_simple_scenarios.slim \
+		> {log}
+		'''

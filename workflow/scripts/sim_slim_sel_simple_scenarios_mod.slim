@@ -1,0 +1,147 @@
+// require SLiM v3.7
+
+initialize() {
+	if (!exists("JSON_FILE")) {
+		stop("must define JSON_FILE");
+	}
+	if (!exists("backward_sampling")) {
+		stop("must define backward_sampling");
+	}
+	if (!exists("census_time")) {
+		stop("must define census_time");
+	}
+	if (!exists("N_sample")) {
+		defineConstant("N_sample", 100);
+	}
+	if (!exists("shift_size")) {
+		defineConstant("shift_size", 1);
+	}
+	if (!exists("TREES_FILE")) {
+		defineConstant("TREES_FILE", "output.trees");
+	}
+	if (!exists("PHENO_FILE")) {
+		defineConstant("PHENO_FILE", "output_pheno.tsv");
+	}
+	if (!exists("shift_delay")) {
+		defineConstant("shift_delay", 0);
+	}
+	if (!exists("shift_delay")) {
+		defineConstant("shift_type", "jump");
+	}
+	header = "gen\tpop\tz_opt\tmean_z0\tmean_z1\tmean_z2";
+	// header = "gen\tpop\tz_opt\tmean_z0\tmean_z1";
+	writeFile(PHENO_FILE, header, append=F);
+
+	// chr parameters
+	defineConstant("CONTIG_LENGTH", 5e7);
+	defineConstant("MUTATION_RATE", 1e-08);
+	if (!exists("rec")) {
+		defineConstant("rec", 2e-08);
+	}
+
+	defineConstant("alpha", 0.01);
+	defineConstant("Vs", 1); // Stabilizing selection variance
+	defineConstant("initial_opt", 0.0); // optimum before any shift
+
+	initializeTreeSeq();
+	initializeMutationRate(MUTATION_RATE);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	initializeMutationType("m3", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	initializeMutationType("m4", 0.5, "s", "if (runif(1) < 0.5) -alpha; else alpha;");
+	m2.convertToSubstitution = T;
+	m3.convertToSubstitution = T;
+	m4.convertToSubstitution = T;
+	initializeGenomicElementType("g1", c(m2, m3, m4), c(1.0, 1.0, 1.0));
+	// initializeGenomicElementType("g1", c(m2, m3), c(1.0, 1.0));
+	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
+	
+	initializeRecombinationRate(rec);
+	
+	source("workflow/scripts/demes.slim");
+}
+
+// we use the sel coef field to store the mutation effect size
+// mutationEffect(m2) { return 1.0; } // Only if slim 4
+fitness(m2) { return 1.0; }
+fitness(m3) { return 1.0; }
+fitness(m4) { return 1.0; }
+
+1 early() {
+	model = demes_load(JSON_FILE, burn_in=0.1);
+	demes_schedule_events(model);
+	defineConstant("g_end", model.getValue("end_time"));
+
+	defineConstant("num_demes", length(model.getValue("demes")));
+	defineConstant("admix_start", model.getValue("demes")[num_demes - 1].getValue("start_time")); // start time of Admixed pop
+	defineConstant("shift_start", admix_start + shift_delay);
+	defineConstant("shift_step", shift_size / (g_end - shift_start));
+	
+	// rescheduling
+	sim.rescheduleScriptBlock(s1, g_end, g_end);
+	sampling_times = g_end - backward_sampling;
+	sim.rescheduleScriptBlock(s2, generations=sampling_times); // schedule sampling
+	sim.rescheduleScriptBlock(s3, generations=g_end - census_time); // census time
+}
+
+// Output the tree sequence file at the end of the simulation.
+s1 late() {
+	sim.treeSeqOutput(TREES_FILE);
+}
+
+// Sampling of N_sample individuals, remembered in the tree sequence file.
+s2 late() {
+	for (i in seq(0, length(sim.subpopulations) - 1)) {
+		sim.treeSeqRememberIndividuals(sample(sim.subpopulations[i].individuals, N_sample));
+	}
+}
+
+// Populations census
+s3 early() {
+	sim.treeSeqRememberIndividuals(sim.subpopulations.individuals);
+}
+
+1: late() {
+	gen = sim.generation;
+	z_opt = initial_opt;
+	count = 1;
+	if (gen >= shift_start) { // for admix pop after shift
+		if (shift_type == "jump") {
+			z_opt = z_opt + shift_size; // step shift
+		} else {
+			if (shift_type == "gradual") {
+				z_opt = z_opt + shift_step * (gen - shift_start); // gradual shift
+			} else {
+				print("oops shift type should be 'jump' or 'gradual'");
+			};
+		};
+	};
+	// fixed traits
+	ft_0 = sum(sim.substitutions[sim.substitutions.mutationType == m2].selectionCoeff);
+	ft_1 = sum(sim.substitutions[sim.substitutions.mutationType == m3].selectionCoeff);
+	ft_2 = sum(sim.substitutions[sim.substitutions.mutationType == m4].selectionCoeff);
+
+	for (sp in sim.subpopulations) {
+		inds = sp.individuals;
+		z0 = ft_0 + inds.sumOfMutationsOfType(m2);
+		z1 = ft_1 + inds.sumOfMutationsOfType(m3);
+		z2 = ft_2 + inds.sumOfMutationsOfType(m4);
+		// fitness scaling
+		f0 = dnorm(z0 - z_opt, mean=0, sd=sqrt(Vs));
+		f1 = dnorm(z1 - z_opt, mean=0, sd=sqrt(Vs));
+		f2 = dnorm(z2 - z_opt, mean=0, sd=sqrt(Vs));
+
+		inds.fitnessScaling = f0 * f1 * f2;
+		// inds.fitnessScaling = f0 * f1;
+
+		if (gen >= (admix_start - 1) & gen % 10 == 0) {
+			line = paste(
+				c(gen, "Pop" + (count - 1), z_opt, mean(z0), mean(z1), mean(z2)),
+				// c(gen, "Pop" + (count - 1), z_opt, mean(z0), mean(z1)),
+				sep="\t"
+			);
+			writeFile(PHENO_FILE, line, append=T);
+		}
+		count = count + 1;
+	}
+}

@@ -20,6 +20,15 @@ rule all:
 		),
 		"results/figures/fig_sim_main.pdf",
 		'results/figures/fig_sim_msprime_europe_uk.pdf',
+		expand(
+			'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
+			sc=config['scenarios'],
+			shift_type=['gradual'],
+			time=[140],
+			ssize=[3.0],
+			inter=[20, 10, 5, 1],
+			rep=range(config['N_rep']),
+		) # for variable sampling interval
 
 rule prepare_scenarios:
 	output:
