@@ -30,8 +30,23 @@ refs = [
     {'pop': i, 'time': census_time, 'n': ref_n_sample}
     for i in range(N_admix_pop)
 ]
-alpha_mask = np.array(
+
+proportions = np.zeros((times.size - 1, len(graph.pulses[0].proportions)))
+alpha_times = np.array([p.time for p in graph.pulses])
+graph_proportions = np.array(
     [p.proportions for p in graph.pulses]
+)
+for i, t in enumerate(times[:-1]):
+    where = np.where((alpha_times >= times[i+1]) & (alpha_times < times[i]))[0]
+    if where.size > 0:
+        proportions[i] = graph_proportions[where]
+# This finds where to put the pulses when we have more time steps than pulses.
+# We take into account that in slim sampling is done after migration, so that
+# a pulse will be taken into account into the previous time interval
+# and not the following.
+
+alpha_mask = np.array(
+    proportions
 ) > 0 # create alphas from graph
 rng = np.random.default_rng()
 

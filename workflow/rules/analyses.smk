@@ -108,6 +108,15 @@ rule plot_msprime_europe_uk:
 		'../scripts/plot_europe_uk.py'
 
 
+def get_mem_mb_inter(wildcards):
+	if wildcards.inter in ["20", "10", "5"]:
+		mem = 6_000
+	elif wildcards.inter in ["1"]:
+		mem = 21_000
+	else:
+		mem = 3_000
+	return mem
+
 rule analyse_slim_sel_variable_interval:
 	input:
 		files = expand(
@@ -122,7 +131,7 @@ rule analyse_slim_sel_variable_interval:
 		n_sample = 30,
 		ref_n_sample = 30,
 	resources:
-		mem_mb = 3_000,
+		mem_mb = get_mem_mb_inter,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
