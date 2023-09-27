@@ -41,7 +41,7 @@ for i, t in enumerate(times[:-1]):
     if where.size > 0:
         proportions[i] = graph_proportions[where]
 # This finds where to put the pulses when we have more time steps than pulses.
-# We take into account that in slim sampling is done after migration, so that
+# We take into account that slim sampling is done after migration, so that
 # a pulse will be taken into account into the previous time interval
 # and not the following.
 
@@ -75,11 +75,12 @@ G = []
 G_nc = []
 G_nde = []
 Ap = []
+V = []
 Q = []
 covmat_nc = []
 covmat = []
 for r in results:
-    (t, gnc, g, a, gnde) =  ac.stats_from_matrices(
+    (t, gnc, g, a, gnde, v) =  ac.stats_from_matrices(
         r['covmat'],
         r['admix_cov'],
         r['drift_err'],
@@ -89,6 +90,7 @@ for r in results:
     G.append(g)
     Ap.append(a)
     G_nde.append(gnde)
+    V.append(v)
     Q.append(r['Q'])
     covmat_nc.append(r['covmat'])
     covmat.append(r['covmat'] - r['admix_cov'] - r['drift_err'])
@@ -98,6 +100,7 @@ G_nc = np.array(G_nc)
 G = np.array(G)
 Ap = np.array(Ap)
 G_nde = np.array(G_nde)
+V = np.array(V)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
 covmat = np.stack(covmat)
@@ -107,6 +110,7 @@ G_nc_CI = ac.get_ci(G_nc)
 G_CI = ac.get_ci(G)
 Ap_CI = ac.get_ci(Ap)
 G_nde_CI = ac.get_ci(G_nde)
+V_CI = ac.get_ci(V)
 
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
@@ -133,6 +137,7 @@ with open(snakemake.output['pickle'], 'wb') as fw:
             G_CI,
             Ap_CI,
             G_nde_CI,
+            V_CI,
             covmat_nc_CI,
             covmat_CI,
             Q_CIs,

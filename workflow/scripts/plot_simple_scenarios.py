@@ -9,18 +9,19 @@ import pandas as pd
 import pickle
 
 with open(snakemake.input['pickle'], 'rb') as fr:
-	(
-		times,
+    (
+        times,
         totvar_CI,
         G_nc_CI,
         G_CI,
         Ap_CI,
         G_nde_CI,
+        V_CI,
         covmat_nc_CI,
         covmat_CI,
         Q_CIs,
         ztb,	
-	) = pickle.load(fr)
+    ) = pickle.load(fr)
 
 # %%
 time_padding = 10
