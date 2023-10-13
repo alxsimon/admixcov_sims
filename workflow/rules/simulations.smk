@@ -85,7 +85,7 @@ rule sim_slim_sel_variable_high_sampling_freq:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees'),
 		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
@@ -117,7 +117,7 @@ rule sim_slim_sel_variable_high_sampling_freq:
 
 rule sim_slim_sel_variable_interval_postprocessing:
 	input:
-		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees'),
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
 		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
