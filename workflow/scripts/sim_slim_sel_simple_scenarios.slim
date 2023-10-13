@@ -37,7 +37,7 @@ initialize() {
 
 	// chr parameters
 	defineConstant("CONTIG_LENGTH", 5e7); // 50 Mb
-	defineConstant("RECOMBINATION_RATE", rec);
+	// defineConstant("RECOMBINATION_RATE", rec);
 	defineConstant("MUTATION_RATE", 1e-08);
 
 	defineConstant("alpha", 0.01);
@@ -57,7 +57,7 @@ initialize() {
 	// initializeGenomicElementType("g1", c(m2, m3), c(1.0, 1.0));
 	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
 	
-	initializeRecombinationRate(RECOMBINATION_RATE);
+	initializeRecombinationRate(rec);
 	
 	source("workflow/scripts/demes.slim");
 }
