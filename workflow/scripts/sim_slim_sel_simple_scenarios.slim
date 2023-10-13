@@ -28,13 +28,16 @@ initialize() {
 	if (!exists("shift_delay")) {
 		defineConstant("shift_type", "jump");
 	}
+	if (!exists("rec")) {
+		defineConstant("rec", 2e-8);
+	}
 	header = "gen\tpop\tz_opt\tmean_z0\tmean_z1\tmean_z2";
 	// header = "gen\tpop\tz_opt\tmean_z0\tmean_z1";
 	writeFile(PHENO_FILE, header, append=F);
 
 	// chr parameters
-	defineConstant("CONTIG_LENGTH", 5e7);
-	defineConstant("RECOMBINATION_RATE", 2e-08);
+	defineConstant("CONTIG_LENGTH", 5e7); // 50 Mb
+	defineConstant("RECOMBINATION_RATE", rec);
 	defineConstant("MUTATION_RATE", 1e-08);
 
 	defineConstant("alpha", 0.01);

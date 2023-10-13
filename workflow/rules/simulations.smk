@@ -81,21 +81,21 @@ rule sim_msprime_europe_uk:
 
 
 
-rule sim_slim_sel_variable_interval:
+rule sim_slim_sel_variable_high_sampling_freq:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
-		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}_pheno.tsv',
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 50,
-		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, int(w.inter)))[::-1]])})",
+		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, 1))[::-1]])})",
 		shift_delay = lambda w: 200 - int(w.time), # delay of shift from admix_start
 	resources:
 		mem_mb = 9_000,
 	log:
-		"logs/sim_slim_sel_variable_interval_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.log"
+		"logs/sim_slim_sel_high_interval_sampling_{sc}_{type}_t{time}_s{ssize}_{rep}.log"
 	conda:
 		"../envs/popgensim.yaml"
 	shell:
@@ -104,6 +104,7 @@ rule sim_slim_sel_variable_interval:
 		-d 'JSON_FILE="{input.demes_file}"' \
 		-d 'TREES_FILE="{output.trees_file}"' \
 		-d 'PHENO_FILE="{output.pheno_file}"' \
+		-d 'rec={wildcards.rec}'
 		-d 'backward_sampling={params.sampling_times}' \
 		-d 'N_sample={params.n_sample}' \
 		-d 'census_time={params.census_time}' \
@@ -116,10 +117,10 @@ rule sim_slim_sel_variable_interval:
 
 rule sim_slim_sel_variable_interval_postprocessing:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
+		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees'),
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_i{inter}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
 	params:
 		neutral_mut_rate = 1e-08,
 	resources:

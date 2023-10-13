@@ -16,4 +16,5 @@
 
 module load miniconda3
 snakemake --profile farm-profile \
---rerun-triggers code mtime
+--rerun-triggers code mtime \
+-U sim_slim_sel_variable_interval_postprocessing
