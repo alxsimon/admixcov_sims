@@ -95,7 +95,7 @@ rule sim_slim_sel_variable_high_sampling_freq:
 	resources:
 		mem_mb = 9_000,
 	log:
-		"logs/sim_slim_sel_high_interval_sampling_{sc}_{type}_t{time}_s{ssize}_{rep}.log"
+		"logs/sim_slim_sel_high_interval_sampling_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.log"
 	conda:
 		"../envs/popgensim.yaml"
 	shell:
