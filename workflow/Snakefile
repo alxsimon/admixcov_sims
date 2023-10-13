@@ -21,7 +21,7 @@ rule all:
 		"results/figures/fig_sim_main.pdf",
 		'results/figures/fig_sim_msprime_europe_uk.pdf',
 		expand(
-			'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+			'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{shift_type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
 			sc=config['scenarios'],
 			shift_type=['gradual'],
 			time=[140],
