@@ -104,7 +104,7 @@ rule sim_slim_sel_variable_high_sampling_freq:
 		-d 'JSON_FILE="{input.demes_file}"' \
 		-d 'TREES_FILE="{output.trees_file}"' \
 		-d 'PHENO_FILE="{output.pheno_file}"' \
-		-d 'rec={wildcards.rec}'
+		-d 'rec={wildcards.rec}' \
 		-d 'backward_sampling={params.sampling_times}' \
 		-d 'N_sample={params.n_sample}' \
 		-d 'census_time={params.census_time}' \
