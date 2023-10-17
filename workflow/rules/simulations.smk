@@ -81,12 +81,12 @@ rule sim_msprime_europe_uk:
 
 
 
-rule sim_slim_sel_variable_high_sampling_freq:
+rule sim_slim_sel_high_sampling_freq:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees'),
-		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}_pheno.tsv',
+		trees_file = temp('results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_high_freq_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees'),
+		pheno_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_high_freq_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}_pheno.tsv',
 	params:
 		census_time = 200,
 		n_sample = 50,
@@ -95,7 +95,7 @@ rule sim_slim_sel_variable_high_sampling_freq:
 	resources:
 		mem_mb = 9_000,
 	log:
-		"logs/sim_slim_sel_high_interval_sampling_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.log"
+		"logs/sim_slim_sel_high_freq_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.log"
 	conda:
 		"../envs/popgensim.yaml"
 	shell:
@@ -115,16 +115,16 @@ rule sim_slim_sel_variable_high_sampling_freq:
 		> {log}
 		'''
 
-rule sim_slim_sel_variable_interval_postprocessing:
+rule sim_slim_sel_high_sampling_freq_postprocessing:
 	input:
-		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/raw_sim_slim_sel_high_freq_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
-		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_inter_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_sel_rep/sim_slim_sel_high_freq_{sc}_{type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
 	params:
 		neutral_mut_rate = 1e-08,
 	resources:
-		mem_mb = 3_000,
+		mem_mb = 6_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:
