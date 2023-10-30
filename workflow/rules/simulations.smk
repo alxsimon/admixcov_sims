@@ -80,7 +80,6 @@ rule sim_msprime_europe_uk:
 		'../scripts/sim_msprime_europe_uk.py'
 
 
-
 rule sim_slim_sel_high_sampling_freq:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
@@ -125,6 +124,56 @@ rule sim_slim_sel_high_sampling_freq_postprocessing:
 		neutral_mut_rate = 1e-08,
 	resources:
 		mem_mb = 6_000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/sim_slim_postprocessing.py'
+
+
+#========================
+# Background selection
+
+rule sim_slim_bgs_simple_scenarios:
+	input:
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = temp('results/simulations/sim_slim_bgs_rep/raw_sim_slim_bgs_scenario_{sc}_r{rec}_{rep}.trees'),
+	params:
+		census_time = 200,
+		n_sample = 100,
+		sampling_times = 'c(200, 160, 140, 120, 100, 80, 60, 40, 20, 0)',
+		U = 0.17,
+		s = 0.1,
+	resources:
+		mem_mb = 9_000,
+	log: 
+		"logs/sim_slim_bgs_simple_scenarios_{sc}_r{rec}_{rep}.log"
+	conda:
+		"../envs/popgensim.yaml"
+	shell:
+		'''
+		slim \
+		-d 'JSON_FILE="{input.demes_file}"' \
+		-d 'TREES_FILE="{output.trees_file}"' \
+		-d 'backward_sampling={params.sampling_times}' \
+		-d 'N_sample={params.n_sample}' \
+		-d 'census_time={params.census_time}' \
+		-d 'U={params.U}' \
+		-d 's={params.s}' \
+		workflow/scripts/sim_slim_bgs_simple_scenarios.slim \
+		> {log}
+		'''
+
+rule sim_slim_bgs_postprocessing:
+	input:
+		trees_file = 'results/simulations/sim_slim_bgs_rep/raw_sim_slim_bgs_scenario_{sc}_r{rep}_{rep}.trees',
+		demes_file = 'results/simulations/scenario_{sc}.json',
+	output:
+		trees_file = 'results/simulations/sim_slim_bgs_rep/sim_slim_bgs_scenario_{sc}_r{rec}_{rep}.trees',
+	params:
+		neutral_mut_rate = 1e-08,
+	resources:
+		mem_mb = 3_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:

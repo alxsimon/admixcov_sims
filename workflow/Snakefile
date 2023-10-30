@@ -15,28 +15,30 @@ rule all:
 			'results/figures/fig_sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
 			sc=config['scenarios'],
 			shift_type=['gradual'],
-			time=[140],
-			ssize=[3.0],
+			time=config['shift_time'],
+			ssize=config['shift_size'],
 		),
 		"results/figures/fig_sim_main.pdf",
 		'results/figures/fig_sim_msprime_europe_uk.pdf',
 		expand(
-			'results/simulations/sim_slim_sel_rep/sim_slim_sel_high_freq_{sc}_{shift_type}_t{time}_s{ssize}_r{rec}_{rep}.trees',
+			'results/simulations/sim_slim_sel_inter_{sc}_{shift_type}_t{time}_s{ssize}_r{rec}_i{inter}.pickle',
 			sc=config['scenarios'],
 			shift_type=['gradual'],
-			time=[140],
-			ssize=[3.0],
-			rec=['0.5e-8', '1e-8', '2e-8', '3e-8'],
-			rep=range(config['N_rep']),
+			time=config['shift_time'],
+			ssize=config['shift_size'],
+			rec=config['rec'],
+			inter=config['intervals'],
+		),
+		expand(
+			'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
+			sc=config['scenarios'],
+			rec=config['rec'],
+		),
+		expand(
+			'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
+			sc=config['scenarios'],
+			rec=config['rec'],
 		)
-		# expand(
-		# 	'results/simulations/sim_slim_sel_inter_{sc}_{shift_type}_t{time}_s{ssize}_i{inter}.pickle',
-		# 	sc=config['scenarios'],
-		# 	shift_type=['gradual'],
-		# 	time=[140],
-		# 	ssize=[3.0],
-		# 	inter=[20, 10, 5, 1],
-		# ) # for variable sampling interval
 
 rule prepare_scenarios:
 	output:

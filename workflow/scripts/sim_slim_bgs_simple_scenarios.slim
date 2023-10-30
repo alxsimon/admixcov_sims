@@ -1,0 +1,71 @@
+// require SLiM v3.7
+
+initialize() {
+	if (!exists("JSON_FILE")) {
+		stop("must define JSON_FILE");
+	}
+	if (!exists("backward_sampling")) {
+		stop("must define backward_sampling");
+	}
+	if (!exists("census_time")) {
+		stop("must define census_time");
+	}
+	if (!exists("N_sample")) {
+		defineConstant("N_sample", 100);
+	}
+	if (!exists("TREES_FILE")) {
+		defineConstant("TREES_FILE", "output.trees");
+	}
+	if (!exists("rec")) {
+		defineConstant("rec", 2e-8);
+	}
+
+	// chr parameters
+	defineConstant("CONTIG_LENGTH", 5e7); // 50 Mb
+	mu = U / (2 * CONTIG_LENGTH);
+	defineConstant("MUTATION_RATE", mu);
+
+	initializeTreeSeq();
+	initializeMutationRate(MUTATION_RATE);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", 0.5, "f", -s);
+	m2.convertToSubstitution = T;
+	initializeGenomicElementType("g1", m2, 1.0);
+	initializeGenomicElement(g1, 0, CONTIG_LENGTH - 1);
+	
+	initializeRecombinationRate(rec);
+	
+	source("workflow/scripts/demes.slim");
+}
+
+1 early() {
+	model = demes_load(JSON_FILE, burn_in=1);
+	demes_schedule_events(model);
+	defineConstant("g_end", model.getValue("end_time"));
+
+	defineConstant("num_demes", length(model.getValue("demes")));
+	defineConstant("admix_start", model.getValue("demes")[num_demes - 1].getValue("start_time")); // start time of Admixed pop
+	
+	// rescheduling
+	sim.rescheduleScriptBlock(s1, g_end, g_end);
+	sampling_times = g_end - backward_sampling;
+	sim.rescheduleScriptBlock(s2, generations=sampling_times); // schedule sampling
+	sim.rescheduleScriptBlock(s3, generations=g_end - census_time); // census time
+}
+
+// Output the tree sequence file at the end of the simulation.
+s1 late() {
+	sim.treeSeqOutput(TREES_FILE);
+}
+
+// Sampling of N_sample individuals, remembered in the tree sequence file.
+s2 late() {
+	for (i in seq(0, length(sim.subpopulations) - 1)) {
+		sim.treeSeqRememberIndividuals(sample(sim.subpopulations[i].individuals, N_sample));
+	}
+}
+
+// Populations census
+s3 early() {
+	sim.treeSeqRememberIndividuals(sim.subpopulations.individuals);
+}

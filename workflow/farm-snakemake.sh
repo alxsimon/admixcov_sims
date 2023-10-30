@@ -16,5 +16,4 @@
 
 module load miniconda3
 snakemake --profile farm-profile \
---rerun-triggers code mtime \
--U sim_slim_sel_high_sampling_freq_postprocessing
+--rerun-triggers mtime

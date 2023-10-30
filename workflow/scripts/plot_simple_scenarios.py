@@ -118,7 +118,7 @@ fig.savefig(
 )
 
 #%%
-if 'slim' in snakemake.input['pickle']:
+if 'slim_sel' in snakemake.input['pickle']:
     n_traits = 3
     fig, axs = plt.subplots(1, n_traits, figsize=(n_traits*4, 3), layout='constrained')
     for i in range(n_traits):

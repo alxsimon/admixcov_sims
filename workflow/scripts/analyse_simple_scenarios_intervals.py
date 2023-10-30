@@ -12,11 +12,15 @@ import pickle
 files = snakemake.input['files']
 demes_file = snakemake.input['demes_file']
 census_time = snakemake.params['census_time']
+interval = int(snakemake.wildcards['inter'])
+start_sampling = snakemake.params['start_sampling']
 
-drop_times = 2 if 'slim' in files[0] else 1
+# drop_times = 2 if 'slim' in files[0] else 1
+
+times = np.flip(range(0, start_sampling + 1, interval))
 
 ts = tskit.load(files[0]) # extract info common to all trees
-times = np.flip(ac.ts.get_times(ts))[drop_times:]
+# times = np.flip(ac.ts.get_times(ts))[drop_times:]
 graph = demes.load(demes_file)
 N_admix_pop = len(graph.demes) - 1
 
@@ -104,6 +108,11 @@ V = np.array(V)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
 covmat = np.stack(covmat)
+
+sum_varcov = covmat.sum(axis=(1, 2))
+sum_var = covmat.diagonal(0, 1, 2).sum(axis=1)
+sum_cov = sum_varcov - sum_var
+
 # convert to CIs
 totvar_CI = ac.get_ci(totvar)
 G_nc_CI = ac.get_ci(G_nc)
@@ -115,12 +124,16 @@ V_CI = ac.get_ci(V)
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
 
+sum_varcov_CI = ac.get_ci(sum_varcov)
+sum_var_CI = ac.get_ci(sum_var)
+sum_cov_CI = ac.get_ci(sum_cov)
+
 Q_CIs = [
     ac.get_ci(Q[:,:,i])
     for i in range(Q.shape[-1])
 ]
 
-if 'slim_sel' in files[0]:
+if 'slim' in files[0]:
     ztb = pd.read_csv(files[0].replace('.trees', '_pheno.tsv'), sep='\t')
     for f in files[1:]:
         ztb = pd.concat([ztb, pd.read_csv(f.replace('.trees', '_pheno.tsv'), sep='\t')])
@@ -140,6 +153,9 @@ with open(snakemake.output['pickle'], 'wb') as fw:
             V_CI,
             covmat_nc_CI,
             covmat_CI,
+            sum_varcov,
+            sum_var,
+            sum_cov,
             Q_CIs,
             ztb,
         ),
