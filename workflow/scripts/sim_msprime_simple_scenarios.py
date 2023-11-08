@@ -13,6 +13,7 @@ demes_file = snakemake.input['demes_file']
 # outputs
 trees_file = snakemake.output['trees_file']
 # params
+rec = snakemake.params['recombination_rate']
 census_time = snakemake.params['census_time']
 n_sample = snakemake.params['n_sample']
 sampling_times = snakemake.params['sampling_times']
@@ -47,7 +48,7 @@ ts = msprime.sim_ancestry(
 	ploidy=2,
 	# recombination_rate=rate_map,
 	sequence_length=1e8,
-	recombination_rate=2e-8,
+	recombination_rate=rec,
 	demography=demography,
 )
 

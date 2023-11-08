@@ -137,6 +137,28 @@ rule analyse_slim_sel_intervals:
 	script:
 		'../scripts/analyse_simple_scenarios_intervals.py'
 
+rule analyse_msprime_intervals:
+	input:
+		files = expand(
+			'results/simulations/sim_msprime_rep/sim_msprime_high_freq_{{sc}}_r{{rec}}_{rep}.trees',
+			rep=range(config['N_rep']),
+		),
+		demes_file = 'results/simulations/scenario_{sc}.yaml',
+	output:
+		pickle = 'results/simulations/sim_msprime_inter_{sc}_r{rec}_i{inter}.pickle',
+	params:
+		census_time = 200,
+		n_sample = 30,
+		ref_n_sample = 30,
+		start_sampling = 200,
+	resources:
+		mem_mb = get_mem_mb_inter,
+		runtime = '2d',
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/analyse_simple_scenarios_intervals.py'
+
 
 # bgs
 rule analyse_slim_bgs_simple_scenarios:

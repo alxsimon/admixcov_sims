@@ -30,6 +30,13 @@ rule all:
 			inter=config['intervals'],
 		),
 		expand(
+			'results/simulations/sim_msprime_inter_{sc}_r{rec}_i{inter}.pickle',
+			# sc=config['scenarios'],
+			sc=['2A', '2NGF'],
+			rec=config['rec'],
+			inter=config['intervals'],
+		),
+		expand(
 			'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
 			sc=config['scenarios'],
 			rec=config['rec'],

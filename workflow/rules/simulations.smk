@@ -4,6 +4,7 @@ rule sim_msprime_simple_scenarios:
 	output:
 		trees_file = 'results/simulations/sim_msprime_rep/sim_msprime_scenario_{sc}_{rep}.trees',
 	params:
+		recombination_rate = 2e-8,
 		census_time = 200,
 		n_sample = 100,
 		sampling_times = [200, 160, 140, 120, 100, 80, 60, 40, 20, 0],
@@ -78,6 +79,26 @@ rule sim_msprime_europe_uk:
 		"../envs/popgensim.yaml"
 	script:
 		'../scripts/sim_msprime_europe_uk.py'
+
+#========================
+# High sampling frequency
+
+rule sim_msprime_high_sampling_freq:
+	input:
+		demes_file = 'results/simulations/scenario_{sc}.yaml',
+	output:
+		trees_file = 'results/simulations/sim_msprime_rep/sim_msprime_high_freq_{sc}_r{rec}_{rep}.trees',
+	params:
+		recombination_rate = lambda w: float(w.rec),
+		census_time = 200,
+		n_sample = 100,
+		sampling_times = lambda w: [x for x in list(range(0, 201, 1))[::-1]],
+	resources:
+		mem_mb = 9_000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/sim_msprime_simple_scenarios.py'
 
 
 rule sim_slim_sel_high_sampling_freq:

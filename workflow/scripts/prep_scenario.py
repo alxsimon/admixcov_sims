@@ -97,6 +97,23 @@ sc_dict['2NGF'] = Scenario(
     path=snakemake.params['outdir'],
 )
 
+sc_dict['2NGF2'] = Scenario( 
+    name="2NGF2",
+    N_anc=2,
+    pop_sizes=[5_000, 5_000, 5_000],
+    pulses=[
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+        [.0, .0],
+    ],
+    path=snakemake.params['outdir'],
+)
+
 # Scenario 2A
 sc_dict['2A'] = Scenario(
     name="2A",
