@@ -20,6 +20,7 @@ rule all:
 		),
 		"results/figures/fig_sim_main.pdf",
 		'results/figures/fig_sim_msprime_europe_uk.pdf',
+		"results/figures/fig_sim_sel_2A_intervals_rec.pdf",
 		expand(
 			'results/simulations/sim_slim_sel_inter_{sc}_{shift_type}_t{time}_s{ssize}_r{rec}_i{inter}.pickle',
 			sc=config['scenarios'],
@@ -69,3 +70,21 @@ rule main_figure:
 		"envs/popgensim.yaml"
 	script:
 		"scripts/main_figure.py"
+
+rule figure_intervals_rec:
+	input:
+		expand(
+			'results/simulations/sim_msprime_inter_2A_r{rec}_i{inter}.pickle',
+			rec=config['rec'],
+			inter=config['intervals'],
+		),
+	output:
+		fig = "results/figures/fig_sim_sel_2A_intervals_rec.pdf"
+	params:
+		prefix = "results/simulations/sim_slim_sel_inter_2A_gradual_t140_s3.0",
+		rec = config['rec'],
+		intervals = config['intervals'],
+	conda:
+		"envs/popgensim.yaml"
+	script:
+		"scripts/plot_variable_intervals_rec.py"

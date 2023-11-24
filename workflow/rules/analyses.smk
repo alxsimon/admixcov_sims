@@ -137,6 +137,7 @@ rule analyse_slim_sel_intervals:
 	script:
 		'../scripts/analyse_simple_scenarios_intervals.py'
 
+
 rule analyse_msprime_intervals:
 	input:
 		files = expand(
