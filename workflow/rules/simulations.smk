@@ -154,15 +154,15 @@ rule sim_slim_sel_high_sampling_freq_postprocessing:
 #========================
 # Background selection
 
-rule sim_slim_bgs_simple_scenarios:
+rule sim_slim_bgs_high_sampling_freq:
 	input:
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
 		trees_file = temp('results/simulations/sim_slim_bgs_rep/raw_sim_slim_bgs_scenario_{sc}_r{rec}_{rep}.trees'),
 	params:
 		census_time = 200,
-		n_sample = 100,
-		sampling_times = 'c(200, 160, 140, 120, 100, 80, 60, 40, 20, 0)',
+		n_sample = 50,
+		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, 1))[::-1]])})",
 		U = 0.17,
 		s = 0.1,
 	resources:
@@ -194,7 +194,7 @@ rule sim_slim_bgs_postprocessing:
 	params:
 		neutral_mut_rate = 1e-08,
 	resources:
-		mem_mb = 3_000,
+		mem_mb = 6_000,
 	conda:
 		"../envs/popgensim.yaml"
 	script:

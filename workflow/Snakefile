@@ -23,7 +23,7 @@ rule all:
 		"results/figures/fig_sim_sel_2A_intervals_rec.pdf",
 		expand(
 			'results/simulations/sim_slim_sel_inter_{sc}_{shift_type}_t{time}_s{ssize}_r{rec}_i{inter}.pickle',
-			sc=config['scenarios'],
+			sc=['2A'],
 			shift_type=['gradual'],
 			time=config['shift_time'],
 			ssize=config['shift_size'],
@@ -32,21 +32,21 @@ rule all:
 		),
 		expand(
 			'results/simulations/sim_msprime_inter_{sc}_r{rec}_i{inter}.pickle',
-			# sc=config['scenarios'],
-			sc=['2A', '2NGF'],
+			sc=['2A', '2NGF'], # limit the scenarios
 			rec=config['rec'],
 			inter=config['intervals'],
 		),
 		expand(
-			'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
-			sc=config['scenarios'],
+			'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}_i{inter}.pickle',
+			sc=['2A', '2NGF'],
 			rec=config['rec'],
+			inter=config['intervals'],
 		),
-		expand(
-			'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
-			sc=config['scenarios'],
-			rec=config['rec'],
-		)
+		# expand(
+		# 	'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
+		# 	sc=config['scenarios'],
+		# 	rec=config['rec'],
+		# )
 
 rule prepare_scenarios:
 	output:

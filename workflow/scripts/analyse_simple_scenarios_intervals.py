@@ -133,7 +133,7 @@ Q_CIs = [
     for i in range(Q.shape[-1])
 ]
 
-if 'slim' in files[0]:
+if 'slim_sel' in files[0]:
     ztb = pd.read_csv(files[0].replace('.trees', '_pheno.tsv'), sep='\t')
     for f in files[1:]:
         ztb = pd.concat([ztb, pd.read_csv(f.replace('.trees', '_pheno.tsv'), sep='\t')])

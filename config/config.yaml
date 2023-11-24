@@ -1,6 +1,6 @@
 scenarios:
   - "2NGF"
-  - "2NGF2"
+  # - "2NGF2"
   - "2A"
   # - "2B"
   # - "2C"
@@ -13,6 +13,6 @@ rec:
   - '1e-8'
   - '2e-8'
   - '3e-8'
-intervals: [1, 2, 5, 10, 15, 20]
+intervals: [2, 5, 10, 15, 20]
 shift_time: [140]
 shift_size: [3.0]
