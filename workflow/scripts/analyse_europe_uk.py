@@ -69,7 +69,7 @@ Q = []
 covmat_nc = []
 covmat = []
 for r in results:
-    (t, gnc, g, a, gnde) =  ac.stats_from_matrices(
+    (t, gnc, g, a, gnde, v) =  ac.stats_from_matrices(
         r['covmat'],
         r['admix_cov'],
         r['drift_err'],
@@ -79,6 +79,7 @@ for r in results:
     G.append(g)
     Ap.append(a)
     G_nde.append(gnde)
+    V.append(v)
     Q.append(r['Q'])
     covmat_nc.append(r['covmat'])
     covmat.append(r['covmat'] - r['admix_cov'] - r['drift_err'])
@@ -86,8 +87,9 @@ for r in results:
 totvar = np.array(totvar)
 G_nc = np.array(G_nc)
 G = np.array(G)
-G_nde = np.array(G_nde)
 Ap = np.array(Ap)
+G_nde = np.array(G_nde)
+V = np.array(V)
 Q = np.stack(Q)
 covmat_nc = np.stack(covmat_nc)
 covmat = np.stack(covmat)
@@ -97,6 +99,7 @@ G_nc_CI = ac.get_ci(G_nc)
 G_CI = ac.get_ci(G)
 Ap_CI = ac.get_ci(Ap)
 G_nde_CI = ac.get_ci(G_nde)
+V_CI = ac.get_ci(V)
 
 covmat_nc_CI = ac.get_ci(covmat_nc)
 covmat_CI = ac.get_ci(covmat)
@@ -106,7 +109,7 @@ Q_CIs = [
     for i in range(Q.shape[-1])
 ]
 
-if 'slim' in files[0]:
+if 'slim_sel' in files[0]:
     ztb = pd.read_csv(files[0].replace('.trees', '_pheno.tsv'), sep='\t')
     for f in files[1:]:
         ztb = pd.concat([ztb, pd.read_csv(f.replace('.trees', '_pheno.tsv'), sep='\t')])
@@ -123,6 +126,7 @@ with open(snakemake.output['pickle'], 'wb') as fw:
             G_CI,
             Ap_CI,
             G_nde_CI,
+            V_CI,
             covmat_nc_CI,
             covmat_CI,
             Q_CIs,

@@ -13,10 +13,11 @@ dependencies:
   - slim=3.7.1
   - stdpopsim=0.2.0
   - numpy=1.23.3
+  - scipy=1.11.4
   - matplotlib=3.6.3
   - seaborn=0.12.2
   - jupyterlab=3.6.1
   - sgkit=0.6.0
   - pip
   - pip:
-    - git+https://github.com/alxsimon/py-admixcov.git@37e9bde
+    - git+https://github.com/alxsimon/py-admixcov.git@bfeb5a8

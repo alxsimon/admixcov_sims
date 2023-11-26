@@ -163,7 +163,7 @@ rule sim_slim_bgs_high_sampling_freq:
 		census_time = 200,
 		n_sample = 50,
 		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, 1))[::-1]])})",
-		U = 0.17,
+		U = 1,
 		s = 0.1,
 	resources:
 		mem_mb = 9_000,
@@ -187,7 +187,7 @@ rule sim_slim_bgs_high_sampling_freq:
 
 rule sim_slim_bgs_postprocessing:
 	input:
-		trees_file = 'results/simulations/sim_slim_bgs_rep/raw_sim_slim_bgs_scenario_{sc}_r{rep}_{rep}.trees',
+		trees_file = 'results/simulations/sim_slim_bgs_rep/raw_sim_slim_bgs_scenario_{sc}_r{rec}_{rep}.trees',
 		demes_file = 'results/simulations/scenario_{sc}.json',
 	output:
 		trees_file = 'results/simulations/sim_slim_bgs_rep/sim_slim_bgs_scenario_{sc}_r{rec}_{rep}.trees',

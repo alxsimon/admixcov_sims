@@ -15,5 +15,4 @@
 #SBATCH --mail-user acpsimon@ucdavis.edu
 
 module load miniconda3
-snakemake --profile farm-profile \
---rerun-triggers mtime
+snakemake --profile farm-profile

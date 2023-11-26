@@ -168,7 +168,7 @@ rule analyse_slim_bgs_intervals:
 	input:
 		files = expand(
 			'results/simulations/sim_slim_bgs_rep/sim_slim_bgs_scenario_{{sc}}_r{{rec}}_{rep}.trees',
-			rep=range(300), # bumped up the number of replicates in this case
+			rep=range(config['N_rep']),
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
