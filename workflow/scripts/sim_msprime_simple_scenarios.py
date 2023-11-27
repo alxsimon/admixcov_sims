@@ -1,6 +1,5 @@
 #!python
 import demes
-import demesdraw
 import msprime
 # import math
 import numpy as np

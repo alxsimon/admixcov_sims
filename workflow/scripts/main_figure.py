@@ -1,10 +1,6 @@
 import admixcov as ac
-import tskit
-import demes
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
 import pickle
 
 fig, axs = plt.subplots(3, 2, figsize=(12, 10), layout="tight")

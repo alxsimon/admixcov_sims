@@ -1,5 +1,4 @@
 import demes
-import os
 import demesdraw
 
 sc = snakemake.wildcards['sc']
