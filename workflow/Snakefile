@@ -11,7 +11,12 @@ rule all:
 	input:
 		expand("results/simulations/scenario_{sc}.{ext}", sc=config['scenarios'], ext=['yaml', 'json', 'svg']),
 		expand('results/figures/fig_sim_msprime_scenario_{sc}.pdf', sc=config['scenarios']),
-		expand('results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf', sc=config['scenarios'], rec=config['rec']),
+		expand(
+			'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}_i{inter}.pdf',
+			sc=config['scenarios'],
+			rec=config['rec'],
+			inter=config['intervals'],
+		),
 		expand(
 			'results/figures/fig_sim_slim_sel_scenario_{sc}_{shift_type}_t{time}_s{ssize}.pdf',
 			sc=config['scenarios'],

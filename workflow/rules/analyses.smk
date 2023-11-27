@@ -189,9 +189,9 @@ rule analyse_slim_bgs_intervals:
 
 rule plot_slim_bgs_simple_scenarios:
 	input:
-		pickle = 'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
+		pickle = 'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}_i{inter}.pickle',
 	output:
-		main_fig = 'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
+		main_fig = 'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}_i{inter}.pdf',
 	resources:
 		mem_mb = 3_000,
 	conda:
