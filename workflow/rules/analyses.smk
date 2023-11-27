@@ -187,14 +187,14 @@ rule analyse_slim_bgs_intervals:
 		'../scripts/analyse_simple_scenarios_intervals.py'
 
 
-# rule plot_slim_bgs_simple_scenarios:
-# 	input:
-# 		pickle = 'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
-# 	output:
-# 		main_fig = 'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
-# 	resources:
-# 		mem_mb = 3_000,
-# 	conda:
-# 		"../envs/popgensim.yaml"
-# 	script:
-# 		'../scripts/plot_simple_scenarios.py'
+rule plot_slim_bgs_simple_scenarios:
+	input:
+		pickle = 'results/simulations/sim_slim_bgs_scenario_{sc}_r{rec}.pickle',
+	output:
+		main_fig = 'results/figures/fig_sim_slim_bgs_scenario_{sc}_r{rec}.pdf',
+	resources:
+		mem_mb = 3_000,
+	conda:
+		"../envs/popgensim.yaml"
+	script:
+		'../scripts/plot_simple_scenarios.py'
