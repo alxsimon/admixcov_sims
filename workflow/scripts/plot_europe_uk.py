@@ -110,9 +110,9 @@ axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{0}$)")
 axs[k, l].legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].xaxis.set_major_locator(loc)
-for i, t in enumerate(new_times[1:]):
-    if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1))
+# for i, t in enumerate(new_times[1:]):
+#     if G_CI[0][i]*G_CI[2][i] > 0:
+#         axs[k, l].annotate("*", xy=(t, 0.1))
 
 fig.savefig(
     snakemake.output['main_fig'],

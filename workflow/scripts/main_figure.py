@@ -101,7 +101,6 @@ axs[k, l].yaxis.set_major_formatter(formatter)
 k, l = (2, 0)
 x_shift = 2
 ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_{nc}$')
-# ac.plot_ci_line(times[1:] + 2 * x_shift, G_nde_CI, ax=axs[k, l], marker='^', linestyle='dashdot', label='$G_{nde}$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='$G$')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='$A$')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
@@ -111,9 +110,9 @@ axs[k, l].set_xlabel('t')
 axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
 axs[k, l].set_title('Neutral, Var. decomposition')
 axs[k, l].set_title("E", loc='left', fontdict={'fontweight': 'bold'})
-for i, t in enumerate(times[1:]):
-    if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.1))
+# for i, t in enumerate(times[1:]):
+#     if G_CI[0][i]*G_CI[2][i] > 0:
+#         axs[k, l].annotate("*", xy=(t, 0.1))
 
 # ==================
 with open(snakemake.input['sim_sel'], 'rb') as fr:
@@ -135,7 +134,6 @@ with open(snakemake.input['sim_sel'], 'rb') as fr:
 k, l = (2, 1)
 x_shift = 2
 ac.plot_ci_line(times[1:] + x_shift, G_nc_CI, ax=axs[k, l], marker='o', linestyle='dashed', label='$G_{nc}$')
-# ac.plot_ci_line(times[1:] + 2 * x_shift, G_nde_CI, ax=axs[k, l], marker='^', linestyle='dotted', label='$G_{nde}$')
 ac.plot_ci_line(times[1:], G_CI, ax=axs[k, l], marker='o', label='$G$')
 ac.plot_ci_line(times[1:] - x_shift, Ap_CI, ax=axs[k, l], marker='s', color='blue', label='$A$')
 axs[k, l].set_xlim(times[1] + time_padding, times[-1] - time_padding)
@@ -146,9 +144,9 @@ axs[k, l].set_ylabel("Proportion of variance ($p_t - p_{160}$)")
 axs[k, l].set_title('Gradual selection, Var. decomposition')
 axs[k, l].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs[k, l].set_title("F", loc='left', fontdict={'fontweight': 'bold'})
-for i, t in enumerate(times[1:]):
-    if G_CI[0][i]*G_CI[2][i] > 0:
-        axs[k, l].annotate("*", xy=(t, 0.3))
+# for i, t in enumerate(times[1:]):
+#     if G_CI[0][i]*G_CI[2][i] > 0:
+#         axs[k, l].annotate("*", xy=(t, 0.3))
 
 
 fig.savefig(snakemake.output['fig'])
