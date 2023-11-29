@@ -2,6 +2,7 @@
 import admixcov as ac
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import seaborn as sns
 import pickle
 
@@ -16,6 +17,9 @@ with open(snakemake.input['pickle'], 'rb') as fr:
         V_CI,
         covmat_nc_CI,
         covmat_CI,
+        sum_varcov_CI,
+        sum_var_CI,
+        sum_cov_CI,
         Q_CIs,
         ztb,	
     ) = pickle.load(fr)
@@ -68,16 +72,18 @@ ac.plot_covmat_ci(
 )
 axs[k, l].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
 
+cmap = mpl.colormaps['viridis']
+colors = [cmap(x) for x in np.linspace(0, 1, times.size - 1)]
 x_shift = 2
 k, l = (1, 0)
-ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors_oi, d=2)
+ac.cov_lineplot(times, covmat_nc_CI, axs[k, l], colors=colors, d=2)
 axs[k, l].set_ylabel('Before correction')
 axs[k, l].set_title("C", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)
 axs[k, l].hlines(y=0, xmin=times[1] + x_shift, xmax=times[-2] - 4 * x_shift, linestyles='dotted', colors='grey')
 axs[k, l].yaxis.set_major_formatter(formatter)
 k, l = (1, 1)
-ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors_oi, d=2, ylim=axs[1, 0].get_ylim())
+ac.cov_lineplot(times, covmat_CI, axs[k, l], colors=colors, d=2, ylim=axs[1, 0].get_ylim())
 axs[k, l].set_ylabel('After correction')
 axs[k, l].set_title("D", loc='left', fontdict={'fontweight': 'bold'})
 axs[k, l].set_xlim(times[1] + x_shift, times[-2] - 4 * x_shift)

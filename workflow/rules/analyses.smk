@@ -121,7 +121,7 @@ rule analyse_slim_sel_intervals:
 	input:
 		files = expand(
 			'results/simulations/sim_slim_sel_rep/sim_slim_sel_high_freq_{{sc}}_{{type}}_t{{time}}_s{{ssize}}_r{{rec}}_{rep}.trees',
-			rep=range(300),
+			rep=range(config['N_rep']),
 		),
 		demes_file = 'results/simulations/scenario_{sc}.yaml',
 	output:
@@ -197,4 +197,4 @@ rule plot_slim_bgs_simple_scenarios:
 	conda:
 		"../envs/popgensim.yaml"
 	script:
-		'../scripts/plot_simple_scenarios.py'
+		'../scripts/plot_simple_scenarios_bgs.py'
