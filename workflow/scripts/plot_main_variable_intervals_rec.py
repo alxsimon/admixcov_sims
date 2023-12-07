@@ -84,6 +84,33 @@ _ = axs[0].set_xticklabels(intervals)
 _ = axs[2].set_xticks([int(x) + 0.5 for x in intervals])
 _ = axs[2].set_xticklabels(intervals)
 
+# a supplementary figure for just r=2e-8
+supfig, supaxs = plt.subplots(1, 2, figsize=(10, 3.5), layout="constrained")
+x_val = [int(x) for x in intervals]
+rec = "2e-8"
+ac.plot_ci_line(x_val, sum_cov[rec], supaxs[0], marker='o', color=colors_oi[3])
+ac.plot_ci_line(x_val, sum_var[rec], supaxs[1], marker='o', color=colors_oi[3])
+ylim = (
+    np.min(np.stack([sum_cov[rec][0], sum_var[rec][0]])),
+    np.max(np.stack([sum_cov[rec][2], sum_var[rec][2]]))
+)
+supaxs[0].set_xlabel("sampling interval (gen)")
+supaxs[0].set_ylabel("Sum(Cov)")
+supaxs[0].set_title("A", loc='left', fontdict={'fontweight': 'bold'})
+supaxs[0].set_title('Covariances GSS')
+_ = supaxs[0].set_xticks(x_val)
+_ = supaxs[0].set_xticklabels(intervals)
+_ = supaxs[0].set_ylim(ylim)
+supaxs[1].set_xlabel("sampling interval (gen)")
+supaxs[1].set_ylabel("Sum(Var)")
+supaxs[1].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
+supaxs[1].set_title('Variances GSS')
+_ = supaxs[1].set_xticks(x_val)
+_ = supaxs[1].set_xticklabels(intervals)
+_ = supaxs[1].set_ylim(ylim)
+supaxs[0].yaxis.set_major_formatter(formatter)
+supaxs[1].yaxis.set_major_formatter(formatter)
+supfig.savefig(snakemake.output['supfig'])
 
 # BGS plot on axes 1
 for rec in recombinations:

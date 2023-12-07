@@ -88,7 +88,8 @@ rule figure_main_intervals_rec_gss:
 			inter=config['intervals'],
 		),
 	output:
-		fig = "results/figures/fig_sim_main_intervals_rec_2A.pdf"
+		fig = "results/figures/fig_sim_main_intervals_rec_2A.pdf",
+		supfig = "results/figures/fig_sim_sup_intervals_r2e-8_2A.pdf",
 	params:
 		prefix_gss = "results/simulations/sim_slim_sel_inter_2A_gradual_t140_s3.0",
 		prefix_bgs = "results/simulations/sim_slim_bgs_scenario_2A",
@@ -125,7 +126,7 @@ rule figure_intervals_rec_bgs:
 			inter=config['intervals'],
 		),
 	output:
-		fig = "results/figures/fig_sim_bgs_2A_intervals_rec.pdf"
+		fig = "results/figures/fig_sim_bgs_2A_intervals_rec.pdf",
 	params:
 		prefix = "results/simulations/sim_slim_bgs_scenario_2A",
 		rec = config['rec'],
