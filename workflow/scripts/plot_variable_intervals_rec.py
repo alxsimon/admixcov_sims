@@ -2,6 +2,11 @@ import admixcov as ac
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+# sci notation formatter
+import matplotlib.ticker as tkr
+formatter = tkr.ScalarFormatter(useMathText=True)
+formatter.set_scientific(True)
+formatter.set_powerlimits((0, 0))
 
 colors_oi = [
     '#000000', # black
@@ -68,14 +73,20 @@ ylim = (ymin, ymax)
 axs[0].legend(ncols=3)
 axs[0].set_xlabel("sampling interval (gen)")
 axs[0].set_ylabel("Sum(Cov)")
+axs[0].set_title("A", loc='left', fontdict={'fontweight': 'bold'})
+axs[0].set_title(f"Covariances {snakemake.params['model']}")
 _ = axs[0].set_ylim(ylim)
 axs[1].set_xlabel("sampling interval (gen)")
 axs[1].set_ylabel("Sum(Var)")
+axs[1].set_title("B", loc='left', fontdict={'fontweight': 'bold'})
+axs[1].set_title(f"Variances {snakemake.params['model']}")
 _ = axs[1].set_ylim(ylim)
 
 _ = axs[0].set_xticks([int(x) + 0.5 for x in intervals])
 _ = axs[0].set_xticklabels(intervals)
 _ = axs[1].set_xticks([int(x) + 0.5 for x in intervals])
 _ = axs[1].set_xticklabels(intervals)
+axs[0].yaxis.set_major_formatter(formatter)
+axs[1].yaxis.set_major_formatter(formatter)
 
 fig.savefig(snakemake.output['fig'])

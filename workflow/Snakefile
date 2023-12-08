@@ -113,6 +113,7 @@ rule figure_intervals_rec_gss:
 		prefix = "results/simulations/sim_slim_sel_inter_2A_gradual_t140_s3.0",
 		rec = config['rec'],
 		intervals = config['intervals'],
+		model = "BGS",
 	conda:
 		"envs/popgensim.yaml"
 	script:
@@ -121,7 +122,7 @@ rule figure_intervals_rec_gss:
 rule figure_intervals_rec_bgs:
 	input:
 		expand(
-			'results/simulations/sim_msprime_inter_2A_r{rec}_i{inter}.pickle',
+			'results/simulations/sim_slim_bgs_scenario_2A_r{rec}_i{inter}.pickle',
 			rec=config['rec'],
 			inter=config['intervals'],
 		),
@@ -131,6 +132,7 @@ rule figure_intervals_rec_bgs:
 		prefix = "results/simulations/sim_slim_bgs_scenario_2A",
 		rec = config['rec'],
 		intervals = config['intervals'],
+		model = "BGS",
 	conda:
 		"envs/popgensim.yaml"
 	script:
