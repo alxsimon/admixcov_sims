@@ -164,7 +164,7 @@ rule sim_slim_bgs_high_sampling_freq:
 		n_sample = 50,
 		sampling_times = lambda w: f"c({','.join([str(x) for x in list(range(0, 201, 1))[::-1]])})",
 		U = 1,
-		s = 0.1,
+		s = 0.1, # made negative in slim script
 	resources:
 		mem_mb = 9_000,
 	log: 
